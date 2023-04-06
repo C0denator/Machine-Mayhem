@@ -1,42 +1,24 @@
 package com.programmierbeleg.machine_mayhem;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Graphics;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.Game;
 
-public class Spiel extends ApplicationAdapter {
-	SpriteBatch batch;
-	Texture img;
-	float tmp;
-	
+public class Spiel extends Game {
+	public static Spiel instanz;
+
+	public Spiel(){
+		if(instanz==null){
+			instanz=this;
+		}
+	}
+
 	@Override
 	public void create () {
-		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
-		tmp=0.0f;
+		setScreen(new Hauptmenu());
 	}
 
-	@Override
-	public void render () {
-		update();
-
-		ScreenUtils.clear(0.2f, 0.2f, 0.2f, 1);
-		batch.begin();
-		////////////////////////////////////////////////////////////
-		batch.draw(img, tmp, tmp);
-		////////////////////////////////////////////////////////////
-		batch.end();
-	}
-
-	public void update(){
-		tmp+=1;
-	}
 	
 	@Override
 	public void dispose () {
-		batch.dispose();
-		img.dispose();
+		//this.dispose();
 	}
 }

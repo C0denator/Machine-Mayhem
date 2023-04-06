@@ -9,6 +9,7 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 public class DesktopLauncher {
 
 	private static int foregroundFPS=60;
+	private static boolean vollbildAn=false;
 	private static int breite=1920;
 	private static int höhe=1080;
 
@@ -17,8 +18,11 @@ public class DesktopLauncher {
 		config.setForegroundFPS(foregroundFPS);
 		config.useVsync(true);
 		config.setTitle("Machine Mayhem");
-		//config.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());
-		config.setWindowedMode(breite,höhe);
+		if(vollbildAn){
+			config.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());
+		}else{
+			config.setWindowedMode(breite,höhe);
+		}
 		new Lwjgl3Application(new Spiel(), config);
 		System.out.println("lul");
 	}
