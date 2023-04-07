@@ -12,14 +12,16 @@ public class Hauptmenü extends ScreenAdapter {
 
     SpriteBatch batch;
     Texture img;
-    float tmp;
+    float tmpX =500.0f;
+    float tmpY =0.0f;
+    float velX =100.0f;
+    float velY =100.0f;
     private ArrayList<Knopf> knöpfe;
 
 
     public Hauptmenü(){
         batch = new SpriteBatch();
         img = new Texture("badlogic.jpg");
-        tmp=0.0f;
         knöpfe=new ArrayList<Knopf>();
 
         knöpfe.add(new Knopf(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()*0.8f,300,50,"Spielen"){
@@ -34,6 +36,12 @@ public class Hauptmenü extends ScreenAdapter {
                 System.out.println("Optionen!!!!11");
             }
         });
+        knöpfe.add(new Knopf(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()*0.6f,300,50,"Beenden"){
+            @Override
+            public void action(){
+                Gdx.app.exit();
+            }
+        });
 
     }
 
@@ -45,7 +53,7 @@ public class Hauptmenü extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         ////////////////////////////////////////////////////////////
-        batch.draw(img, tmp, tmp);
+        batch.draw(img, tmpX, tmpY);
         ////////////////////////////////////////////////////////////
         batch.end();
 
@@ -57,7 +65,24 @@ public class Hauptmenü extends ScreenAdapter {
     }
 
     private void update(){
-        tmp+=100* Gdx.graphics.getDeltaTime();
+        tmpX+=velX* Gdx.graphics.getDeltaTime();
+        tmpY+=velY* Gdx.graphics.getDeltaTime();
+        if(tmpX>=Gdx.graphics.getWidth()-256.0f){
+            tmpX=Gdx.graphics.getWidth()-256.0f;
+            velX*=-1;
+        }
+        if(tmpX<=0){
+            tmpX=0;
+            velX*=-1;
+        }
+        if(tmpY>=Gdx.graphics.getHeight()-256.0f){
+            tmpY=Gdx.graphics.getHeight()-256.0f;
+            velY*=-1;
+        }
+        if(tmpY<=0){
+            tmpY=0;
+            velY*=-1;
+        }
     }
 
     @Override
