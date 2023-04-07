@@ -69,7 +69,8 @@ public abstract class Knopf {
         shaperenderer.end();
 
         batch.begin();
-        bitmapFont.draw(batch,schriftzug,x+10.0f,(y+höhe/2)+5.0f);
+        bitmapFont.getData().setScale(2.0f);
+        bitmapFont.draw(batch,schriftzug,x+10.0f,(y+höhe/2)+6*bitmapFont.getScaleY());
         batch.end();
     }
 

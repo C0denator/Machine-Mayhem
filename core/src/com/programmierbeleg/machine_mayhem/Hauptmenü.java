@@ -24,19 +24,19 @@ public class Hauptmenü extends ScreenAdapter {
         img = new Texture("badlogic.jpg");
         knöpfe=new ArrayList<Knopf>();
 
-        knöpfe.add(new Knopf(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()*0.8f,300,50,"Spielen"){
+        knöpfe.add(new Knopf(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()*0.8f,600,100,"Spielen"){
             @Override
             public void action(){
                 System.out.println("ACTION!!!!111");
             }
         });
-        knöpfe.add(new Knopf(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()*0.7f,300,50,"Optionen"){
+        knöpfe.add(new Knopf(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()*0.7f,600,100,"Optionen"){
             @Override
             public void action(){
                 System.out.println("Optionen!!!!11");
             }
         });
-        knöpfe.add(new Knopf(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()*0.6f,300,50,"Beenden"){
+        knöpfe.add(new Knopf(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()*0.6f,600,100,"Beenden"){
             @Override
             public void action(){
                 Gdx.app.exit();
@@ -62,6 +62,8 @@ public class Hauptmenü extends ScreenAdapter {
                 knöpfe.get(i).render();
             }
         }
+
+        Spiel.instanz.renderDebug();
     }
 
     private void update(){
