@@ -35,20 +35,24 @@ public abstract class Knopf {
         shaperenderer.begin(ShapeRenderer.ShapeType.Filled);
 
         if(Gdx.input.getX() >= x && Gdx.input.getX() <= x+breite && Gdx.graphics.getHeight()-Gdx.input.getY() >= y && Gdx.graphics.getHeight()-Gdx.input.getY() <= y+höhe){
+
+            if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)){
+                wurdeGedrückt=true;
+            }
+
             if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
                 //Zeiger drückt Knopf durchgehend
                 shaperenderer.setColor(0.3f,0.3f,0.3f,1.0f);
                 zeichneRechteck();
-                shaperenderer.setColor(0.5f,0.5f,0.5f,1.0f);
+                shaperenderer.setColor(0.4f,0.4f,0.4f,1.0f);
                 zeichneRand();
-                wurdeGedrückt=true;
             }else{
                 if(wurdeGedrückt){
                     action();
                     wurdeGedrückt=false;
                 }
                 //Zeiger berührt Knopf; klickt aber nicht
-                shaperenderer.setColor(0.5f,0.5f,0.5f,1.0f);
+                shaperenderer.setColor(0.6f,0.6f,0.6f,1.0f);
                 zeichneRechteck();
                 shaperenderer.setColor(0.4f,0.4f,0.4f,1.0f);
                 zeichneRand();
@@ -57,7 +61,6 @@ public abstract class Knopf {
         }
         else{
             //Zeiger berührt nicht den Knopf
-            wurdeGedrückt=false;
             shaperenderer.setColor(0.5f,0.5f,0.5f,1.0f);
             zeichneRechteck();
             shaperenderer.setColor(0.3f,0.3f,0.3f,1.0f);
