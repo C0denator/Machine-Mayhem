@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import jdk.internal.org.jline.terminal.MouseEvent;
 
-public class Knopf {
+public abstract class Knopf {
 
     ShapeRenderer shaperenderer = new ShapeRenderer();
     BitmapFont bitmapFont = new BitmapFont();
@@ -33,30 +33,25 @@ public class Knopf {
 
     public void render(){
         shaperenderer.begin(ShapeRenderer.ShapeType.Filled);
-        //Gdx.input.getX() >= x && Gdx.input.getX() <= x+breite && Gdx.input.getY() >= y && Gdx.input.getY() <= y+höhe
+
         if(Gdx.input.getX() >= x && Gdx.input.getX() <= x+breite && Gdx.graphics.getHeight()-Gdx.input.getY() >= y && Gdx.graphics.getHeight()-Gdx.input.getY() <= y+höhe){
             if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
                 //Zeiger drückt Knopf durchgehend
                 shaperenderer.setColor(0.3f,0.3f,0.3f,1.0f);
-                shaperenderer.rect(x,y,breite,höhe);
+                zeichneRechteck();
                 shaperenderer.setColor(0.5f,0.5f,0.5f,1.0f);
-                shaperenderer.rectLine(x+linienbreite/2,y,x+linienbreite/2,y+höhe,linienbreite);
-                shaperenderer.rectLine(x,y+höhe-linienbreite/2,x+breite,y+höhe-linienbreite/2,linienbreite);
-                shaperenderer.rectLine(x+breite-linienbreite/2,y+höhe,x+breite-linienbreite/2,y,linienbreite);
-                shaperenderer.rectLine(x+breite,y+linienbreite/2,x,y+linienbreite/2,linienbreite);
+                zeichneRand();
                 wurdeGedrückt=true;
             }else{
                 if(wurdeGedrückt){
                     action();
+                    wurdeGedrückt=false;
                 }
                 //Zeiger berührt Knopf; klickt aber nicht
                 shaperenderer.setColor(0.5f,0.5f,0.5f,1.0f);
-                shaperenderer.rect(x,y,breite,höhe);
+                zeichneRechteck();
                 shaperenderer.setColor(0.4f,0.4f,0.4f,1.0f);
-                shaperenderer.rectLine(x+linienbreite/2,y,x+linienbreite/2,y+höhe,linienbreite);
-                shaperenderer.rectLine(x,y+höhe-linienbreite/2,x+breite,y+höhe-linienbreite/2,linienbreite);
-                shaperenderer.rectLine(x+breite-linienbreite/2,y+höhe,x+breite-linienbreite/2,y,linienbreite);
-                shaperenderer.rectLine(x+breite,y+linienbreite/2,x,y+linienbreite/2,linienbreite);
+                zeichneRand();
             }
 
         }
@@ -64,12 +59,9 @@ public class Knopf {
             //Zeiger berührt nicht den Knopf
             wurdeGedrückt=false;
             shaperenderer.setColor(0.5f,0.5f,0.5f,1.0f);
-            shaperenderer.rect(x,y,breite,höhe);
+            zeichneRechteck();
             shaperenderer.setColor(0.3f,0.3f,0.3f,1.0f);
-            shaperenderer.rectLine(x+linienbreite/2,y,x+linienbreite/2,y+höhe,linienbreite);
-            shaperenderer.rectLine(x,y+höhe-linienbreite/2,x+breite,y+höhe-linienbreite/2,linienbreite);
-            shaperenderer.rectLine(x+breite-linienbreite/2,y+höhe,x+breite-linienbreite/2,y,linienbreite);
-            shaperenderer.rectLine(x+breite,y+linienbreite/2,x,y+linienbreite/2,linienbreite);
+            zeichneRand();
         }
         shaperenderer.end();
 
@@ -78,9 +70,19 @@ public class Knopf {
         batch.end();
     }
 
-    private void action(){
-        System.out.println("ACTION!!!!111");
-        wurdeGedrückt=false;
+    private void zeichneRechteck(){
+        shaperenderer.rect(x,y,breite,höhe);
+    }
+
+    private void zeichneRand(){
+        shaperenderer.rectLine(x+linienbreite/2,y,x+linienbreite/2,y+höhe,linienbreite);
+        shaperenderer.rectLine(x,y+höhe-linienbreite/2,x+breite,y+höhe-linienbreite/2,linienbreite);
+        shaperenderer.rectLine(x+breite-linienbreite/2,y+höhe,x+breite-linienbreite/2,y,linienbreite);
+        shaperenderer.rectLine(x+breite,y+linienbreite/2,x,y+linienbreite/2,linienbreite);
+    }
+
+    public void action(){
+
     }
 
     public void dispose(){
