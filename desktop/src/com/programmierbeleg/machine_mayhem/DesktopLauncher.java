@@ -13,6 +13,7 @@ public class DesktopLauncher {
 	private static int breite=1920;
 	private static int höhe=1080;
 
+
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setForegroundFPS(foregroundFPS);

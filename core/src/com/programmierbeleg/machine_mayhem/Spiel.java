@@ -13,7 +13,7 @@ public class Spiel extends Game {
 
 	@Override
 	public void create () {
-		setScreen(new Hauptmenu());
+		setScreen(new Hauptmenü());
 	}
 
 	
