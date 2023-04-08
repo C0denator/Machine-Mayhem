@@ -1,23 +1,61 @@
 package com.programmierbeleg.machine_mayhem;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-//Alle Spielobjekte die gerendert werden müssen
 public abstract class SpielObjekt {
 
-    float x;
-    float y;
-    float breite;
-    float höhe;
-    Sprite sprite;
+    private float x;
+    private float y;
+    private float breite;
+    private float höhe;
+    private boolean Sichtbar;
 
-    public void render(SpriteBatch batch, float delta){
-        update(delta);
+    public SpielObjekt(float x, float y, float breite, float höhe, boolean Sichtbar){
+        this.x=x-breite/2;
+        this.y=y-höhe/2;
+        this.breite=breite;
+        this.höhe=höhe;
+        this.Sichtbar=Sichtbar;
+
     }
 
-    private void update(float delta){
-
+    public float getX() {
+        return x;
     }
 
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public void setY(float y) {
+        this.y = y;
+    }
+
+    public float getBreite() {
+        return breite;
+    }
+
+    public void setBreite(float breite) {
+        this.breite = breite;
+    }
+
+    public float getHöhe() {
+        return höhe;
+    }
+
+    public void setHöhe(float höhe) {
+        this.höhe = höhe;
+    }
+
+    public boolean isSichtbar() {
+        return Sichtbar;
+    }
+
+    public void setSichtbar(boolean sichtbar) {
+        Sichtbar = sichtbar;
+    }
 }

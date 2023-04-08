@@ -30,7 +30,8 @@ public class Hauptmenü extends ScreenAdapter {
         knöpfe.add(new Knopf(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()*0.7f,600,75,"Spielen"){
             @Override
             public void action(){
-                Spiel.instanz.setScreen(new SpielAnzeige());
+                Spiel.instanz.aktiverBildschirm=new SpielAnzeige();
+                Spiel.instanz.aktiverBildschirm.show();
             }
         });
         knöpfe.add(new Knopf(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()*0.6f,600,75,"Optionen"){
@@ -52,23 +53,21 @@ public class Hauptmenü extends ScreenAdapter {
     public void render(float delta) {
         update();
         //ScreenUtils.clear(0.2f, 0.2f, 0.2f, 1);
-        Gdx.gl.glClearColor(0.2f,0.2f,0.2f,1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         ////////////////////////////////////////////////////////////
         batch.draw(img, tmpX, tmpY);
         bitmapFont.getData().setScale(5.0f);
         bitmapFont.draw(batch,"Machine Mayhem", Gdx.graphics.getWidth()/2-275, Gdx.graphics.getHeight()*0.9f);
-        ////////////////////////////////////////////////////////////
-        batch.end();
 
         for (int i=0; i<knöpfe.size(); i++){
             if(knöpfe.get(i)!=null){
-                knöpfe.get(i).render();
+                knöpfe.get(i).render(Gdx.graphics.getDeltaTime());
             }
         }
 
-        Spiel.instanz.renderDebug();
+        ////////////////////////////////////////////////////////////
+        batch.end();
+
     }
 
     private void update(){

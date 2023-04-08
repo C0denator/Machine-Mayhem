@@ -2,39 +2,34 @@ package com.programmierbeleg.machine_mayhem;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import jdk.internal.org.jline.terminal.MouseEvent;
 
-public abstract class Knopf {
+public class Knopf extends SpielObjekt implements GrafikAusgabe {
 
     ShapeRenderer shaperenderer = new ShapeRenderer();
     BitmapFont bitmapFont = new BitmapFont();
-    SpriteBatch batch=new SpriteBatch();
-    private float x;
-    private float y;
-    private float breite;
-    private float höhe;
     private String schriftzug;
     private boolean wurdeGedrückt=false;
     private float linienbreite;
 
+    private SpriteBatch testBatch;
+
     public Knopf(float x, float y, float breite, float höhe, String schriftzug){
-        this.x=x-breite/2;
-        this.y=y-höhe/2;
-        this.breite=breite;
-        this.höhe=höhe;
+        super(x,y,breite,höhe,true);
         this.schriftzug=schriftzug;
         linienbreite=5.0f;
+
+        testBatch=new SpriteBatch();
     }
 
-    public void render(){
+    public void render(float delta){
         shaperenderer.begin(ShapeRenderer.ShapeType.Filled);
 
-        if(Gdx.input.getX() >= x && Gdx.input.getX() <= x+breite && Gdx.graphics.getHeight()-Gdx.input.getY() >= y && Gdx.graphics.getHeight()-Gdx.input.getY() <= y+höhe){
+        if(Gdx.input.getX() >= super.getX() && Gdx.input.getX() <= super.getX()+super.getBreite() &&
+                Gdx.graphics.getHeight()-Gdx.input.getY() >= super.getY() &&
+                Gdx.graphics.getHeight()-Gdx.input.getY() <= super.getY()+super.getHöhe()){
 
             if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)){
                 wurdeGedrückt=true;
@@ -69,21 +64,21 @@ public abstract class Knopf {
         }
         shaperenderer.end();
 
-        batch.begin();
+        testBatch.begin();
         bitmapFont.getData().setScale(2.0f);
-        bitmapFont.draw(batch,schriftzug,x+10.0f,(y+höhe/2)+6*bitmapFont.getScaleY());
-        batch.end();
+        bitmapFont.draw(testBatch,schriftzug,super.getX()+10.0f,(super.getY()+super.getHöhe()/2)+6*bitmapFont.getScaleY());
+        testBatch.end();
     }
 
     private void zeichneRechteck(){
-        shaperenderer.rect(x,y,breite,höhe);
+        shaperenderer.rect(super.getX(),super.getY(),super.getBreite(),super.getHöhe());
     }
 
     private void zeichneRand(){
-        shaperenderer.rectLine(x+linienbreite/2,y,x+linienbreite/2,y+höhe,linienbreite);
-        shaperenderer.rectLine(x,y+höhe-linienbreite/2,x+breite,y+höhe-linienbreite/2,linienbreite);
-        shaperenderer.rectLine(x+breite-linienbreite/2,y+höhe,x+breite-linienbreite/2,y,linienbreite);
-        shaperenderer.rectLine(x+breite,y+linienbreite/2,x,y+linienbreite/2,linienbreite);
+        shaperenderer.rectLine(super.getX()+linienbreite/2,super.getY(),super.getX()+linienbreite/2,super.getY()+super.getHöhe(),linienbreite);
+        shaperenderer.rectLine(super.getX(),super.getY()+super.getHöhe()-linienbreite/2,super.getX()+super.getBreite(),super.getY()+super.getHöhe()-linienbreite/2,linienbreite);
+        shaperenderer.rectLine(super.getX()+super.getBreite()-linienbreite/2,super.getY()+super.getHöhe(),super.getX()+super.getBreite()-linienbreite/2,super.getY(),linienbreite);
+        shaperenderer.rectLine(super.getX()+super.getBreite(),super.getY()+linienbreite/2,super.getX(),super.getY()+linienbreite/2,linienbreite);
     }
 
     public void action(){
@@ -93,7 +88,6 @@ public abstract class Knopf {
     public void dispose(){
         shaperenderer.dispose();
         bitmapFont.dispose();
-        batch.dispose();
     }
 
 }

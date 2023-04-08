@@ -1,4 +1,11 @@
 package com.programmierbeleg.machine_mayhem;
 
-public class Feld extends SpielObjekt{
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+public class Feld implements GrafikAusgabe {
+    @Override
+    public void render(float delta) {
+
+    }
+
 }
