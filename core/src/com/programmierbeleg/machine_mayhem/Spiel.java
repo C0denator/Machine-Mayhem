@@ -15,14 +15,17 @@ public class Spiel extends Game {
 		//setScreen(new Hauptmenü());
 		if(instanz==null){
 			instanz=this;
+		}else {
+			System.err.println("FEHLER: Spiel läuft bereits");
+			Gdx.app.exit();
 		}
 	}
 
 	@Override
 	public void create () {
-		setScreen(new Hauptmenü());
 		bitmapFont = new BitmapFont();
 		batch = new SpriteBatch();
+		setScreen(new Hauptmenü());
 	}
 
 	public void renderDebug(){

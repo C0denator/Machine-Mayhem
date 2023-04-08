@@ -61,6 +61,7 @@ public abstract class Knopf {
         }
         else{
             //Zeiger berührt nicht den Knopf
+            wurdeGedrückt=false;
             shaperenderer.setColor(0.5f,0.5f,0.5f,1.0f);
             zeichneRechteck();
             shaperenderer.setColor(0.3f,0.3f,0.3f,1.0f);

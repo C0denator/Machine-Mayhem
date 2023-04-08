@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ public class Hauptmenü extends ScreenAdapter {
 
     SpriteBatch batch;
     Texture img;
+    BitmapFont bitmapFont;
     float tmpX =500.0f;
     float tmpY =0.0f;
     float velX =100.0f;
@@ -23,20 +25,21 @@ public class Hauptmenü extends ScreenAdapter {
         batch = new SpriteBatch();
         img = new Texture("badlogic.jpg");
         knöpfe=new ArrayList<Knopf>();
+        bitmapFont = new BitmapFont();
 
-        knöpfe.add(new Knopf(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()*0.8f,600,100,"Spielen"){
+        knöpfe.add(new Knopf(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()*0.7f,600,75,"Spielen"){
             @Override
             public void action(){
-                System.out.println("ACTION!!!!111");
+                Spiel.instanz.setScreen(new SpielAnzeige());
             }
         });
-        knöpfe.add(new Knopf(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()*0.7f,600,100,"Optionen"){
+        knöpfe.add(new Knopf(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()*0.6f,600,75,"Optionen"){
             @Override
             public void action(){
                 System.out.println("Optionen!!!!11");
             }
         });
-        knöpfe.add(new Knopf(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()*0.6f,600,100,"Beenden"){
+        knöpfe.add(new Knopf(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()*0.5f,600,75,"Beenden"){
             @Override
             public void action(){
                 Gdx.app.exit();
@@ -54,6 +57,8 @@ public class Hauptmenü extends ScreenAdapter {
         batch.begin();
         ////////////////////////////////////////////////////////////
         batch.draw(img, tmpX, tmpY);
+        bitmapFont.getData().setScale(5.0f);
+        bitmapFont.draw(batch,"Machine Mayhem", Gdx.graphics.getWidth()/2-275, Gdx.graphics.getHeight()*0.9f);
         ////////////////////////////////////////////////////////////
         batch.end();
 
