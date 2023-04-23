@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import java.util.ArrayList;
 
@@ -19,11 +20,13 @@ public class Hauptmenü extends ScreenAdapter {
     float velX =100.0f;
     float velY =100.0f;
     private ArrayList<Knopf> knöpfe;
+    private TextureRegion testBild;
 
 
     public Hauptmenü(){
         batch = new SpriteBatch();
-        img = new Texture("badlogic.jpg");
+        //img = new Texture("badlogic.jpg");
+        testBild=Spiel.instanz.atlas.findRegion("badlogic");
         knöpfe=new ArrayList<Knopf>();
         bitmapFont = new BitmapFont();
 
@@ -55,7 +58,7 @@ public class Hauptmenü extends ScreenAdapter {
         //ScreenUtils.clear(0.2f, 0.2f, 0.2f, 1);
         batch.begin();
         ////////////////////////////////////////////////////////////
-        batch.draw(img, tmpX, tmpY);
+        batch.draw(testBild, tmpX,tmpY,testBild.getRegionWidth(),testBild.getRegionHeight());
         bitmapFont.getData().setScale(5.0f);
         bitmapFont.draw(batch,"Machine Mayhem", Gdx.graphics.getWidth()/2-275, Gdx.graphics.getHeight()*0.9f);
 

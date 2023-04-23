@@ -6,6 +6,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 import java.util.ArrayList;
 
@@ -15,6 +16,7 @@ public class Spiel extends Game {
 	private SpriteBatch mainBatch;
 	public boolean debug=true;
 	public float delta;
+	public TextureAtlas atlas;
 	ArrayList<Feld> felder;
 	ArrayList<Spieler> spieler;
 	ArrayList<Gegner> gegner;
@@ -24,6 +26,7 @@ public class Spiel extends Game {
 
 	public Spiel(){
 		//setScreen(new Hauptmenü());
+		//atlas = new TextureAtlas("assets/texturenAtlas.atlas");
 		if(instanz==null){
 			instanz=this;
 		}else {
@@ -34,6 +37,7 @@ public class Spiel extends Game {
 
 	@Override
 	public void create () {
+		atlas = new TextureAtlas("assets/texturenAtlas.atlas");
 		bitmapFont = new BitmapFont();
 		mainBatch = new SpriteBatch();
 		aktiverBildschirm = (new Hauptmenü());
@@ -61,7 +65,7 @@ public class Spiel extends Game {
 		}
 
 		aktiverBildschirm.render(delta);
-		Spiel.instanz.renderDebug(mainBatch);
+		renderDebug(mainBatch);
 		////////////////////////////////////////////////////////////
 		mainBatch.end();
 
