@@ -17,7 +17,8 @@ public class Knopf extends SpielObjekt implements GrafikAusgabe {
     private SpriteBatch testBatch;
 
     public Knopf(float x, float y, float breite, float höhe, String schriftzug){
-        super(x,y,breite,höhe,true);
+        super(x,y,breite,höhe,true,"Knopf");
+        this.setKlassenName("Knopf");
         this.schriftzug=schriftzug;
         linienbreite=5.0f;
 

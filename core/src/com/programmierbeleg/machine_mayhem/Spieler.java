@@ -6,7 +6,7 @@ public class Spieler extends SpielObjekt implements GrafikAusgabe {
     private int maxLeben;
 
     public Spieler(float x, float y, float breite, float höhe){
-        super(x,y,breite,höhe,true);
+        super(x,y,breite,höhe,true, "Spieler");
         leben=100;
         maxLeben=100;
 

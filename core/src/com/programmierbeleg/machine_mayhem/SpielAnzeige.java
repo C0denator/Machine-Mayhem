@@ -10,10 +10,21 @@ import java.util.ArrayList;
 public class SpielAnzeige extends ScreenAdapter {
 
 
-    SpriteBatch batch;
+    private SpriteBatch batch;
+    private Spieler spieler;
 
     public SpielAnzeige(){
         batch=new SpriteBatch();
+        if(Spiel.instanz.spieler == null) Spiel.instanz.spieler= new ArrayList<Spieler>();
+        if(Spiel.instanz.gegner == null) Spiel.instanz.gegner=new ArrayList<Gegner>();
+
+        Spiel.instanz.spieler.add(new Spieler(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2,
+                Spiel.instanz.atlas.findRegion("SpielerTest").getRegionWidth(),
+                Spiel.instanz.atlas.findRegion("SpielerTest").getRegionHeight()));
+
+        Spiel.instanz.gegner.add(new Gegner(Gdx.graphics.getWidth()/4,Gdx.graphics.getHeight()/4,
+                Spiel.instanz.atlas.findRegion("robot",1).getRegionWidth(),
+                Spiel.instanz.atlas.findRegion("robot",1).getRegionHeight()));
 
     }
 

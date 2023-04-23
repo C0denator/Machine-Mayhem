@@ -52,16 +52,22 @@ public class Spiel extends Game {
 		mainBatch.begin();
 		////////////////////////////////////////////////////////////
 		if(felder!=null) {
-			for (int i = 0; i < felder.size(); i++) felder.get(i).render(delta);
+			for (int i = 0; i < felder.size(); i++) ;
 		}
 		if(spieler!=null) {
-			for (int i = 0; i < spieler.size(); i++) spieler.get(i).render(delta);
+			for (int i = 0; i < spieler.size(); i++) {
+				if(spieler.get(i).isSichtbar()) mainBatch.draw(spieler.get(i).getRegions()[0], spieler.get(i).getX(), spieler.get(i).getY(), spieler.get(i).getBreite(), spieler.get(i).getHöhe());
+
+			}
 		}
 		if(gegner!=null) {
-			for (int i = 0; i < gegner.size(); i++) gegner.get(i).render(delta);
+			for (int i = 0; i < gegner.size(); i++) {
+				if(gegner.get(i).isSichtbar()) mainBatch.draw(gegner.get(i).getRegions()[0], gegner.get(i).getX(), gegner.get(i).getY(), gegner.get(i).getBreite(), gegner.get(i).getHöhe());
+
+			}
 		}
 		if(projektile!=null) {
-			for (int i = 0; i < projektile.size(); i++) projektile.get(i).render(delta);
+			for (int i = 0; i < projektile.size(); i++) ;
 		}
 
 		aktiverBildschirm.render(delta);
@@ -72,7 +78,9 @@ public class Spiel extends Game {
 	}
 
 	private void update(){
+
 		delta=Gdx.graphics.getDeltaTime();
+		instanz = this;
 	}
 
 	public void renderDebug(SpriteBatch batch){
