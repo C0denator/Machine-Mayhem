@@ -7,6 +7,11 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.programmierbeleg.machine_mayhem.Anzeigen.Hauptmenü;
+import com.programmierbeleg.machine_mayhem.SpielObjekte.Feld;
+import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner;
+import com.programmierbeleg.machine_mayhem.SpielObjekte.Projektil;
+import com.programmierbeleg.machine_mayhem.SpielObjekte.Spieler;
 
 import java.util.ArrayList;
 
@@ -14,15 +19,14 @@ public class Spiel extends Game {
 	public static Spiel instanz;
 	private BitmapFont bitmapFont;
 	private SpriteBatch mainBatch;
-	public boolean debug=true;
+	private boolean debug=true;
 	public float delta;
 	public TextureAtlas atlas;
-	ArrayList<Feld> felder;
-	ArrayList<Spieler> spieler;
-	ArrayList<Gegner> gegner;
-	ArrayList<Projektil> projektile;
-
-	ScreenAdapter aktiverBildschirm;
+	public ArrayList<Feld> felder;
+	public ArrayList<Spieler> spieler;
+	public ArrayList<Gegner> gegner;
+	public ArrayList<Projektil> projektile;
+	public ScreenAdapter aktiverBildschirm;
 
 	public Spiel(){
 		//setScreen(new Hauptmenü());
