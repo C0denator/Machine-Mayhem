@@ -17,6 +17,7 @@ public class DesktopLauncher {
 
 
 	public static void main (String[] arg) {
+		System.out.println("Programm gestartet - Daumen drücken!");
 		TexturePacker.Settings settings = new TexturePacker.Settings();
 		settings.maxHeight=4096;
 		settings.maxWidth=4096;

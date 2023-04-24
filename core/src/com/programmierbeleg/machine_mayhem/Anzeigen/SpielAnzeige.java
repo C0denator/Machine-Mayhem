@@ -48,8 +48,8 @@ public class SpielAnzeige extends ScreenAdapter {
         //ScreenUtils.clear(0.2f, 0.2f, 0.2f, 1);
         Gdx.gl.glClearColor(0.4f,0.9f,0.4f,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        batch.begin();
         batch.setProjectionMatrix(camera.combined);
+        batch.begin();
         ////////////////////////////////////////////////////////////
 
         if(spieler.size()==1){

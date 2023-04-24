@@ -13,6 +13,10 @@ public abstract class SpielObjekt {
     private TextureRegion[] regions;
     private boolean Sichtbar;
     private String klassenName;
+    /*Identifikator um die richtige Textur zuzuweisen --> !Muss exakt mit dem Klassennamen übereinstimmen
+        Die Methode getClass().getSimpleName() funktioniert nicht, da anonyme Klasse
+    */
+
 
     public SpielObjekt(float x, float y, float breite, float höhe, boolean Sichtbar, String klassenName){
         this.x=x-breite/2;
@@ -23,7 +27,6 @@ public abstract class SpielObjekt {
         this.klassenName=klassenName;
 
         //Zuweisen der jeweiligen Texturen
-
         switch (this.klassenName){
             case "Spieler":
                 regions=new TextureRegion[1];
@@ -46,7 +49,7 @@ public abstract class SpielObjekt {
 
     }
 
-    public void move(float x, float y){
+    public void bewegen(float x, float y){
         this.x+=x;
         this.y+=y;
     }
