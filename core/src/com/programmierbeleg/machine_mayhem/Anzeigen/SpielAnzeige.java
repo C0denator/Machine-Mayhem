@@ -39,24 +39,30 @@ public class SpielAnzeige extends ScreenAdapter {
                 Spiel.instanz.atlas.findRegion("robot",1).getRegionWidth(),
                 Spiel.instanz.atlas.findRegion("robot",1).getRegionHeight()));
 
+        gegner.add(new Gegner(Gdx.graphics.getWidth()/-10,Gdx.graphics.getHeight()/-10,
+                Spiel.instanz.atlas.findRegion("robot",1).getRegionWidth(),
+                Spiel.instanz.atlas.findRegion("robot",1).getRegionHeight()));
+
     }
 
     @Override
     public void render(float delta) {
         physik(delta);
+        if(spieler.size()==1){
+            camera.position.set(spieler.get(0).getX(),spieler.get(0).getY(),0);
+            camera.update();
+        }else{
+            System.err.println("FEHLER: spieler != 1");
+        }
+
 
         //ScreenUtils.clear(0.2f, 0.2f, 0.2f, 1);
-        Gdx.gl.glClearColor(0.4f,0.9f,0.4f,1);
+        Gdx.gl.glClearColor(0.4f,0.4f,0.4f,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         ////////////////////////////////////////////////////////////
 
-        if(spieler.size()==1){
-            camera.position.set(spieler.get(0).getX(),spieler.get(0).getY(),0);
-        }else{
-            System.err.println("FEHLER: spieler != 1");
-        }
 
         if(felder!=null) {
             for (int i = 0; i < felder.size(); i++) ;
@@ -77,7 +83,6 @@ public class SpielAnzeige extends ScreenAdapter {
             for (int i = 0; i < projektile.size(); i++) ;
         }
 
-        camera.update();
         ////////////////////////////////////////////////////////////
         batch.end();
 

@@ -6,10 +6,10 @@ import com.programmierbeleg.machine_mayhem.Spiel;
 
 public abstract class SpielObjekt {
 
-    private float x;
-    private float y;
-    private float breite;
-    private float höhe;
+    protected float x;
+    protected float y;
+    protected float breite;
+    protected float höhe;
     private TextureRegion[] regions;
     private boolean Sichtbar;
     private String klassenName;

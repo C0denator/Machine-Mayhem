@@ -37,7 +37,14 @@ public class Spiel extends Game {
 
 	@Override
 	public void create () {
-		atlas = new TextureAtlas("assets/texturenAtlas.atlas");
+
+		try{
+			atlas = new TextureAtlas("assets/texturenAtlas.atlas");
+		}catch(Exception e){
+			System.err.println("FEHLER: Kein Texturen-Atlas gefunden");
+			Gdx.app.exit();
+		}
+
 		bitmapFont = new BitmapFont();
 		mainBatch = new SpriteBatch();
 		aktiverBildschirm = (new Hauptmenü());
@@ -47,7 +54,7 @@ public class Spiel extends Game {
 	@Override
 	public void render() {
 		update();
-		Gdx.gl.glClearColor(0.4f,0.4f,0.4f,1);
+		Gdx.gl.glClearColor(0.5f,0.4f,0.4f,1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		aktiverBildschirm.render(delta);
