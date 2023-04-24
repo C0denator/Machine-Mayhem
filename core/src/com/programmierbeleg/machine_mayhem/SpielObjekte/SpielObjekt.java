@@ -55,6 +55,11 @@ public abstract class SpielObjekt {
         this.y+=v.y * delta;
     }
 
+    public void bewegen(float x, float y, float delta){
+        this.x+=x*delta;
+        this.y+=y*delta;
+    }
+
     public float getX() {
         return x;
     }

@@ -20,7 +20,7 @@ public class Spiel extends Game {
 	private BitmapFont bitmapFont;
 	private SpriteBatch mainBatch;
 	private boolean debug=true;
-	private float delta;
+	public float delta;
 	public TextureAtlas atlas;
 	public ScreenAdapter aktiverBildschirm;
 
