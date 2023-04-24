@@ -20,12 +20,8 @@ public class Spiel extends Game {
 	private BitmapFont bitmapFont;
 	private SpriteBatch mainBatch;
 	private boolean debug=true;
-	public float delta;
+	private float delta;
 	public TextureAtlas atlas;
-	public ArrayList<Feld> felder;
-	public ArrayList<Spieler> spieler;
-	public ArrayList<Gegner> gegner;
-	public ArrayList<Projektil> projektile;
 	public ScreenAdapter aktiverBildschirm;
 
 	public Spiel(){
@@ -55,25 +51,6 @@ public class Spiel extends Game {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		mainBatch.begin();
 		////////////////////////////////////////////////////////////
-		if(felder!=null) {
-			for (int i = 0; i < felder.size(); i++) ;
-		}
-		if(spieler!=null) {
-			for (int i = 0; i < spieler.size(); i++) {
-				if(spieler.get(i).isSichtbar()) mainBatch.draw(spieler.get(i).getRegions()[0], spieler.get(i).getX(), spieler.get(i).getY(), spieler.get(i).getBreite(), spieler.get(i).getHöhe());
-
-			}
-		}
-		if(gegner!=null) {
-			for (int i = 0; i < gegner.size(); i++) {
-				if(gegner.get(i).isSichtbar()) mainBatch.draw(gegner.get(i).getRegions()[0], gegner.get(i).getX(), gegner.get(i).getY(), gegner.get(i).getBreite(), gegner.get(i).getHöhe());
-
-			}
-		}
-		if(projektile!=null) {
-			for (int i = 0; i < projektile.size(); i++) ;
-		}
-
 		aktiverBildschirm.render(delta);
 		renderDebug(mainBatch);
 		////////////////////////////////////////////////////////////

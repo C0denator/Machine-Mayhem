@@ -46,6 +46,11 @@ public abstract class SpielObjekt {
 
     }
 
+    public void move(float x, float y){
+        this.x+=x;
+        this.y+=y;
+    }
+
     public float getX() {
         return x;
     }
