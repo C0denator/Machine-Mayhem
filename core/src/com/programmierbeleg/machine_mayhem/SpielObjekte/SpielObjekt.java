@@ -2,6 +2,7 @@ package com.programmierbeleg.machine_mayhem.SpielObjekte;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.programmierbeleg.machine_mayhem.Spiel;
 
 public abstract class SpielObjekt {
@@ -49,9 +50,9 @@ public abstract class SpielObjekt {
 
     }
 
-    public void bewegen(float x, float y){
-        this.x+=x;
-        this.y+=y;
+    public void bewegen(Vector2 v, float delta){
+        this.x+=v.x * delta;
+        this.y+=v.y * delta;
     }
 
     public float getX() {
