@@ -5,7 +5,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector3;
+import com.programmierbeleg.machine_mayhem.Daten.GegnerTyp;
 import com.programmierbeleg.machine_mayhem.Spiel;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Feld;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner;
@@ -35,11 +35,11 @@ public class SpielAnzeige extends ScreenAdapter {
                 Spiel.instanz.atlas.findRegion("SpielerTest").getRegionWidth(),
                 Spiel.instanz.atlas.findRegion("SpielerTest").getRegionHeight()));
 
-        gegner.add(new Gegner(Gdx.graphics.getWidth()/10,Gdx.graphics.getHeight()/10,
+        gegner.add(new Gegner(GegnerTyp.FERNKAMPF_1,Gdx.graphics.getWidth()/10,Gdx.graphics.getHeight()/10,
                 Spiel.instanz.atlas.findRegion("robot",1).getRegionWidth(),
                 Spiel.instanz.atlas.findRegion("robot",1).getRegionHeight()));
 
-        gegner.add(new Gegner(Gdx.graphics.getWidth()/-10,Gdx.graphics.getHeight()/-10,
+        gegner.add(new Gegner(GegnerTyp.FERNKAMPF_1,Gdx.graphics.getWidth()/-10,Gdx.graphics.getHeight()/-10,
                 Spiel.instanz.atlas.findRegion("robot",1).getRegionWidth(),
                 Spiel.instanz.atlas.findRegion("robot",1).getRegionHeight()));
 
@@ -48,6 +48,7 @@ public class SpielAnzeige extends ScreenAdapter {
     @Override
     public void render(float delta) {
         physik(delta);
+
         if(spieler.size()==1){
             camera.position.set(spieler.get(0).getX(),spieler.get(0).getY(),0);
             camera.update();
@@ -65,22 +66,31 @@ public class SpielAnzeige extends ScreenAdapter {
 
 
         if(felder!=null) {
-            for (int i = 0; i < felder.size(); i++) ;
+            for (int i = 0; i < felder.size(); i++) {
+
+            }
         }
         if(spieler!=null) {
             for (int i = 0; i < spieler.size(); i++) {
-                if(spieler.get(i).isSichtbar()) batch.draw(spieler.get(i).getRegions()[0], spieler.get(i).getX(), spieler.get(i).getY(), spieler.get(i).getBreite(), spieler.get(i).getHöhe());
+                if(spieler.get(i).isSichtbar()) {
+                    batch.draw(spieler.get(i).getTexturen()[0], spieler.get(i).getX(), spieler.get(i).getY(), spieler.get(i).getBreite(), spieler.get(i).getHöhe());
+                }
 
             }
         }
         if(gegner!=null) {
             for (int i = 0; i < gegner.size(); i++) {
-                if(gegner.get(i).isSichtbar()) batch.draw(gegner.get(i).getRegions()[0], gegner.get(i).getX(), gegner.get(i).getY(), gegner.get(i).getBreite(), gegner.get(i).getHöhe());
+                if(gegner.get(i).isSichtbar()) {
+                    gegner.get(i).denke();
+                    batch.draw(gegner.get(i).getTexturen()[0], gegner.get(i).getX(), gegner.get(i).getY(), gegner.get(i).getBreite(), gegner.get(i).getHöhe());
+                }
 
             }
         }
         if(projektile!=null) {
-            for (int i = 0; i < projektile.size(); i++) ;
+            for (int i = 0; i < projektile.size(); i++) {
+
+            }
         }
 
         ////////////////////////////////////////////////////////////
@@ -89,8 +99,7 @@ public class SpielAnzeige extends ScreenAdapter {
     }
 
     private void physik(float delta){
-        if(spieler.size()==1){
-           spieler.get(0).prüfeEingabe(delta);
-        }
+        spieler.get(0).prüfeEingabe(delta);
     }
+
 }

@@ -11,7 +11,7 @@ public abstract class SpielObjekt {
     protected float y;
     protected float breite;
     protected float höhe;
-    private TextureRegion[] regions;
+    protected TextureRegion[] texturen;
     private boolean Sichtbar;
     private String klassenName;
     /*Identifikator um die richtige Textur zuzuweisen --> !Muss exakt mit dem Klassennamen übereinstimmen
@@ -26,28 +26,6 @@ public abstract class SpielObjekt {
         this.höhe=höhe;
         this.Sichtbar=Sichtbar;
         this.klassenName=klassenName;
-
-        //Zuweisen der jeweiligen Texturen
-        switch (this.klassenName){
-            case "Spieler":
-                regions=new TextureRegion[1];
-                regions[0]= Spiel.instanz.atlas.findRegion("SpielerTest");
-                break;
-            case "Gegner":
-                regions=new TextureRegion[3];
-                regions[0]=Spiel.instanz.atlas.findRegion("robot",1);
-                regions[1]=Spiel.instanz.atlas.findRegion("robot",2);
-                regions[2]=Spiel.instanz.atlas.findRegion("robot",3);
-                break;
-            case "Knopf":
-                break;
-            default:
-                System.err.println("FEHLER: Objekt konnte keine Texture zugewiesen werden");
-                System.err.println("Fehlerhafter Name: "+klassenName);
-                Gdx.app.exit();
-        }
-
-
     }
 
     public void bewegen(Vector2 v, float delta){
@@ -100,8 +78,8 @@ public abstract class SpielObjekt {
         Sichtbar = sichtbar;
     }
 
-    public TextureRegion[] getRegions() {
-        return regions;
+    public TextureRegion[] getTexturen() {
+        return texturen;
     }
 
     public String getKlassenName() {
