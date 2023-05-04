@@ -5,7 +5,7 @@ public class Projektil extends SpielObjekt{
     private int schaden;
     private boolean vonGegner;
     //wurde das Projektil von einem Gegner abgefeuert?
-    public Projektil(float x, float y, float breite, float höhe, int schaden) {
+    public Projektil(float x, float y, int breite, int höhe, int schaden) {
         super(x, y, breite, höhe, true, "Projektil");
         this.schaden=schaden;
     }

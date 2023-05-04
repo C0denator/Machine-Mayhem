@@ -15,22 +15,10 @@ public class Gegner extends SpielObjekt{
     protected int maxLeben;
     protected int geschwindigkeit;
 
-    public Gegner (GegnerTyp gegnerTyp, float x, float y, float breite, float höhe) {
-        super (x, y, breite, höhe, true,"Gegner");
-        this.setKlassenName("Gegner");
-        aktiverAngriff=null;
-        zeitBisAngriff=5.0f;
-
-        leben=gegnerTyp.getMaxLeben();
-        maxLeben=gegnerTyp.getMaxLeben();
-        geschwindigkeit=gegnerTyp.getGeschwindigkeit();
-        texturen=gegnerTyp.getTexturen();
-        angriffe=gegnerTyp.getAngriffe();
-    }
-
     public Gegner (GegnerTyp gegnerTyp, float x, float y) {
-        super (x, y, Spiel.instanz.atlas.findRegion("robot",1).getRegionWidth(),
-                Spiel.instanz.atlas.findRegion("robot",1).getRegionHeight(),
+        super (x, y,
+                Spiel.instanz.atlas.findRegion("robot",1).getRegionWidth() *Spiel.instanz.skalierung,
+                Spiel.instanz.atlas.findRegion("robot",1).getRegionHeight() *Spiel.instanz.skalierung,
                 true,"Gegner");
         this.setKlassenName("Gegner");
         aktiverAngriff=null;
@@ -43,13 +31,13 @@ public class Gegner extends SpielObjekt{
         angriffe=gegnerTyp.getAngriffe();
     }
 
-    public void denke(){
+    public void prüfeAngriff(){
         //muss einmal pro Frame aufgerufen werden
 
         if(aktiverAngriff==null){
             bewege();
-            zeitBisAngriff-= Spiel.instanz.delta;
-            if(zeitBisAngriff<0 && angriffe!=null){
+            if(zeitBisAngriff>0) zeitBisAngriff-= Spiel.instanz.delta;
+            if(zeitBisAngriff<=0 && angriffe!=null){
                 if(angriffe.length==1){
                     aktiverAngriff=angriffe[0];
                     System.out.println("ANGRIFF!!!!!");
@@ -61,6 +49,8 @@ public class Gegner extends SpielObjekt{
             if(aktiverAngriff.isBewegenErlaubt()){
                 bewege();
             }
+            aktiverAngriff.setDauer(aktiverAngriff.getDauer()-1);
+            if(aktiverAngriff.getDauer()<=0) aktiverAngriff=null;
         }
 
     }

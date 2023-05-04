@@ -9,8 +9,8 @@ public abstract class SpielObjekt {
 
     protected float x;
     protected float y;
-    protected float breite;
-    protected float höhe;
+    protected int breite;
+    protected int höhe;
     protected TextureRegion[] texturen;
     private boolean Sichtbar;
     private String klassenName;
@@ -19,7 +19,7 @@ public abstract class SpielObjekt {
     */
 
 
-    public SpielObjekt(float x, float y, float breite, float höhe, boolean Sichtbar, String klassenName){
+    public SpielObjekt(float x, float y, int breite, int höhe, boolean Sichtbar, String klassenName){
         this.x=x-breite/2;
         this.y=y-höhe/2;
         this.breite=breite;
@@ -27,6 +27,7 @@ public abstract class SpielObjekt {
         this.Sichtbar=Sichtbar;
         this.klassenName=klassenName;
     }
+
 
     public void bewegen(Vector2 v, float delta){
         this.x+=v.x * delta;
@@ -54,19 +55,19 @@ public abstract class SpielObjekt {
         this.y = y;
     }
 
-    public float getBreite() {
+    public int getBreite() {
         return breite;
     }
 
-    public void setBreite(float breite) {
+    public void setBreite(int breite) {
         this.breite = breite;
     }
 
-    public float getHöhe() {
+    public int getHöhe() {
         return höhe;
     }
 
-    public void setHöhe(float höhe) {
+    public void setHöhe(int höhe) {
         this.höhe = höhe;
     }
 

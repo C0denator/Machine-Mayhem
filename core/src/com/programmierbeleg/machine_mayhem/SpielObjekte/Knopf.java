@@ -15,7 +15,7 @@ public class Knopf extends SpielObjekt {
     private BitmapFont bitmapFont;
     private SpriteBatch batch;
 
-    public Knopf(float x, float y, float breite, float höhe, String schriftzug){
+    public Knopf(float x, float y, int breite, int höhe, String schriftzug){
         super(x,y,breite,höhe,true,"Knopf");
         this.schriftzug=schriftzug;
         linienbreite=5.0f;

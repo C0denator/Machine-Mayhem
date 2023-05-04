@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.programmierbeleg.machine_mayhem.Anzeigen.SpielAnzeige;
 import com.programmierbeleg.machine_mayhem.Spiel;
 
 public class Spieler extends SpielObjekt {
@@ -12,25 +13,17 @@ public class Spieler extends SpielObjekt {
     private int maxLeben;
     private float geschwindigkeit;
     private Vector2 bewegungsVektor;
-    public Spieler(float x, float y, float breite, float höhe){
-        super(x,y,breite,höhe,true, "Spieler");
-        leben=100;
-        maxLeben=100;
-        geschwindigkeit=100.0f;
-        bewegungsVektor =new Vector2(0.0f,0.0f);
-
-        texturen =new TextureRegion[1];
-        texturen[0]= Spiel.instanz.atlas.findRegion("SpielerTest");
-
-    }
+    private double winkel;
 
     public Spieler(float x, float y){
-        super(x,y,Spiel.instanz.atlas.findRegion("SpielerTest").getRegionWidth(),
-                Spiel.instanz.atlas.findRegion("SpielerTest").getRegionHeight(),true, "Spieler");
+        super(x,y,Spiel.instanz.atlas.findRegion("SpielerTest").getRegionWidth()*Spiel.instanz.skalierung,
+                Spiel.instanz.atlas.findRegion("SpielerTest").getRegionHeight()*Spiel.instanz.skalierung,
+                true, "Spieler");
         leben=100;
         maxLeben=100;
         geschwindigkeit=100.0f;
         bewegungsVektor =new Vector2(0.0f,0.0f);
+        winkel=0.0;
 
         texturen =new TextureRegion[1];
         texturen[0]= Spiel.instanz.atlas.findRegion("SpielerTest");
@@ -69,4 +62,32 @@ public class Spieler extends SpielObjekt {
         }
     }
 
+    public void prüfeRotation(){
+        //setzt den Winkel so, dass Spieler in Richtung Mauszeiger schaut
+        double a;
+        double b;
+
+        a=Gdx.input.getX()-Gdx.graphics.getWidth()/2.0f;
+        b=Gdx.input.getY()-Gdx.graphics.getHeight()/2.0f;
+
+        if(a>=0){
+            winkel= -((180/Math.PI)*Math.atan(b/a)+90.0);
+        }else{
+            winkel= -((180/Math.PI)*Math.atan(b/a)-90.0);
+        }
+
+        //System.out.println(winkel);
+    }
+
+    public double getWinkel() {
+        return winkel;
+    }
+
+    public int getWinkelInt(){
+        return (int)Math.round(winkel);
+    }
+
+    public void setWinkel(double winkel) {
+        this.winkel = winkel;
+    }
 }

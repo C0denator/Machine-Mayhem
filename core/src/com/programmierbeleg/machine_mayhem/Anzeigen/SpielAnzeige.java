@@ -5,11 +5,9 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.programmierbeleg.machine_mayhem.Daten.GegnerTyp;
-import com.programmierbeleg.machine_mayhem.Spiel;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Feld;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Projektil;
@@ -72,7 +70,10 @@ public class SpielAnzeige extends ScreenAdapter {
         if(spieler!=null) {
             for (int i = 0; i < spieler.size(); i++) {
                 if(spieler.get(i).isSichtbar()) {
-                    batch.draw(spieler.get(i).getTexturen()[0], spieler.get(i).getX(), spieler.get(i).getY(), spieler.get(i).getBreite(), spieler.get(i).getHöhe());
+                    //batch.draw(spieler.get(i).getTexturen()[0], spieler.get(i).getX(), spieler.get(i).getY(), spieler.get(i).getBreite(), spieler.get(i).getHöhe());
+                    batch.draw(spieler.get(i).getTexturen()[0], spieler.get(i).getX(), spieler.get(i).getY(),
+                            spieler.get(i).getBreite()/2, spieler.get(i).getHöhe()/2,
+                            spieler.get(i).getBreite(), spieler.get(i).getHöhe(), 1.0f, 1.0f, spieler.get(i).getWinkelInt());
                 }
 
             }
@@ -80,7 +81,7 @@ public class SpielAnzeige extends ScreenAdapter {
         if(gegner!=null) {
             for (int i = 0; i < gegner.size(); i++) {
                 if(gegner.get(i).isSichtbar()) {
-                    gegner.get(i).denke();
+                    gegner.get(i).prüfeAngriff();
                     batch.draw(gegner.get(i).getTexturen()[0], gegner.get(i).getX(), gegner.get(i).getY(), gegner.get(i).getBreite(), gegner.get(i).getHöhe());
                 }
 
@@ -99,6 +100,7 @@ public class SpielAnzeige extends ScreenAdapter {
 
     private void physik(float delta){
         spieler.get(0).prüfeEingabe(delta);
+        spieler.get(0).prüfeRotation();
     }
 
     @Override
