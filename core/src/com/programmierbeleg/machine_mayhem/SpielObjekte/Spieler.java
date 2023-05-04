@@ -16,12 +16,12 @@ public class Spieler extends SpielObjekt {
     private double winkel;
 
     public Spieler(float x, float y){
-        super(x,y,Spiel.instanz.atlas.findRegion("SpielerTest").getRegionWidth()*Spiel.instanz.skalierung,
-                Spiel.instanz.atlas.findRegion("SpielerTest").getRegionHeight()*Spiel.instanz.skalierung,
+        super(x,y,Spiel.instanz.atlas.findRegion("SpielerTest").getRegionWidth(),
+                Spiel.instanz.atlas.findRegion("SpielerTest").getRegionHeight(),
                 true, "Spieler");
         leben=100;
         maxLeben=100;
-        geschwindigkeit=100.0f;
+        geschwindigkeit=200.0f;
         bewegungsVektor =new Vector2(0.0f,0.0f);
         winkel=0.0;
 
@@ -64,11 +64,8 @@ public class Spieler extends SpielObjekt {
 
     public void prüfeRotation(){
         //setzt den Winkel so, dass Spieler in Richtung Mauszeiger schaut
-        double a;
-        double b;
-
-        a=Gdx.input.getX()-Gdx.graphics.getWidth()/2.0f;
-        b=Gdx.input.getY()-Gdx.graphics.getHeight()/2.0f;
+        double a = Gdx.input.getX()-(Gdx.graphics.getWidth()/2.0f);
+        double b = Gdx.input.getY()-(Gdx.graphics.getHeight()/2.0f);
 
         if(a>=0){
             winkel= -((180/Math.PI)*Math.atan(b/a)+90.0);

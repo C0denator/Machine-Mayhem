@@ -24,7 +24,7 @@ public class Spiel extends Game {
 	public TextureAtlas atlas;
 	public ScreenAdapter aktiverBildschirm;
 
-	public final int skalierung=2;
+	public final int skalierung=3;
 
 	public Spiel(){
 		//setScreen(new Hauptmenü());

@@ -20,10 +20,10 @@ public abstract class SpielObjekt {
 
 
     public SpielObjekt(float x, float y, int breite, int höhe, boolean Sichtbar, String klassenName){
-        this.x=x-breite/2;
-        this.y=y-höhe/2;
-        this.breite=breite;
-        this.höhe=höhe;
+        this.breite=breite*Spiel.instanz.skalierung;
+        this.höhe=höhe*Spiel.instanz.skalierung;
+        this.x=x-this.breite/2.0f;
+        this.y=y-this.höhe/2.0f;
         this.Sichtbar=Sichtbar;
         this.klassenName=klassenName;
     }

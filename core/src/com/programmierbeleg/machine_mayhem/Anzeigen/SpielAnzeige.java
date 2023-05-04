@@ -36,9 +36,9 @@ public class SpielAnzeige extends ScreenAdapter {
 
         spieler.add(new Spieler(0.0f,0.0f));
 
-        gegner.add(new Gegner(GegnerTyp.FERNKAMPF_1,Gdx.graphics.getWidth()/10,Gdx.graphics.getHeight()/10));
+        gegner.add(new Gegner(GegnerTyp.FERNKAMPF_1,100.0f,100.0f));
 
-        gegner.add(new Gegner(GegnerTyp.FERNKAMPF_1,Gdx.graphics.getWidth()/-10,Gdx.graphics.getHeight()/-10));
+        gegner.add(new Gegner(GegnerTyp.FERNKAMPF_1,960.0f,540.0f));
 
     }
 
@@ -47,7 +47,7 @@ public class SpielAnzeige extends ScreenAdapter {
         physik(delta);
 
         if(spieler.size()==1){
-            camera.position.set(spieler.get(0).getX(),spieler.get(0).getY(),0);
+            camera.position.set(spieler.get(0).getX()+spieler.get(0).getBreite()/2,spieler.get(0).getY()+spieler.get(0).getHöhe()/2,0);
             camera.update();
         }else{
             System.err.println("FEHLER: spieler != 1");

@@ -17,8 +17,8 @@ public class Gegner extends SpielObjekt{
 
     public Gegner (GegnerTyp gegnerTyp, float x, float y) {
         super (x, y,
-                Spiel.instanz.atlas.findRegion("robot",1).getRegionWidth() *Spiel.instanz.skalierung,
-                Spiel.instanz.atlas.findRegion("robot",1).getRegionHeight() *Spiel.instanz.skalierung,
+                Spiel.instanz.atlas.findRegion("robot",1).getRegionWidth(),
+                Spiel.instanz.atlas.findRegion("robot",1).getRegionHeight(),
                 true,"Gegner");
         this.setKlassenName("Gegner");
         aktiverAngriff=null;
