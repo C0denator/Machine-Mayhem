@@ -86,4 +86,9 @@ public class Spiel extends Game {
 		//this.dispose();
 		System.out.println("Spiel wurde beendet");
 	}
+
+	@Override
+	public void resize(int width, int height) {
+		aktiverBildschirm.resize(width,height);
+	}
 }

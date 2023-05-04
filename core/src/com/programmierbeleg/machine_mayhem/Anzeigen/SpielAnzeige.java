@@ -5,6 +5,9 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.programmierbeleg.machine_mayhem.Daten.GegnerTyp;
 import com.programmierbeleg.machine_mayhem.Spiel;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Feld;
@@ -23,25 +26,21 @@ public class SpielAnzeige extends ScreenAdapter {
     private ArrayList<Gegner> gegner;
     private ArrayList<Projektil> projektile;
     private OrthographicCamera camera;
+    private Viewport viewport;
 
     public SpielAnzeige(){
         batch=new SpriteBatch();
         camera=new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        viewport=new ScreenViewport(camera);
 
         if(spieler == null) spieler= new ArrayList<Spieler>();
         if(gegner == null) gegner=new ArrayList<Gegner>();
 
-        spieler.add(new Spieler(0.0f,0.0f,
-                Spiel.instanz.atlas.findRegion("SpielerTest").getRegionWidth(),
-                Spiel.instanz.atlas.findRegion("SpielerTest").getRegionHeight()));
+        spieler.add(new Spieler(0.0f,0.0f));
 
-        gegner.add(new Gegner(GegnerTyp.FERNKAMPF_1,Gdx.graphics.getWidth()/10,Gdx.graphics.getHeight()/10,
-                Spiel.instanz.atlas.findRegion("robot",1).getRegionWidth(),
-                Spiel.instanz.atlas.findRegion("robot",1).getRegionHeight()));
+        gegner.add(new Gegner(GegnerTyp.FERNKAMPF_1,Gdx.graphics.getWidth()/10,Gdx.graphics.getHeight()/10));
 
-        gegner.add(new Gegner(GegnerTyp.FERNKAMPF_1,Gdx.graphics.getWidth()/-10,Gdx.graphics.getHeight()/-10,
-                Spiel.instanz.atlas.findRegion("robot",1).getRegionWidth(),
-                Spiel.instanz.atlas.findRegion("robot",1).getRegionHeight()));
+        gegner.add(new Gegner(GegnerTyp.FERNKAMPF_1,Gdx.graphics.getWidth()/-10,Gdx.graphics.getHeight()/-10));
 
     }
 
@@ -102,4 +101,9 @@ public class SpielAnzeige extends ScreenAdapter {
         spieler.get(0).prüfeEingabe(delta);
     }
 
+    @Override
+    public void resize(int width, int height) {
+        viewport.update(width, height);
+        viewport.apply();
+    }
 }

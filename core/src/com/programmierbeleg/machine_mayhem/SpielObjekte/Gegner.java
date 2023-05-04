@@ -11,6 +11,7 @@ public class Gegner extends SpielObjekt{
     private Angriff[] angriffe;
     private Angriff aktiverAngriff;
     private float zeitBisAngriff;
+    protected int leben;
     protected int maxLeben;
     protected int geschwindigkeit;
 
@@ -20,6 +21,22 @@ public class Gegner extends SpielObjekt{
         aktiverAngriff=null;
         zeitBisAngriff=5.0f;
 
+        leben=gegnerTyp.getMaxLeben();
+        maxLeben=gegnerTyp.getMaxLeben();
+        geschwindigkeit=gegnerTyp.getGeschwindigkeit();
+        texturen=gegnerTyp.getTexturen();
+        angriffe=gegnerTyp.getAngriffe();
+    }
+
+    public Gegner (GegnerTyp gegnerTyp, float x, float y) {
+        super (x, y, Spiel.instanz.atlas.findRegion("robot",1).getRegionWidth(),
+                Spiel.instanz.atlas.findRegion("robot",1).getRegionHeight(),
+                true,"Gegner");
+        this.setKlassenName("Gegner");
+        aktiverAngriff=null;
+        zeitBisAngriff=5.0f;
+
+        leben=gegnerTyp.getMaxLeben();
         maxLeben=gegnerTyp.getMaxLeben();
         geschwindigkeit=gegnerTyp.getGeschwindigkeit();
         texturen=gegnerTyp.getTexturen();
