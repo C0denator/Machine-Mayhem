@@ -8,7 +8,7 @@ public class Feld extends SpielObjekt{
 
     private boolean laufbar;
     public Feld(FeldTyp typ, float x, float y) {
-        super(x, y, 16* Spiel.instanz.skalierung, 16* Spiel.instanz.skalierung,
+        super(x, y, 16, 16,
                 true, "Feld");
         texturen=new TextureRegion[] {typ.getTexturen()[0]};
         laufbar=typ.isLaufbar();

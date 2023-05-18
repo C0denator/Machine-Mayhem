@@ -4,11 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.programmierbeleg.machine_mayhem.Interfaces.Physik;
 import com.programmierbeleg.machine_mayhem.Spiel;
 
 import java.util.ArrayList;
 
-public class Spieler extends SpielObjekt {
+public class Spieler extends SpielObjekt implements Physik {
 
     private int leben;
     private int maxLeben;
@@ -91,5 +92,11 @@ public class Spieler extends SpielObjekt {
 
     public void setWinkel(double winkel) {
         this.winkel = winkel;
+    }
+
+    @Override
+    public void berechnePhysik(float delta) {
+        prüfeEingabe(delta);
+        schauAufMauzeiger();
     }
 }
