@@ -4,8 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.programmierbeleg.machine_mayhem.Anzeigen.SpielAnzeige;
 import com.programmierbeleg.machine_mayhem.Spiel;
+
+import java.util.ArrayList;
 
 public class Spieler extends SpielObjekt {
 
@@ -14,6 +15,14 @@ public class Spieler extends SpielObjekt {
     private float geschwindigkeit;
     private Vector2 bewegungsVektor;
     private double winkel;
+
+    //Angriffsparameter
+    private int schaden;
+    private int maxGenauigkeitAbzug;
+    //Angabe in Grad
+    private int reichweite;
+    //Angabe in Sekunden
+    private ArrayList<Projektil> spielerProjektile;
 
     public Spieler(float x, float y){
         super(x,y,Spiel.instanz.atlas.findRegion("SpielerTest").getRegionWidth(),
@@ -36,19 +45,15 @@ public class Spieler extends SpielObjekt {
 
         if(Gdx.input.isKeyPressed(Input.Keys.W)){
             bewegungsVektor.y+=1.0f;
-            System.out.println("W gedrückt");
         }
         if(Gdx.input.isKeyPressed(Input.Keys.S)){
             bewegungsVektor.y-=1.0f;
-            System.out.println("S gedrückt");
         }
         if(Gdx.input.isKeyPressed(Input.Keys.A)){
             bewegungsVektor.x-=1.0f;
-            System.out.println("A gedrückt");
         }
         if(Gdx.input.isKeyPressed(Input.Keys.D)){
             bewegungsVektor.x+=1.0f;
-            System.out.println("D gedrückt");
         }
 
         if(bewegungsVektor.x!=0.0f || bewegungsVektor.y!=0.0f){
@@ -62,7 +67,7 @@ public class Spieler extends SpielObjekt {
         }
     }
 
-    public void prüfeRotation(){
+    public void schauAufMauzeiger(){
         //setzt den Winkel so, dass Spieler in Richtung Mauszeiger schaut
         double a = Gdx.input.getX()-(Gdx.graphics.getWidth()/2.0f);
         double b = Gdx.input.getY()-(Gdx.graphics.getHeight()/2.0f);

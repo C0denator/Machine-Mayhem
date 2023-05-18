@@ -14,7 +14,7 @@ public abstract class SpielObjekt {
     protected TextureRegion[] texturen;
     private boolean Sichtbar;
     private String klassenName;
-    /*Identifikator um die richtige Textur zuzuweisen --> !Muss exakt mit dem Klassennamen übereinstimmen
+    /*Identifikator --> !Muss exakt mit dem Klassennamen übereinstimmen
         Die Methode getClass().getSimpleName() funktioniert nicht, da anonyme Klasse
     */
 

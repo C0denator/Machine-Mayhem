@@ -8,12 +8,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.programmierbeleg.machine_mayhem.Anzeigen.Hauptmenü;
-import com.programmierbeleg.machine_mayhem.SpielObjekte.Feld;
-import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner;
-import com.programmierbeleg.machine_mayhem.SpielObjekte.Projektil;
-import com.programmierbeleg.machine_mayhem.SpielObjekte.Spieler;
-
-import java.util.ArrayList;
 
 public class Spiel extends Game {
 	public static Spiel instanz;
@@ -93,4 +87,5 @@ public class Spiel extends Game {
 	public void resize(int width, int height) {
 		aktiverBildschirm.resize(width,height);
 	}
+
 }

@@ -9,7 +9,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.programmierbeleg.machine_mayhem.Daten.GegnerTyp;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Feld;
-import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner;
+import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner.Fernkampf_1;
+import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner.Gegner;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Projektil;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Spieler;
 
@@ -36,9 +37,10 @@ public class SpielAnzeige extends ScreenAdapter {
 
         spieler.add(new Spieler(0.0f,0.0f));
 
-        gegner.add(new Gegner(GegnerTyp.FERNKAMPF_1,100.0f,100.0f));
+        //gegner.add(new Gegner(GegnerTyp.FERNKAMPF_1,100.0f,100.0f));
+        gegner.add(new Fernkampf_1(100.0f,100.0f));
 
-        gegner.add(new Gegner(GegnerTyp.FERNKAMPF_1,960.0f,540.0f));
+        //gegner.add(new Gegner(GegnerTyp.FERNKAMPF_1,960.0f,540.0f));
 
     }
 
@@ -81,7 +83,6 @@ public class SpielAnzeige extends ScreenAdapter {
         if(gegner!=null) {
             for (int i = 0; i < gegner.size(); i++) {
                 if(gegner.get(i).isSichtbar()) {
-                    gegner.get(i).prüfeAngriff();
                     batch.draw(gegner.get(i).getTexturen()[0], gegner.get(i).getX(), gegner.get(i).getY(), gegner.get(i).getBreite(), gegner.get(i).getHöhe());
                 }
 
@@ -100,7 +101,7 @@ public class SpielAnzeige extends ScreenAdapter {
 
     private void physik(float delta){
         spieler.get(0).prüfeEingabe(delta);
-        spieler.get(0).prüfeRotation();
+        spieler.get(0).schauAufMauzeiger();
     }
 
     @Override
