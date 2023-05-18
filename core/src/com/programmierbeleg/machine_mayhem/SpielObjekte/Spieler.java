@@ -31,7 +31,7 @@ public class Spieler extends SpielObjekt implements Physik {
                 true, "Spieler");
         leben=100;
         maxLeben=100;
-        geschwindigkeit=200.0f;
+        geschwindigkeit=75.0f *Spiel.instanz.skalierung;
         bewegungsVektor =new Vector2(0.0f,0.0f);
         winkel=0.0;
 
