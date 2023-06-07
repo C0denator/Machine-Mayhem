@@ -11,6 +11,7 @@ public abstract class SpielObjekt {
     protected float y;
     protected int breite;
     protected int höhe;
+
     protected TextureRegion[] texturen;
     private boolean Sichtbar;
     private String klassenName;
@@ -81,6 +82,10 @@ public abstract class SpielObjekt {
 
     public TextureRegion[] getTexturen() {
         return texturen;
+    }
+
+    public void setTexturen(TextureRegion[] texturen) {
+        this.texturen = texturen;
     }
 
     public String getKlassenName() {

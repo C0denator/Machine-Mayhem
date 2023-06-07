@@ -7,11 +7,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.programmierbeleg.machine_mayhem.SpielObjekte.Feld;
-import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner.Fernkampf_1;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner.Gegner;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Projektil;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Spieler;
+import com.programmierbeleg.machine_mayhem.Welt.Raum;
 import com.programmierbeleg.machine_mayhem.Welt.Welt;
 
 import java.util.ArrayList;
@@ -20,7 +19,7 @@ public class SpielAnzeige extends ScreenAdapter {
 
 
     private SpriteBatch batch;
-    public static ArrayList<Feld> felder;
+    public static ArrayList<Raum> räume;
     public static ArrayList<Spieler> spieler;
     public static ArrayList<Gegner> gegner;
     public static ArrayList<Projektil> projektile;
@@ -32,7 +31,7 @@ public class SpielAnzeige extends ScreenAdapter {
         camera=new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         viewport=new ScreenViewport(camera);
 
-        if(felder == null) felder= new ArrayList<Feld>();
+        if(räume == null) räume= new ArrayList<Raum>();
         if(spieler == null) spieler= new ArrayList<Spieler>();
         if(gegner == null) gegner=new ArrayList<Gegner>();
         if(projektile == null) projektile= new ArrayList<Projektil>();
@@ -45,7 +44,7 @@ public class SpielAnzeige extends ScreenAdapter {
         //gegner.add(new Gegner(GegnerTyp.FERNKAMPF_1,960.0f,540.0f));
 
 
-        Welt welt = new Welt(10);
+        Welt welt = new Welt(1);
 
 
     }
@@ -59,6 +58,7 @@ public class SpielAnzeige extends ScreenAdapter {
             camera.update();
         }else{
             System.err.println("FEHLER: spieler != 1");
+            System.err.println("Spielergröße: "+spieler.size());
         }
 
 
@@ -70,11 +70,18 @@ public class SpielAnzeige extends ScreenAdapter {
         ////////////////////////////////////////////////////////////
 
 
-        if(felder!=null) {
-            for (int i = 0; i < felder.size(); i++) {
-                if(felder.get(i).isSichtbar()){
-                    batch.draw(felder.get(i).getTexturen()[0], felder.get(i).getX(), felder.get(i).getY(),
-                            felder.get(i).getBreite(), felder.get(i).getHöhe());
+        if(räume !=null) {
+            for (int i = 0; i < räume.size(); i++) {
+                if(räume.get(i).isSichtbar()){
+                    for(int x=0; x<räume.get(i).getFelder().length; x++){
+                        for(int y=0; y<räume.get(i).getFelder()[x].length; y++){
+                            batch.draw(räume.get(i).getFelder()[x][y].getTexturen()[0],
+                                    räume.get(i).getFelder()[x][y].getX(),
+                                    räume.get(i).getFelder()[x][y].getY(),
+                                    räume.get(i).getFelder()[x][y].getBreite(),
+                                    räume.get(i).getFelder()[x][y].getHöhe());
+                        }
+                    }
                 }
             }
         }
