@@ -4,58 +4,128 @@ size: 512, 512
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
+Fragezeichen
+  rotate: false
+  xy: 2, 56
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
 SpielerTest
   rotate: false
-  xy: 2, 38
+  xy: 260, 314
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 badlogic
   rotate: false
-  xy: 2, 56
+  xy: 2, 74
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
 boden
   rotate: false
-  xy: 260, 296
+  xy: 2, 38
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 robot
   rotate: false
-  xy: 2, 20
+  xy: 20, 56
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 1
 robot
   rotate: false
-  xy: 20, 38
+  xy: 260, 296
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 2
 robot
   rotate: false
-  xy: 260, 278
+  xy: 278, 314
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 3
-wand_nord
+wand_no
+  rotate: false
+  xy: 2, 20
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wand_ns
+  rotate: false
+  xy: 20, 38
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wand_nso
+  rotate: false
+  xy: 38, 56
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wand_nsw
+  rotate: false
+  xy: 260, 278
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wand_nswo
   rotate: false
   xy: 278, 296
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-wand_rand
+wand_nw
+  rotate: false
+  xy: 296, 314
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wand_nwo
   rotate: false
   xy: 2, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wand_so
+  rotate: false
+  xy: 20, 20
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wand_sw
+  rotate: false
+  xy: 38, 38
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wand_swo
+  rotate: false
+  xy: 56, 56
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wand_wo
+  rotate: false
+  xy: 260, 260
   size: 16, 16
   orig: 16, 16
   offset: 0, 0

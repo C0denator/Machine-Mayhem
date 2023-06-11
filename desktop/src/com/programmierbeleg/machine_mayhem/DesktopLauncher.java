@@ -17,6 +17,7 @@ public class DesktopLauncher {
 
 
 	public static void main (String[] arg) {
+		System.out.println("Programm gestartet - Daumen drücken!");
 		TexturePacker.Settings settings = new TexturePacker.Settings();
 		settings.maxHeight=4096;
 		settings.maxWidth=4096;
@@ -24,6 +25,7 @@ public class DesktopLauncher {
 		settings.filterMin=Texture.TextureFilter.Nearest;
 		settings.filterMag=Texture.TextureFilter.Nearest;
 		TexturePacker.process(settings, "assets/Texturen","assets","texturenAtlas");
+		//Diesen Block vor dem Build entfernen!!!
 
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setForegroundFPS(foregroundFPS);
@@ -35,6 +37,6 @@ public class DesktopLauncher {
 			config.setWindowedMode(breite,höhe);
 		}
 		new Lwjgl3Application(new Spiel(), config);
-		System.out.println("lul");
+		System.out.println("Spiel gestartet");
 	}
 }
