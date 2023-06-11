@@ -15,6 +15,10 @@ public enum FeldTextur {
     Wand_SO(new TextureRegion[] {Spiel.instanz.atlas.findRegion("wand_so")}),
     Wand_SW(new TextureRegion[] {Spiel.instanz.atlas.findRegion("wand_sw")}),
     Wand_NW(new TextureRegion[] {Spiel.instanz.atlas.findRegion("wand_nw")}),
+    Wand_NWO(new TextureRegion[] {Spiel.instanz.atlas.findRegion("wand_nwo")}),
+    Wand_NSO(new TextureRegion[] {Spiel.instanz.atlas.findRegion("wand_nso")}),
+    Wand_SWO(new TextureRegion[] {Spiel.instanz.atlas.findRegion("wand_swo")}),
+    Wand_NSW(new TextureRegion[] {Spiel.instanz.atlas.findRegion("wand_nsw")}),
     Unbekannt(new TextureRegion[] {Spiel.instanz.atlas.findRegion("Fragezeichen")})
     ;
     private final TextureRegion[] texturen;

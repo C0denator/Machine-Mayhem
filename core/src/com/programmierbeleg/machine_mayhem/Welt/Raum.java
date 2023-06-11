@@ -140,17 +140,25 @@ public class Raum {
         if(wandN && wandS && wandO && wandW){
             return FeldTextur.Wand_NSWO;
         }else if(wandN && wandS){
-            return FeldTextur.Wand_NS;
-        }else if(wandW && wandO){
             return FeldTextur.Wand_WO;
+        }else if(wandW && wandO){
+            return FeldTextur.Wand_NS;
         } else if (wandN && wandO) {
-            return FeldTextur.Wand_NO;
+            return FeldTextur.Wand_SW;
         } else if (wandS && wandO) {
-            return FeldTextur.Wand_SO;
-        } else if (wandS && wandW) {
-            return  FeldTextur.Wand_SW;
-        } else if (wandN && wandW) {
             return FeldTextur.Wand_NW;
+        } else if (wandS && wandW) {
+            return  FeldTextur.Wand_NO;
+        } else if (wandN && wandW) {
+            return FeldTextur.Wand_SO;
+        }else if (wandS){
+            return FeldTextur.Wand_NWO;
+        }else if(wandW){
+            return FeldTextur.Wand_NSO;
+        }else if(wandN){
+            return FeldTextur.Wand_SWO;
+        }else if(wandO){
+            return FeldTextur.Wand_NSW;
         }else{
             return FeldTextur.Unbekannt;
         }
