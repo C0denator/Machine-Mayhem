@@ -8,12 +8,12 @@ public class Feld extends SpielObjekt{
 
     private boolean laufbar;
     public final FeldEigenschaft feldEigenschaft;
-    public Feld(FeldTextur typ, FeldEigenschaft feldEigenschaft, float x, float y) {
+    public Feld(FeldTextur typ, FeldEigenschaft feldEigenschaft, float x, float y, boolean laufbar) {
         super(x, y, 16, 16,
                 true, "Feld");
         this.feldEigenschaft = feldEigenschaft;
         texturen=typ.getTexturen();
-
+        this.laufbar=laufbar;
     }
 
     public boolean isLaufbar() {

@@ -59,19 +59,22 @@ public class Raum {
                         felder[x][y]=new Feld
                                 (ermittleWandTextur(image,x,y), FeldEigenschaft.Keine,
                                         (x-start_x)*16* Spiel.instanz.skalierung,
-                                        (-(y-start_y))*16*Spiel.instanz.skalierung);
+                                        (-(y-start_y))*16*Spiel.instanz.skalierung,
+                                        false);
                     } else if (g==255 && b==0) {
                         //Tür
                         felder[x][y]=new Feld
                                 (ermittleWandTextur(image,x,y), FeldEigenschaft.Tür,
                                         (x-start_x)*16* Spiel.instanz.skalierung,
-                                        (-(y-start_y))*16*Spiel.instanz.skalierung);
+                                        (-(y-start_y))*16*Spiel.instanz.skalierung,
+                                        true);
                     } else{
                         //FEHLER
                         felder[x][y]=new Feld
                                 (FeldTextur.Unbekannt, FeldEigenschaft.Keine,
                                         (x-start_x)*16* Spiel.instanz.skalierung,
-                                        (-(y-start_y))*16*Spiel.instanz.skalierung);
+                                        (-(y-start_y))*16*Spiel.instanz.skalierung,
+                                        false);
                     }
 
                 }else if(r==255){
@@ -81,20 +84,23 @@ public class Raum {
                         felder[x][y]=new Feld
                                 (FeldTextur.Boden_1, FeldEigenschaft.Keine,
                                 (x-start_x)*16* Spiel.instanz.skalierung,
-                                (-(y-start_y))*16*Spiel.instanz.skalierung);
+                                (-(y-start_y))*16*Spiel.instanz.skalierung,
+                                        true);
                     } else if (g==0 && b==0) {
                         //Normaler Boden mit Gegnerspawn
                         felder[x][y]=new Feld
                                 (FeldTextur.Boden_1, FeldEigenschaft.Gegnerspawn,
                                         (x-start_x)*16* Spiel.instanz.skalierung,
-                                        (-(y-start_y))*16*Spiel.instanz.skalierung);
+                                        (-(y-start_y))*16*Spiel.instanz.skalierung,
+                                        true);
                         SpielAnzeige.gegner.add(new Fernkampf_1((x-start_x)*16* Spiel.instanz.skalierung,(-(y-start_y))*16*Spiel.instanz.skalierung));
                     } else if (g==255 && b==0) {
                         //Normaler Boden mit Spielerspawn
                         felder[x][y]=new Feld
                                 (FeldTextur.Boden_1, FeldEigenschaft.Spielerspawn,
                                         (x-start_x)*16* Spiel.instanz.skalierung,
-                                        (-(y-start_y))*16*Spiel.instanz.skalierung);
+                                        (-(y-start_y))*16*Spiel.instanz.skalierung,
+                                        true);
                         if(SpielAnzeige.spieler.size()<1){
                             SpielAnzeige.spieler.add(new Spieler((x-start_x)*16* Spiel.instanz.skalierung,(-(y-start_y))*16*Spiel.instanz.skalierung));
                         }
@@ -103,14 +109,16 @@ public class Raum {
                         felder[x][y]=new Feld
                                 (FeldTextur.Unbekannt, FeldEigenschaft.Keine,
                                         (x-start_x)*16* Spiel.instanz.skalierung,
-                                        (-(y-start_y))*16*Spiel.instanz.skalierung);
+                                        (-(y-start_y))*16*Spiel.instanz.skalierung,
+                                        false);
                     }
                 }else{
                     //FEHLER
                     felder[x][y]=new Feld
                             (FeldTextur.Unbekannt, FeldEigenschaft.Keine,
                                     (x-start_x)*16* Spiel.instanz.skalierung,
-                                    (-(y-start_y))*16*Spiel.instanz.skalierung);
+                                    (-(y-start_y))*16*Spiel.instanz.skalierung,
+                                    false);
                 }
                 ///////////////////////////////////////
 

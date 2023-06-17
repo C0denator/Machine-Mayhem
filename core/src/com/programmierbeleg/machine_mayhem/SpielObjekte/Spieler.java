@@ -71,7 +71,7 @@ public class Spieler extends SpielObjekt implements Physik {
         }
 
 
-        return true;
+        return alleLaufbar;
     }
 
     public void prüfeEingabe(float delta){
@@ -98,8 +98,16 @@ public class Spieler extends SpielObjekt implements Physik {
             bewegungsVektor.y/=längeVektor;
             bewegungsVektor.x*=geschwindigkeit;
             bewegungsVektor.y*=geschwindigkeit;
+
+            //es wird geprüft ob der Spieler sich in die gewünschte Richtung bewegen kann
+            //falls nicht wird geprüft ob der Spieler sich an der Wand entlang bewegen kann
+            //es werden also 3 Vektoren geprüft
             if(prüfeKollision(aktuellerRaum,bewegungsVektor,delta)){
                 bewegen(bewegungsVektor,delta);
+            }else if(prüfeKollision(aktuellerRaum,new Vector2(bewegungsVektor.x,0.0f),delta)){
+                bewegen(bewegungsVektor.x,0.0f, delta);
+            }else if(prüfeKollision(aktuellerRaum,new Vector2(0.0f,bewegungsVektor.y),delta)) {
+                bewegen(0.0f,bewegungsVektor.y, delta);
             }
         }
     }
