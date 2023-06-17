@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.programmierbeleg.machine_mayhem.Interfaces.Physik;
 import com.programmierbeleg.machine_mayhem.Spiel;
+import com.programmierbeleg.machine_mayhem.Welt.Raum;
 
 import java.util.ArrayList;
 
@@ -16,6 +17,8 @@ public class Spieler extends SpielObjekt implements Physik {
     private float geschwindigkeit;
     private Vector2 bewegungsVektor;
     private double winkel;
+
+    private Raum aktuellerRaum;
 
     //Angriffsparameter
     private int schaden;
@@ -38,6 +41,37 @@ public class Spieler extends SpielObjekt implements Physik {
         texturen =new TextureRegion[1];
         texturen[0]= Spiel.instanz.atlas.findRegion("SpielerTest");
 
+    }
+
+    private boolean prüfeKollision(Raum r, Vector2 v, float delta){
+        //prüft ob die zukünftigen Felder, die der Spieler berühren wird, laufbar sind, oder nicht
+        //true: Bewegung erlaubt
+
+        //Ein imaginärer Spieler -> mit diesem wird die Kollision geprüft
+        Spieler zukünftigerSpieler = new Spieler(x,y);
+        zukünftigerSpieler.bewegen(v,delta);
+
+        ArrayList<Feld> berührteFelder = new ArrayList<>();
+
+        for(int x=0; x<r.getFelder().length; x++){
+            for(int y=0; y<r.getFelder()[x].length;y++){
+                if(zukünftigerSpieler.kollidiert(r.getFelder()[x][y])){
+                    berührteFelder.add(r.getFelder()[x][y]);
+                }
+                if(berührteFelder.size()==4) break;
+            }
+            if(berührteFelder.size()==4) break;
+        }
+
+        //alle Felder durchgehen die berührt werden; sobald eins nicht laufbar ist; würde es zu einer Kollision kommen
+        boolean alleLaufbar=true;
+        for(int i=0; i<berührteFelder.size(); i++){
+            System.out.println(berührteFelder.get(i).toString());
+            if(!berührteFelder.get(i).isLaufbar()) alleLaufbar=false;
+        }
+
+
+        return true;
     }
 
     public void prüfeEingabe(float delta){
@@ -64,7 +98,9 @@ public class Spieler extends SpielObjekt implements Physik {
             bewegungsVektor.y/=längeVektor;
             bewegungsVektor.x*=geschwindigkeit;
             bewegungsVektor.y*=geschwindigkeit;
-            bewegen(bewegungsVektor,delta);
+            if(prüfeKollision(aktuellerRaum,bewegungsVektor,delta)){
+                bewegen(bewegungsVektor,delta);
+            }
         }
     }
 
@@ -82,6 +118,7 @@ public class Spieler extends SpielObjekt implements Physik {
         //System.out.println(winkel);
     }
 
+
     public double getWinkel() {
         return winkel;
     }
@@ -98,5 +135,13 @@ public class Spieler extends SpielObjekt implements Physik {
     public void berechnePhysik(float delta) {
         prüfeEingabe(delta);
         schauAufMauzeiger();
+    }
+
+    public Raum getAktuellerRaum() {
+        return aktuellerRaum;
+    }
+
+    public void setAktuellerRaum(Raum aktuellerRaum) {
+        this.aktuellerRaum = aktuellerRaum;
     }
 }

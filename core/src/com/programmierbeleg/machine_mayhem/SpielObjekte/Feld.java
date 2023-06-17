@@ -16,4 +16,17 @@ public class Feld extends SpielObjekt{
 
     }
 
+    public boolean isLaufbar() {
+        return laufbar;
+    }
+
+    public void setLaufbar(boolean laufbar) {
+        this.laufbar = laufbar;
+    }
+
+    public String toString(){
+        String s="Feld: ";
+        s+="X: ["+x+"]  Y: ["+y+"]";
+        return s;
+    }
 }

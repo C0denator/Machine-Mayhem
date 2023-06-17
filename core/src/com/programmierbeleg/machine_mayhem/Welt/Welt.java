@@ -27,9 +27,7 @@ public class Welt {
     public void generiereWelt(){
         boolean kollisionEntdeckt=false;
         while(raumAnzahl<maxRaumAnzahl){
-            if(startraum!=null){
-
-            }else{
+            if(startraum==null){
                 BufferedImage bild = null;
                 try{
                     bild = ImageIO.read(new File("assets/Räume/start.png"));
@@ -38,7 +36,10 @@ public class Welt {
                 }
                 startraum=new Raum(bild);
                 SpielAnzeige.räume.add(startraum);
+                SpielAnzeige.spieler.get(0).setAktuellerRaum(startraum);
                 raumAnzahl++;
+            }else{
+
             }
         }
 

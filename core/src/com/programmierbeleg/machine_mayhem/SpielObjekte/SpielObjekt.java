@@ -2,6 +2,7 @@ package com.programmierbeleg.machine_mayhem.SpielObjekte;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.programmierbeleg.machine_mayhem.Spiel;
 
@@ -38,6 +39,14 @@ public abstract class SpielObjekt {
     public void bewegen(float x, float y, float delta){
         this.x+=x*delta;
         this.y+=y*delta;
+    }
+
+    public boolean kollidiert(SpielObjekt o){
+        //true: Objekte brühren sich
+        //false: sie tun es nicht
+        Rectangle r1 = new Rectangle(x,y,breite,höhe);
+        Rectangle r2 = new Rectangle(o.getX(),o.getY(),o.getBreite(),o.getHöhe());
+        return r1.overlaps(r2);
     }
 
     public float getX() {
