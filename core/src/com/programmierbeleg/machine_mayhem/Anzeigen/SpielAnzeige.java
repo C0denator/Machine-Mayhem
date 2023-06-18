@@ -1,14 +1,18 @@
 package com.programmierbeleg.machine_mayhem.Anzeigen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.programmierbeleg.machine_mayhem.Interfaces.PhysikObjekte;
+import com.programmierbeleg.machine_mayhem.Spiel;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner.Gegner;
+import com.programmierbeleg.machine_mayhem.SpielObjekte.Knopf;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Projektil;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.SpielObjekt;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Spieler;
@@ -26,8 +30,10 @@ public class SpielAnzeige extends ScreenAdapter {
     public static ArrayList<Gegner> gegner;
     public static ArrayList<Projektil> projektile;
     public static ArrayList<PhysikObjekte> physikObjekte;
+    public static ArrayList<Knopf> knöpfe;
     private OrthographicCamera camera;
     private Viewport viewport;
+    private boolean pausiert = false;
 
     public SpielAnzeige(){
         batch=new SpriteBatch();
@@ -39,24 +45,46 @@ public class SpielAnzeige extends ScreenAdapter {
         if(gegner == null) gegner=new ArrayList<Gegner>();
         if(projektile == null) projektile= new ArrayList<Projektil>();
         if(physikObjekte == null) physikObjekte = new ArrayList<>();
-
-        //spieler.add(new Spieler(0.0f,0.0f));
-
-        //gegner.add(new Gegner(GegnerTyp.FERNKAMPF_1,100.0f,100.0f));
-        //gegner.add(new Fernkampf_1(100.0f,100.0f));
-
-        //gegner.add(new Gegner(GegnerTyp.FERNKAMPF_1,960.0f,540.0f));
-
+        knöpfe = new ArrayList<Knopf>();
+        knöpfe.add(new Knopf(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()*0.8f,200,30,"Fortfahren"){
+            @Override
+            public void action(){
+                setPausiert(false);
+            }
+        });
+        knöpfe.add(new Knopf(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()*0.3f,200,30,"Zurück zum Hauptmenü"){
+            @Override
+            public void action(){
+                spieler=null;
+                räume=null;
+                gegner=null;
+                projektile=null;
+                physikObjekte=null;
+                Spiel.instanz.aktiverBildschirm=new Hauptmenü();
+            }
+        });
+        knöpfe.add(new Knopf(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()*0.2f,200,30,"Zurück zum Desktop"){
+            @Override
+            public void action(){
+                Gdx.app.exit();
+            }
+        });
 
         Welt welt = new Welt(1);
-
 
     }
 
     @Override
     public void render(float delta) {
-        for(int i=0; i<physikObjekte.size(); i++){
-            physikObjekte.get(i).berechnePhysik(delta);
+        if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
+            if(pausiert) pausiert=false;
+            else pausiert=true;
+        }
+
+        if(!pausiert){
+            for(int i=0; i<physikObjekte.size(); i++){
+                physikObjekte.get(i).berechnePhysik(delta);
+            }
         }
 
         if(spieler.size()==1){
@@ -67,10 +95,9 @@ public class SpielAnzeige extends ScreenAdapter {
             System.err.println("Spielergröße: "+spieler.size());
         }
 
-
-        //ScreenUtils.clear(0.2f, 0.2f, 0.2f, 1);
         Gdx.gl.glClearColor(0.4f,0.4f,0.4f,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        batch.enableBlending();
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         ////////////////////////////////////////////////////////////
@@ -119,11 +146,22 @@ public class SpielAnzeige extends ScreenAdapter {
         ////////////////////////////////////////////////////////////
         batch.end();
 
-    }
+        if(pausiert){
+            Gdx.gl.glEnable(GL20.GL_BLEND);
+            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+            ShapeRenderer s = new ShapeRenderer();
+            s.setColor(0,0,0,0.5f);
+            s.setAutoShapeType(true);
 
-    private void physik(float delta){
-        for (int i = 0; i < spieler.size(); i++) {
-            spieler.get(i).berechnePhysik(delta);
+            s.begin(ShapeRenderer.ShapeType.Filled);
+            s.rect(0,0,
+                    Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+            s.end();
+            Gdx.gl.glDisable(GL20.GL_BLEND);
+
+            for(int i=0; i< knöpfe.size(); i++){
+                knöpfe.get(i).render();
+            }
         }
     }
 
@@ -131,5 +169,15 @@ public class SpielAnzeige extends ScreenAdapter {
     public void resize(int width, int height) {
         viewport.update(width, height);
         viewport.apply();
+    }
+
+    public void setPausiert(boolean pausiert) {
+        this.pausiert = pausiert;
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        System.out.println("Moin");
     }
 }

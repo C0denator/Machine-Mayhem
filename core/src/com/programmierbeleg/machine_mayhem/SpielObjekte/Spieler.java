@@ -51,8 +51,6 @@ public class Spieler extends SpielObjekt implements PhysikObjekte {
         Spieler zukünftigerSpieler = new Spieler(x,y);
         zukünftigerSpieler.bewegen(v,delta);
 
-
-
         //alle Felder finden, die berührt werden
         //falls eines davon nicht laufbar ist -> false
         boolean alleLaufbar=true;

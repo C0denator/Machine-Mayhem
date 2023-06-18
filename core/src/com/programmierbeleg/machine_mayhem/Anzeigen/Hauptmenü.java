@@ -65,7 +65,7 @@ public class Hauptmenü extends ScreenAdapter {
 
         for (int i=0; i<knöpfe.size(); i++){
             if(knöpfe.get(i)!=null){
-                knöpfe.get(i).render(Gdx.graphics.getDeltaTime());
+                knöpfe.get(i).render();
             }
         }
 

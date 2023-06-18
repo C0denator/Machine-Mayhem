@@ -28,9 +28,10 @@ public class Knopf extends SpielObjekt {
         batch =new SpriteBatch();
     }
 
-    public void render(float delta){
+    public void render(){
         shaperenderer.begin(ShapeRenderer.ShapeType.Filled);
 
+        //prüft ob der Mauszeiger den Knopf berührt
         if(Gdx.input.getX() >= x && Gdx.input.getX() <= x+breite &&
                 Gdx.graphics.getHeight()-Gdx.input.getY() >= y &&
                 Gdx.graphics.getHeight()-Gdx.input.getY() <= y+höhe){
@@ -86,7 +87,7 @@ public class Knopf extends SpielObjekt {
     }
 
     public void action(){
-
+        //muss überschrieben werden
     }
 
     public void dispose(){
