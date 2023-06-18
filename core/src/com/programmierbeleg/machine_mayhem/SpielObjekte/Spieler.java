@@ -4,13 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.programmierbeleg.machine_mayhem.Interfaces.Physik;
+import com.programmierbeleg.machine_mayhem.Interfaces.PhysikObjekte;
 import com.programmierbeleg.machine_mayhem.Spiel;
 import com.programmierbeleg.machine_mayhem.Welt.Raum;
 
 import java.util.ArrayList;
 
-public class Spieler extends SpielObjekt implements Physik {
+public class Spieler extends SpielObjekt implements PhysikObjekte {
 
     private int leben;
     private int maxLeben;
@@ -51,23 +51,19 @@ public class Spieler extends SpielObjekt implements Physik {
         Spieler zukünftigerSpieler = new Spieler(x,y);
         zukünftigerSpieler.bewegen(v,delta);
 
-        ArrayList<Feld> berührteFelder = new ArrayList<>();
 
+
+        //alle Felder finden, die berührt werden
+        //falls eines davon nicht laufbar ist -> false
+        boolean alleLaufbar=true;
         for(int x=0; x<r.getFelder().length; x++){
             for(int y=0; y<r.getFelder()[x].length;y++){
-                if(zukünftigerSpieler.kollidiert(r.getFelder()[x][y])){
-                    berührteFelder.add(r.getFelder()[x][y]);
+                if(zukünftigerSpieler.kollidiert(r.getFelder()[x][y]) && !r.getFelder()[x][y].isLaufbar()){
+                    alleLaufbar=false;
                 }
-                if(berührteFelder.size()==4) break;
+                if(!alleLaufbar) break;
             }
-            if(berührteFelder.size()==4) break;
-        }
-
-        //alle Felder durchgehen die berührt werden; sobald eins nicht laufbar ist; würde es zu einer Kollision kommen
-        boolean alleLaufbar=true;
-        for(int i=0; i<berührteFelder.size(); i++){
-            System.out.println(berührteFelder.get(i).toString());
-            if(!berührteFelder.get(i).isLaufbar()) alleLaufbar=false;
+            if(!alleLaufbar) break;
         }
 
 

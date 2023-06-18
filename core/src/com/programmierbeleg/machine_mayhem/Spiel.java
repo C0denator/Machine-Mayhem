@@ -20,15 +20,17 @@ public class Spiel extends Game {
 
 	public final int skalierung=3;
 
-	public Spiel(){
-		//setScreen(new Hauptmenü());
-		//atlas = new TextureAtlas("assets/texturenAtlas.atlas");
+	public static Spiel starteSpiel() throws IllegalStateException{
 		if(instanz==null){
-			instanz=this;
-		}else {
-			System.err.println("FEHLER: Spiel läuft bereits");
-			Gdx.app.exit();
+			instanz=new Spiel();
+		}else{
+			throw new IllegalStateException("Nicht mehr als eine Spiel-Instanz erlaubt");
 		}
+		return instanz;
+	}
+
+	private Spiel(){
+		//ist Singleton -> deswegen private
 	}
 
 	@Override
@@ -49,7 +51,9 @@ public class Spiel extends Game {
 
 	@Override
 	public void render() {
-		update();
+		delta=Gdx.graphics.getDeltaTime();
+
+
 		Gdx.gl.glClearColor(0.5f,0.4f,0.4f,1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -61,12 +65,6 @@ public class Spiel extends Game {
 		////////////////////////////////////////////////////////////
 		mainBatch.end();
 
-	}
-
-	private void update(){
-
-		delta=Gdx.graphics.getDeltaTime();
-		instanz = this;
 	}
 
 	public void renderDebug(SpriteBatch batch){

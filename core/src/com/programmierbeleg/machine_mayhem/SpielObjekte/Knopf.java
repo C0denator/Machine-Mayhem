@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.programmierbeleg.machine_mayhem.Spiel;
 
 public class Knopf extends SpielObjekt {
 
@@ -18,6 +19,8 @@ public class Knopf extends SpielObjekt {
     public Knopf(float x, float y, int breite, int höhe, String schriftzug){
         super(x,y,breite,höhe,true,"Knopf");
         this.schriftzug=schriftzug;
+        this.x=x-breite* Spiel.instanz.skalierung/2;
+        this.y=y-höhe* Spiel.instanz.skalierung/2;
         linienbreite=5.0f;
 
         shaperenderer = new ShapeRenderer();

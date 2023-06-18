@@ -60,72 +60,86 @@ wand_no
   orig: 16, 16
   offset: 0, 0
   index: -1
-wand_ns
+wand_nord
   rotate: false
   xy: 20, 38
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-wand_nso
+wand_ns
   rotate: false
   xy: 38, 56
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-wand_nsw
+wand_nso
   rotate: false
   xy: 260, 278
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-wand_nswo
+wand_nsw
   rotate: false
   xy: 278, 296
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-wand_nw
+wand_nswo
   rotate: false
   xy: 296, 314
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-wand_nwo
+wand_nw
   rotate: false
   xy: 2, 2
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-wand_so
+wand_nwo
   rotate: false
   xy: 20, 20
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-wand_sw
+wand_rand
   rotate: false
   xy: 38, 38
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-wand_swo
+wand_so
   rotate: false
   xy: 56, 56
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-wand_wo
+wand_sw
   rotate: false
   xy: 260, 260
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wand_swo
+  rotate: false
+  xy: 278, 278
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wand_wo
+  rotate: false
+  xy: 296, 296
   size: 16, 16
   orig: 16, 16
   offset: 0, 0

@@ -7,8 +7,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.programmierbeleg.machine_mayhem.Interfaces.PhysikObjekte;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner.Gegner;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Projektil;
+import com.programmierbeleg.machine_mayhem.SpielObjekte.SpielObjekt;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Spieler;
 import com.programmierbeleg.machine_mayhem.Welt.Raum;
 import com.programmierbeleg.machine_mayhem.Welt.Welt;
@@ -23,6 +25,7 @@ public class SpielAnzeige extends ScreenAdapter {
     public static ArrayList<Spieler> spieler;
     public static ArrayList<Gegner> gegner;
     public static ArrayList<Projektil> projektile;
+    public static ArrayList<PhysikObjekte> physikObjekte;
     private OrthographicCamera camera;
     private Viewport viewport;
 
@@ -35,6 +38,7 @@ public class SpielAnzeige extends ScreenAdapter {
         if(spieler == null) spieler= new ArrayList<Spieler>();
         if(gegner == null) gegner=new ArrayList<Gegner>();
         if(projektile == null) projektile= new ArrayList<Projektil>();
+        if(physikObjekte == null) physikObjekte = new ArrayList<>();
 
         //spieler.add(new Spieler(0.0f,0.0f));
 
@@ -51,7 +55,9 @@ public class SpielAnzeige extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        physik(delta);
+        for(int i=0; i<physikObjekte.size(); i++){
+            physikObjekte.get(i).berechnePhysik(delta);
+        }
 
         if(spieler.size()==1){
             camera.position.set(spieler.get(0).getX()+spieler.get(0).getBreite()/2,spieler.get(0).getY()+spieler.get(0).getHöhe()/2,0);

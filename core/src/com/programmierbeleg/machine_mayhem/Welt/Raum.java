@@ -102,7 +102,9 @@ public class Raum {
                                         (-(y-start_y))*16*Spiel.instanz.skalierung,
                                         true);
                         if(SpielAnzeige.spieler.size()<1){
-                            SpielAnzeige.spieler.add(new Spieler((x-start_x)*16* Spiel.instanz.skalierung,(-(y-start_y))*16*Spiel.instanz.skalierung));
+                            Spieler spieler = new Spieler((x-start_x)*16* Spiel.instanz.skalierung,(-(y-start_y))*16*Spiel.instanz.skalierung);
+                            SpielAnzeige.spieler.add(spieler);
+                            SpielAnzeige.physikObjekte.add(spieler);
                         }
                     }else{
                         //FEHLER
