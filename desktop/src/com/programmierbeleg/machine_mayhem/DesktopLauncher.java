@@ -12,7 +12,7 @@ import com.badlogic.gdx.tools.texturepacker.TexturePacker;
 public class DesktopLauncher {
 
 	private static int foregroundFPS=60;
-	private static boolean vollbildAn=false;
+	private static boolean vollbildAn=true;
 	private static int breite=1920;
 	private static int höhe=1080;
 
@@ -31,6 +31,7 @@ public class DesktopLauncher {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setForegroundFPS(foregroundFPS);
 		config.useVsync(true);
+		config.setResizable(false);
 		config.setTitle("Machine Mayhem");
 		config.setWindowIcon(Files.FileType.Local,"assets/Texturen/robot_1.png");
 		if(vollbildAn){

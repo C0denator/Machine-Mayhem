@@ -16,8 +16,8 @@ public class Hauptmenü extends ScreenAdapter {
     SpriteBatch batch;
     Texture img;
     BitmapFont bitmapFont;
-    float tmpX =500.0f;
-    float tmpY =0.0f;
+    float tmpX =Gdx.graphics.getWidth()-700;
+    float tmpY =Gdx.graphics.getHeight()-700;
     float velX =100.0f;
     float velY =100.0f;
     private ArrayList<Knopf> knöpfe;

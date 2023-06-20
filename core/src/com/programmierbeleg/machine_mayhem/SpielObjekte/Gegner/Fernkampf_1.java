@@ -20,7 +20,8 @@ public class Fernkampf_1 extends Gegner{
         angriffAnimation=new Animation(this,new TextureRegion[]{
                 Spiel.instanz.atlas.findRegion("robot",1),
                 Spiel.instanz.atlas.findRegion("robot",2),
-                Spiel.instanz.atlas.findRegion("robot",3)
+                Spiel.instanz.atlas.findRegion("robot",3),
+                Spiel.instanz.atlas.findRegion("robot",2)
         },0.25f,true);
         angriffAnimation.starteVonVorn();
         SpielAnzeige.physikObjekte.add(angriffAnimation);
