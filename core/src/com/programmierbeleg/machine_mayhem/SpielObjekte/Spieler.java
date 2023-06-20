@@ -13,6 +13,9 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
 
     private int leben;
     private int maxLeben;
+
+    private int kollisionsBreite;
+    private int kollisionsHöhe;
     private float geschwindigkeit;
     private Vector2 bewegungsVektor;
     private double winkel;
@@ -28,14 +31,17 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
     private ArrayList<Projektil> spielerProjektile;
 
     public Spieler(float x, float y){
-        super(x,y,Spiel.instanz.atlas.findRegion("SpielerTest").getRegionWidth(),
-                Spiel.instanz.atlas.findRegion("SpielerTest").getRegionHeight(),
+        super(x,y,Spiel.instanz.atlas.findRegion("SpielerTest").getRegionWidth()-1,
+                Spiel.instanz.atlas.findRegion("SpielerTest").getRegionHeight()-1,
                 true, "Spieler");
         leben=100;
         maxLeben=100;
         geschwindigkeit=75.0f *Spiel.instanz.skalierung;
         bewegungsVektor =new Vector2(0.0f,0.0f);
         winkel=0.0;
+
+        kollisionsBreite=15;
+        kollisionsHöhe=15;
 
         textur= Spiel.instanz.atlas.findRegion("SpielerTest");
 
@@ -47,6 +53,8 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
 
         //Ein imaginärer Spieler -> mit diesem wird die Kollision geprüft
         Spieler zukünftigerSpieler = new Spieler(x,y);
+        //zukünftigerSpieler.setBreite(kollisionsBreite);
+        //zukünftigerSpieler.setHöhe(kollisionsHöhe);
         zukünftigerSpieler.bewegen(v,delta);
 
         //alle Felder finden, die berührt werden
@@ -65,6 +73,7 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
 
         return alleLaufbar;
     }
+
 
     public void prüfeEingabe(float delta){
         bewegungsVektor.x=0.0f;
@@ -100,7 +109,13 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
                 bewegen(bewegungsVektor.x,0.0f, delta);
             }else if(prüfeKollision(aktuellerRaum,new Vector2(0.0f,bewegungsVektor.y),delta)) {
                 bewegen(0.0f,bewegungsVektor.y, delta);
+            } else if (prüfeKollision(aktuellerRaum, new Vector2(0.1f, 0.1f),delta)) {
+                bewegen(0.1f, 0.1f, delta);
             }
+
+            x=(float)(Math.round(x*10.0)/10.0f);
+            y=(float)(Math.round(y*10.0)/10.0f);
+            System.out.println("X: "+x+"| Y: "+y);
         }
     }
 
@@ -143,5 +158,13 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
 
     public void setAktuellerRaum(Raum aktuellerRaum) {
         this.aktuellerRaum = aktuellerRaum;
+    }
+
+    public int getKollisionsBreite() {
+        return kollisionsBreite;
+    }
+
+    public int getGetKollisionsHöhe() {
+        return kollisionsHöhe;
     }
 }

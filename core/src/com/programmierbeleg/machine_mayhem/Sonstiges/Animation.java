@@ -8,6 +8,8 @@ import com.programmierbeleg.machine_mayhem.SpielObjekte.SpielObjekt;
 public class Animation implements EinmalProFrame {
     //warum etwas importieren, wenn man es auch selber machen kann???
 
+    //Wichtig!!! Animation muss zur ArrayList "PhysikObjekte" hinzugefügt werden
+
     private SpielObjekt objekt;
     //die Klasse die eine Animation anfordert
     private TextureRegion[] texturen;
@@ -19,7 +21,7 @@ public class Animation implements EinmalProFrame {
     private float aktuelleZeit;
 
 
-    public Animation(SpielObjekt klasse, TextureRegion[] texturen, int sBisZumNächstenBild){
+    public Animation(SpielObjekt klasse, TextureRegion[] texturen, float sBisZumNächstenBild){
         this.objekt =klasse;
         this.texturen=texturen;
         this.sekundenBisZumNächstenBild =sBisZumNächstenBild;
@@ -29,7 +31,7 @@ public class Animation implements EinmalProFrame {
         this.loop=true;
     }
 
-    public Animation(SpielObjekt klasse, TextureRegion[] texturen, int sBisZumNächstenBild, boolean loop){
+    public Animation(SpielObjekt klasse, TextureRegion[] texturen, float sBisZumNächstenBild, boolean loop){
         this.objekt =klasse;
         this.texturen=texturen;
         this.sekundenBisZumNächstenBild =sBisZumNächstenBild;
