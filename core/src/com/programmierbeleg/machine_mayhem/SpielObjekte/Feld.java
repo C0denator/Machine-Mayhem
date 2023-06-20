@@ -1,18 +1,17 @@
 package com.programmierbeleg.machine_mayhem.SpielObjekte;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.programmierbeleg.machine_mayhem.Daten.FeldEigenschaft;
 import com.programmierbeleg.machine_mayhem.Daten.FeldTextur;
 
 public class Feld extends SpielObjekt{
 
     private boolean laufbar;
-    public final FeldEigenschaft feldEigenschaft;
-    public Feld(FeldTextur typ, FeldEigenschaft feldEigenschaft, float x, float y, boolean laufbar) {
+    private final FeldEigenschaft feldEigenschaft;
+    public Feld(FeldTextur textur, FeldEigenschaft feldEigenschaft, float x, float y, boolean laufbar) {
         super(x, y, 16, 16,
                 true, "Feld");
         this.feldEigenschaft = feldEigenschaft;
-        texturen=typ.getTexturen();
+        this.textur =textur.getTextur();
         this.laufbar=laufbar;
     }
 
@@ -22,6 +21,10 @@ public class Feld extends SpielObjekt{
 
     public void setLaufbar(boolean laufbar) {
         this.laufbar = laufbar;
+    }
+
+    public FeldEigenschaft getFeldEigenschaft() {
+        return feldEigenschaft;
     }
 
     public String toString(){

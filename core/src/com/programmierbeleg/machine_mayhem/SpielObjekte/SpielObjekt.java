@@ -1,6 +1,5 @@
 package com.programmierbeleg.machine_mayhem.SpielObjekte;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -13,7 +12,7 @@ public abstract class SpielObjekt {
     protected int breite;
     protected int höhe;
 
-    protected TextureRegion[] texturen;
+    protected TextureRegion textur;
     private boolean Sichtbar;
     private String klassenName;
     /*Identifikator --> !Muss exakt mit dem Klassennamen übereinstimmen
@@ -89,12 +88,12 @@ public abstract class SpielObjekt {
         Sichtbar = sichtbar;
     }
 
-    public TextureRegion[] getTexturen() {
-        return texturen;
+    public TextureRegion getTextur() {
+        return textur;
     }
 
-    public void setTexturen(TextureRegion[] texturen) {
-        this.texturen = texturen;
+    public void setTextur(TextureRegion textur) {
+        this.textur = textur;
     }
 
     public String getKlassenName() {

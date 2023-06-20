@@ -64,7 +64,7 @@ public class Raum {
                     } else if (g==255 && b==0) {
                         //Tür
                         felder[x][y]=new Feld
-                                (ermittleWandTextur(image,x,y), FeldEigenschaft.Tür,
+                                (FeldTextur.TürZu, FeldEigenschaft.Tür,
                                         (x-start_x)*16* Spiel.instanz.skalierung,
                                         (-(y-start_y))*16*Spiel.instanz.skalierung,
                                         true);

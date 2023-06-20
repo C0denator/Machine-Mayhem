@@ -9,12 +9,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.programmierbeleg.machine_mayhem.Interfaces.PhysikObjekte;
+import com.programmierbeleg.machine_mayhem.Interfaces.EinmalProFrame;
 import com.programmierbeleg.machine_mayhem.Spiel;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner.Gegner;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Knopf;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Projektil;
-import com.programmierbeleg.machine_mayhem.SpielObjekte.SpielObjekt;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Spieler;
 import com.programmierbeleg.machine_mayhem.Welt.Raum;
 import com.programmierbeleg.machine_mayhem.Welt.Welt;
@@ -29,13 +28,21 @@ public class SpielAnzeige extends ScreenAdapter {
     public static ArrayList<Spieler> spieler;
     public static ArrayList<Gegner> gegner;
     public static ArrayList<Projektil> projektile;
-    public static ArrayList<PhysikObjekte> physikObjekte;
+    public static ArrayList<EinmalProFrame> physikObjekte;
     public static ArrayList<Knopf> knöpfe;
     private OrthographicCamera camera;
     private Viewport viewport;
+
+    public static SpielAnzeige instanz;
     private boolean pausiert = false;
 
     public SpielAnzeige(){
+        if(instanz==null){
+            instanz=this;
+        }else{
+            new IllegalStateException("Mehrere SpielAnzeige-Instanzen :(");
+        }
+
         batch=new SpriteBatch();
         camera=new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         viewport=new ScreenViewport(camera);
@@ -83,7 +90,7 @@ public class SpielAnzeige extends ScreenAdapter {
 
         if(!pausiert){
             for(int i=0; i<physikObjekte.size(); i++){
-                physikObjekte.get(i).berechnePhysik(delta);
+                physikObjekte.get(i).einmalProFrame(delta);
             }
         }
 
@@ -108,7 +115,7 @@ public class SpielAnzeige extends ScreenAdapter {
                 if(räume.get(i).isSichtbar()){
                     for(int x=0; x<räume.get(i).getFelder().length; x++){
                         for(int y=0; y<räume.get(i).getFelder()[x].length; y++){
-                            batch.draw(räume.get(i).getFelder()[x][y].getTexturen()[0],
+                            batch.draw(räume.get(i).getFelder()[x][y].getTextur(),
                                     räume.get(i).getFelder()[x][y].getX(),
                                     räume.get(i).getFelder()[x][y].getY(),
                                     räume.get(i).getFelder()[x][y].getBreite(),
@@ -122,7 +129,7 @@ public class SpielAnzeige extends ScreenAdapter {
             for (int i = 0; i < spieler.size(); i++) {
                 if(spieler.get(i).isSichtbar()) {
                     //batch.draw(spieler.get(i).getTexturen()[0], spieler.get(i).getX(), spieler.get(i).getY(), spieler.get(i).getBreite(), spieler.get(i).getHöhe());
-                    batch.draw(spieler.get(i).getTexturen()[0], spieler.get(i).getX(), spieler.get(i).getY(),
+                    batch.draw(spieler.get(i).getTextur(), spieler.get(i).getX(), spieler.get(i).getY(),
                             spieler.get(i).getBreite()/2, spieler.get(i).getHöhe()/2,
                             spieler.get(i).getBreite(), spieler.get(i).getHöhe(), 1.0f, 1.0f, spieler.get(i).getWinkelInt());
                 }
@@ -132,7 +139,7 @@ public class SpielAnzeige extends ScreenAdapter {
         if(gegner!=null) {
             for (int i = 0; i < gegner.size(); i++) {
                 if(gegner.get(i).isSichtbar()) {
-                    batch.draw(gegner.get(i).getTexturen()[0], gegner.get(i).getX(), gegner.get(i).getY(), gegner.get(i).getBreite(), gegner.get(i).getHöhe());
+                    batch.draw(gegner.get(i).getTextur(), gegner.get(i).getX(), gegner.get(i).getY(), gegner.get(i).getBreite(), gegner.get(i).getHöhe());
                 }
 
             }

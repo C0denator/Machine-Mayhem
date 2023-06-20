@@ -2,15 +2,14 @@ package com.programmierbeleg.machine_mayhem.SpielObjekte;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.programmierbeleg.machine_mayhem.Interfaces.PhysikObjekte;
+import com.programmierbeleg.machine_mayhem.Interfaces.EinmalProFrame;
 import com.programmierbeleg.machine_mayhem.Spiel;
 import com.programmierbeleg.machine_mayhem.Welt.Raum;
 
 import java.util.ArrayList;
 
-public class Spieler extends SpielObjekt implements PhysikObjekte {
+public class Spieler extends SpielObjekt implements EinmalProFrame {
 
     private int leben;
     private int maxLeben;
@@ -38,8 +37,7 @@ public class Spieler extends SpielObjekt implements PhysikObjekte {
         bewegungsVektor =new Vector2(0.0f,0.0f);
         winkel=0.0;
 
-        texturen =new TextureRegion[1];
-        texturen[0]= Spiel.instanz.atlas.findRegion("SpielerTest");
+        textur= Spiel.instanz.atlas.findRegion("SpielerTest");
 
     }
 
@@ -134,7 +132,7 @@ public class Spieler extends SpielObjekt implements PhysikObjekte {
     }
 
     @Override
-    public void berechnePhysik(float delta) {
+    public void einmalProFrame(float delta) {
         prüfeEingabe(delta);
         schauAufMauzeiger();
     }
