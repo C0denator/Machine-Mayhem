@@ -25,6 +25,26 @@ public class Welt {
     }
 
     public void generiereWelt(){
+        BufferedImage bild1 = null;
+        try{
+            bild1 = ImageIO.read(new File("assets/Räume/start.png"));
+        }catch(IOException e){
+            System.err.println("Startraum konnte nicht geladen erden");
+        }
+
+        BufferedImage bild2 = null;
+        try{
+            bild2 = ImageIO.read(new File("assets/Räume/raum5.png"));
+        }catch(IOException e){
+            System.err.println("Raum konnte nicht geladen erden");
+        }
+
+        startraum=new Raum(bild1,0,0);
+        startraum.setRaumOst(new Raum(bild2,30,30));
+        SpielAnzeige.räume.add(startraum);
+        SpielAnzeige.räume.add(startraum.getRaumOst());
+        SpielAnzeige.spieler.get(0).setAktuellerRaum(startraum);
+        /*
         boolean kollisionEntdeckt=false;
         while(raumAnzahl<maxRaumAnzahl){
             if(startraum==null){
@@ -43,78 +63,7 @@ public class Welt {
             }
         }
 
+        */
+
     }
-
-    /*
-    public Raum erstelleStartRaum(BufferedImage bild){
-        Raum raum= new Raum();
-        raum.setFelder(leseRaumPixel(bild));
-
-        boolean startGefunden=false;
-        for(int x=0; x<raum.getFelder().length; x++) {
-            for(int y=0; y<raum.getFelder()[x].length; y++) {
-                if(ermittleFeldtyp(raum.getFelder()[x][y])== FeldTextur.SpielerSpawn){
-                    raum.setStart_x(x);
-                    raum.setStart_y(y);
-                    startGefunden=true;
-                    break;
-                }
-            }
-        }
-        if(!startGefunden)System.err.println("FEHLER: Kein SpielerSpawn gefunden");
-
-        for(int x=0; x<raum.getFelder().length; x++) {
-            for(int y=0; y<raum.getFelder()[x].length; y++) {
-                int[] rgb=ermittleRGB(raum.getFelder()[x][y]);
-
-                if ((rgb[0]==0 && rgb[1]==0) || (rgb[0]==255 && rgb[1]==255)){
-                    //Pixel ist Wand oder Feld
-                    SpielAnzeige.räume.add(new Feld(ermittleFeldtyp(raum.getFelder()[x][y])
-                            ,(x-raum.getStart_x())*16*Spiel.instanz.skalierung,(-(y-raum.getStart_y()))*16*Spiel.instanz.skalierung, feldEigenschaft));
-                }else if (rgb[0]==255 && rgb[1]==0){
-                    //Pixel ist Gegner
-                    if(rgb[2]==0){
-                        SpielAnzeige.gegner.add(new Fernkampf_1((x-raum.getStart_x())*16*Spiel.instanz.skalierung,(-(y-raum.getStart_y()))*16*Spiel.instanz.skalierung));
-                        SpielAnzeige.räume.add(new Feld(findeBenachbartesFeld(raum.getFelder(),x,y)
-                                ,(x-raum.getStart_x())*16*Spiel.instanz.skalierung,(-(y-raum.getStart_y()))*16*Spiel.instanz.skalierung, feldEigenschaft));
-                    }
-                }else if(rgb[0]==0 && rgb[1]==255){
-                    //Pixel ist Spieler
-                    if(rgb[2]==0){
-                        SpielAnzeige.spieler.add(new Spieler((x-raum.getStart_x())*16*Spiel.instanz.skalierung,(-(y-raum.getStart_y()))*16*Spiel.instanz.skalierung));
-                        SpielAnzeige.räume.add(new Feld(findeBenachbartesFeld(raum.getFelder(),x,y)
-                                ,(x-raum.getStart_x())*16*Spiel.instanz.skalierung,(-(y-raum.getStart_y()))*16*Spiel.instanz.skalierung, feldEigenschaft));
-                    }
-                }
-
-            }
-        }
-
-        return raum;
-    }*/
-
-    /*private FeldTyp findeBenachbartesFeld(int[][] felder, int x, int y){
-        int[] rgb=ermittleRGB(felder[x][y+1]);
-        if(rgb[0]==255 && rgb[1]==255){
-            return ermittleFeldtyp(felder[x][y+1]);
-        }
-
-        rgb=ermittleRGB(felder[x][y-1]);
-        if(rgb[0]==255 && rgb[1]==255){
-            return ermittleFeldtyp(felder[x][y-1]);
-        }
-
-        rgb=ermittleRGB(felder[x+1][y]);
-        if(rgb[0]==255 && rgb[1]==255){
-            return ermittleFeldtyp(felder[x+1][y]);
-        }
-
-        rgb=ermittleRGB(felder[x-1][y]);
-        if(rgb[0]==255 && rgb[1]==255){
-            return ermittleFeldtyp(felder[x-1][y]);
-        }
-
-        System.err.println("FELER: Kein benachbartes laufbares Feld gefunden");
-        return null;
-    }*/
 }

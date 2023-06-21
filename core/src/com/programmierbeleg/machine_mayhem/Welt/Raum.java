@@ -8,6 +8,7 @@ import com.programmierbeleg.machine_mayhem.SpielObjekte.Feld;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner.Fernkampf_1;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Spieler;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Raum {
@@ -18,6 +19,7 @@ public class Raum {
 
     private int start_x;
     private int start_y;
+    private Rectangle alsRechteck;
 
 
     private Feld[][] felder;
@@ -29,12 +31,14 @@ public class Raum {
     public Raum(BufferedImage image, int start_x, int start_y){
         sichtbar=true;
         kampfAktiv=false;
+        alsRechteck=new Rectangle(-start_x,-start_y,image.getWidth(),image.getHeight());
         erstelleRaumFelder(image, start_x, start_y);
     }
 
     public Raum(BufferedImage image){
         sichtbar=true;
         kampfAktiv=false;
+        alsRechteck=new Rectangle(-start_x,-start_y,image.getWidth(),image.getHeight());
         erstelleRaumFelder(image, 0, 0);
     }
 
@@ -56,23 +60,24 @@ public class Raum {
                     if(g==0 && b==0){
                         //Normale Wand
                         felder[x][y]=new Feld
-                                (ermittleFeldtextur(image,x,y), FeldEigenschaft.Keine,
-                                        (x-start_x)*16* Spiel.instanz.skalierung,
+                                (ermittleFeldtextur(image,x,y), FeldEigenschaft.Keine, this,
+                                        (x+start_x)*16* Spiel.instanz.skalierung,
                                         (-(y-start_y))*16*Spiel.instanz.skalierung,
                                         false);
                         ermittleRotation(felder[x][y],image,x,y);
                     } else if (g==255 && b==0) {
                         //Tür
                         felder[x][y]=new Feld
-                                (FeldTextur.TürZu, FeldEigenschaft.Tür,
-                                        (x-start_x)*16* Spiel.instanz.skalierung,
+                                (FeldTextur.TürZu, FeldEigenschaft.Tür, this,
+                                        (x+start_x)*16* Spiel.instanz.skalierung,
                                         (-(y-start_y))*16*Spiel.instanz.skalierung,
                                         true);
+                        ermittleRotation(felder[x][y],image,x,y);
                     } else{
                         //FEHLER
                         felder[x][y]=new Feld
-                                (FeldTextur.Unbekannt, FeldEigenschaft.Keine,
-                                        (x-start_x)*16* Spiel.instanz.skalierung,
+                                (FeldTextur.Unbekannt, FeldEigenschaft.Keine, this,
+                                        (x+start_x)*16* Spiel.instanz.skalierung,
                                         (-(y-start_y))*16*Spiel.instanz.skalierung,
                                         false);
                     }
@@ -82,42 +87,44 @@ public class Raum {
                     if(g==255 && b==255){
                         //Normaler Boden
                         felder[x][y]=new Feld
-                                (FeldTextur.Boden_1, FeldEigenschaft.Keine,
-                                (x-start_x)*16* Spiel.instanz.skalierung,
-                                (-(y-start_y))*16*Spiel.instanz.skalierung,
+                                (FeldTextur.Boden_1, FeldEigenschaft.Keine, this,
+                                (x+start_x)*16* Spiel.instanz.skalierung,
+                                        (-(y-start_y))*16*Spiel.instanz.skalierung,
                                         true);
                     } else if (g==0 && b==0) {
                         //Normaler Boden mit Gegnerspawn
                         felder[x][y]=new Feld
-                                (FeldTextur.Boden_1, FeldEigenschaft.Gegnerspawn,
-                                        (x-start_x)*16* Spiel.instanz.skalierung,
+                                (FeldTextur.Boden_1, FeldEigenschaft.Gegnerspawn, this,
+                                        (x+start_x)*16* Spiel.instanz.skalierung,
                                         (-(y-start_y))*16*Spiel.instanz.skalierung,
                                         true);
-                        SpielAnzeige.gegner.add(new Fernkampf_1((x-start_x)*16* Spiel.instanz.skalierung,(-(y-start_y))*16*Spiel.instanz.skalierung));
+                        SpielAnzeige.gegner.add(new Fernkampf_1((x+start_x)*16* Spiel.instanz.skalierung,
+                                (-(y-start_y))*16*Spiel.instanz.skalierung));
                     } else if (g==255 && b==0) {
                         //Normaler Boden mit Spielerspawn
                         felder[x][y]=new Feld
-                                (FeldTextur.Boden_1, FeldEigenschaft.Spielerspawn,
-                                        (x-start_x)*16* Spiel.instanz.skalierung,
+                                (FeldTextur.Boden_1, FeldEigenschaft.Spielerspawn, this,
+                                        (x+start_x)*16* Spiel.instanz.skalierung,
                                         (-(y-start_y))*16*Spiel.instanz.skalierung,
                                         true);
                         if(SpielAnzeige.spieler.size()<1){
-                            Spieler spieler = new Spieler((x-start_x)*16* Spiel.instanz.skalierung,(-(y-start_y))*16*Spiel.instanz.skalierung);
+                            Spieler spieler = new Spieler((x+start_x)*16* Spiel.instanz.skalierung,
+                                    (-(y-start_y))*16*Spiel.instanz.skalierung);
                             SpielAnzeige.spieler.add(spieler);
                             SpielAnzeige.physikObjekte.add(spieler);
                         }
                     }else{
                         //FEHLER
                         felder[x][y]=new Feld
-                                (FeldTextur.Unbekannt, FeldEigenschaft.Keine,
-                                        (x-start_x)*16* Spiel.instanz.skalierung,
+                                (FeldTextur.Unbekannt, FeldEigenschaft.Keine, this,
+                                        (x+start_x)*16* Spiel.instanz.skalierung,
                                         (-(y-start_y))*16*Spiel.instanz.skalierung,
                                         false);
                     }
                 }else{
                     //FEHLER
                     felder[x][y]=new Feld
-                            (FeldTextur.Unbekannt, FeldEigenschaft.Keine,
+                            (FeldTextur.Unbekannt, FeldEigenschaft.Keine, this,
                                     (x-start_x)*16* Spiel.instanz.skalierung,
                                     (-(y-start_y))*16*Spiel.instanz.skalierung,
                                     false);
@@ -171,6 +178,10 @@ public class Raum {
                 }else if(wandS){
                     feld.setWinkel(-270);
                 }
+            case TürZu:
+                if(wandN && wandS){
+                    feld.setWinkel(-90);
+                }
         }
 
     }
@@ -205,7 +216,7 @@ public class Raum {
             return FeldTextur.Wand_ecke;
         }else if(w==1){
             return FeldTextur.Wand_ende;
-        }else if(w==3 || w==4){
+        }else if(w==0 || w==3 || w==4){
             return FeldTextur.Wand_block;
         }else{
             return FeldTextur.Unbekannt;

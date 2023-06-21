@@ -113,8 +113,8 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
                 bewegen(0.1f, 0.1f, delta);
             }
 
-            x=(float)(Math.round(x*10.0)/10.0f);
-            y=(float)(Math.round(y*10.0)/10.0f);
+            //x=(float)(Math.round(x*10.0)/10.0f);
+            //y=(float)(Math.round(y*10.0)/10.0f);
             System.out.println("X: "+x+"| Y: "+y);
         }
     }
