@@ -53,9 +53,12 @@ public class Animation implements EinmalProFrame {
                     indexAktuelleTextur++;
                     sendeTextur();
                 }else{
-                    indexAktuelleTextur=0;
-                    sendeTextur();
-                    if(!loop)stop();
+                    if(loop){
+                        indexAktuelleTextur=0;
+                        sendeTextur();
+                    }else{
+                        stop();
+                    }
                 }
             }
         }

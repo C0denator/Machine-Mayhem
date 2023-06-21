@@ -7,11 +7,13 @@ public class Feld extends SpielObjekt{
 
     private boolean laufbar;
     private final FeldEigenschaft feldEigenschaft;
-    private float winkel;
+    private final FeldTextur feldTextur;
+    private int winkel;
     public Feld(FeldTextur textur, FeldEigenschaft feldEigenschaft, float x, float y, boolean laufbar) {
         super(x, y, 16, 16,
                 true, "Feld");
         this.feldEigenschaft = feldEigenschaft;
+        this.feldTextur=textur;
         this.textur =textur.getTextur();
         this.laufbar=laufbar;
         winkel=0;
@@ -39,7 +41,11 @@ public class Feld extends SpielObjekt{
         return winkel;
     }
 
-    public void setWinkel(float winkel) {
+    public void setWinkel(int winkel) {
         this.winkel = winkel;
+    }
+
+    public FeldTextur getFeldTextur() {
+        return feldTextur;
     }
 }

@@ -118,8 +118,11 @@ public class SpielAnzeige extends ScreenAdapter {
                             batch.draw(räume.get(i).getFelder()[x][y].getTextur(),
                                     räume.get(i).getFelder()[x][y].getX(),
                                     räume.get(i).getFelder()[x][y].getY(),
+                                    räume.get(i).getFelder()[x][y].getBreite()/2,
+                                    räume.get(i).getFelder()[x][y].getHöhe()/2,
                                     räume.get(i).getFelder()[x][y].getBreite(),
-                                    räume.get(i).getFelder()[x][y].getHöhe());
+                                    räume.get(i).getFelder()[x][y].getHöhe(),
+                                    1.0f,1.0f, räume.get(i).getFelder()[x][y].getWinkel());
                         }
                     }
                 }

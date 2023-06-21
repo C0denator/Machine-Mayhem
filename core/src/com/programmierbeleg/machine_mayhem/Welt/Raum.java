@@ -1,6 +1,5 @@
 package com.programmierbeleg.machine_mayhem.Welt;
 
-import com.badlogic.gdx.math.Vector2;
 import com.programmierbeleg.machine_mayhem.Anzeigen.SpielAnzeige;
 import com.programmierbeleg.machine_mayhem.Daten.FeldEigenschaft;
 import com.programmierbeleg.machine_mayhem.Daten.FeldTextur;
@@ -57,10 +56,11 @@ public class Raum {
                     if(g==0 && b==0){
                         //Normale Wand
                         felder[x][y]=new Feld
-                                (ermittleWandTextur(image,x,y), FeldEigenschaft.Keine,
+                                (ermittleFeldtextur(image,x,y), FeldEigenschaft.Keine,
                                         (x-start_x)*16* Spiel.instanz.skalierung,
                                         (-(y-start_y))*16*Spiel.instanz.skalierung,
                                         false);
+                        ermittleRotation(felder[x][y],image,x,y);
                     } else if (g==255 && b==0) {
                         //Tür
                         felder[x][y]=new Feld
@@ -128,50 +128,89 @@ public class Raum {
         }
     }
 
-    private static FeldTextur ermittleWandTextur(BufferedImage image, int x, int y){
-        //ermittelt, ob es sich um eine Ecke handelt
+    private static void ermittleRotation(Feld feld, BufferedImage image, int x, int y){
+        //ermittelt, ob und wie sich eine Textur drehen muss
         boolean wandN=false;
         boolean wandS=false;
         boolean wandO=false;
         boolean wandW=false;
-        if(y==0 || ermittleRGB(image.getRGB(x,(y-1)))[0]==0){
+        if(y>0 && ermittleRGB(image.getRGB(x,(y-1)))[0]==0){
             wandN=true;
         }
-        if(y==image.getHeight()-1 || ermittleRGB(image.getRGB(x,(y+1)))[0]==0){
+        if(y<image.getHeight()-1 && ermittleRGB(image.getRGB(x,(y+1)))[0]==0){
             wandS=true;
         }
-        if(x==0 || ermittleRGB(image.getRGB(x-1,y))[0]==0){
+        if(x>0 && ermittleRGB(image.getRGB(x-1,y))[0]==0){
             wandW=true;
         }
-        if(x==image.getWidth()-1 || ermittleRGB(image.getRGB(x+1,y))[0]==0){
+        if(x<image.getWidth()-1 && ermittleRGB(image.getRGB(x+1,y))[0]==0){
             wandO=true;
         }
 
-        if(wandN && wandS && wandO && wandW){
-            return FeldTextur.Wand_NSWO;
-        }else if(wandN && wandS){
-            return FeldTextur.Wand_WO;
-        }else if(wandW && wandO){
-            return FeldTextur.Wand_NS;
-        } else if (wandN && wandO) {
-            return FeldTextur.Wand_SW;
-        } else if (wandS && wandO) {
-            return FeldTextur.Wand_NW;
-        } else if (wandS && wandW) {
-            return  FeldTextur.Wand_NO;
-        } else if (wandN && wandW) {
-            return FeldTextur.Wand_SO;
-        }else if (wandS){
-            return FeldTextur.Wand_NWO;
-        }else if(wandW){
-            return FeldTextur.Wand_NSO;
-        }else if(wandN){
-            return FeldTextur.Wand_SWO;
-        }else if(wandO){
-            return FeldTextur.Wand_NSW;
+
+        switch (feld.getFeldTextur()){
+            case Wand_gerade:
+                if(wandN && wandS){
+                    feld.setWinkel(90);
+                }
+                break;
+            case Wand_ecke:
+                if(wandW && wandN){
+                    feld.setWinkel(-90);
+                }else if(wandN && wandO){
+                    feld.setWinkel(-180);
+                }else if(wandO && wandS){
+                    feld.setWinkel(-270);
+                }
+                break;
+            case Wand_ende:
+                if(wandN){
+                    feld.setWinkel(-90);
+                }else if(wandO){
+                    feld.setWinkel(-180);
+                }else if(wandS){
+                    feld.setWinkel(-270);
+                }
+        }
+
+    }
+
+    private FeldTextur ermittleFeldtextur(BufferedImage image, int x, int y){
+        //ermittelt die richtige Textur für das Feld
+        boolean wandN=false;
+        boolean wandS=false;
+        boolean wandO=false;
+        boolean wandW=false;
+        int w=0;
+        if(y>0 && ermittleRGB(image.getRGB(x,(y-1)))[0]==0){
+            wandN=true;
+            w++;
+        }
+        if(y<image.getHeight()-1 && ermittleRGB(image.getRGB(x,(y+1)))[0]==0){
+            wandS=true;
+            w++;
+        }
+        if(x>0 && ermittleRGB(image.getRGB(x-1,y))[0]==0){
+            wandW=true;
+            w++;
+        }
+        if(x<image.getWidth()-1 && ermittleRGB(image.getRGB(x+1,y))[0]==0){
+            wandO=true;
+            w++;
+        }
+
+        if((wandN && wandS && !wandO && !wandW) || (!wandN && !wandS && wandO && wandW)){
+            return FeldTextur.Wand_gerade;
+        }else if(w==2){
+            return FeldTextur.Wand_ecke;
+        }else if(w==1){
+            return FeldTextur.Wand_ende;
+        }else if(w==3 || w==4){
+            return FeldTextur.Wand_block;
         }else{
             return FeldTextur.Unbekannt;
         }
+
     }
 
     private static int[] ermittleRGB(int feld){

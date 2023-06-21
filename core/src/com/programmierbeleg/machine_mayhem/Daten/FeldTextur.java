@@ -10,19 +10,13 @@ public enum FeldTextur {
     TürOffen(Spiel.instanz.atlas.findRegion("tür2_offen")),
     TürMitte(Spiel.instanz.atlas.findRegion("tür2_mitte")),
     TürZu(Spiel.instanz.atlas.findRegion("tür2_zu")),
-    Wand_NSWO(Spiel.instanz.atlas.findRegion("wand_nswo")),
+    Wand_block(Spiel.instanz.atlas.findRegion("wand_block")),
+    Wand_ecke(Spiel.instanz.atlas.findRegion("wand_ecke")),
+    Wand_ende(Spiel.instanz.atlas.findRegion("wand_ende")),
+    Wand_füllung(Spiel.instanz.atlas.findRegion("wand_füllung")),
+    Wand_gerade(Spiel.instanz.atlas.findRegion("wand_gerade")),
 
-    Wand_NS(Spiel.instanz.atlas.findRegion("wand_ns")),
 
-    Wand_WO(Spiel.instanz.atlas.findRegion("wand_wo")),
-    Wand_NO(Spiel.instanz.atlas.findRegion("wand_no")),
-    Wand_SO(Spiel.instanz.atlas.findRegion("wand_so")),
-    Wand_SW(Spiel.instanz.atlas.findRegion("wand_sw")),
-    Wand_NW(Spiel.instanz.atlas.findRegion("wand_nw")),
-    Wand_NWO(Spiel.instanz.atlas.findRegion("wand_nwo")),
-    Wand_NSO(Spiel.instanz.atlas.findRegion("wand_nso")),
-    Wand_SWO(Spiel.instanz.atlas.findRegion("wand_swo")),
-    Wand_NSW(Spiel.instanz.atlas.findRegion("wand_nsw")),
     Unbekannt(Spiel.instanz.atlas.findRegion("Fragezeichen"));
     private final TextureRegion textur;
 
