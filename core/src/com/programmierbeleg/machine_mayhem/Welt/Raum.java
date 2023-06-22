@@ -36,13 +36,17 @@ public class Raum {
         sichtbar=true;
         kampfAktiv=false;
         feldGröße=16*Spiel.instanz.skalierung;
+        this.start_x=start_x;
+        this.start_y=start_y;
         alsRechteck=new Rectangle(-start_x,-start_y,image.getWidth(),image.getHeight());
         erstelleRaumFelder(image, start_x, -start_y);
     }
 
-    public Raum(BufferedImage image, Vector2 vector2){
+    private Raum(BufferedImage image, Vector2 vector2){
         sichtbar=true;
         kampfAktiv=false;
+        start_x=(int)vector2.x;
+        start_y=(int)vector2.y;
         alsRechteck=new Rectangle((int)-vector2.x,(int)-vector2.y,image.getWidth(),image.getHeight());
         erstelleRaumFelder(image, (int) vector2.x, (int) -vector2.y);
     }
@@ -50,38 +54,125 @@ public class Raum {
 
 
     public Vector2 findeTür(Richtung richtung){
+        //gibt die Stelle der Tür in Pixeln zurück
         switch(richtung){
             case Nord:
                 for(int x=0; x<felder.length; x++){
                     if(felder[x][0].getFeldEigenschaft()==FeldEigenschaft.Tür){
                         System.out.println("Tür gefunden: X"+x+" Y:"+0);
-                        return new Vector2(felder[x][0].getX(),felder[x][0].getY());
+                        return new Vector2(start_x+x,start_y+0);
                     }
                 }
             case Süd:
                 for(int x=0; x<felder.length; x++){
                     if(felder[x][felder[x].length-1].getFeldEigenschaft()==FeldEigenschaft.Tür){
                         System.out.println("Tür gefunden: X"+x+" Y:"+Integer.toString(felder[x].length-1));
-                        return new Vector2(felder[x][felder[x].length-1].getX(),felder[x][felder[x].length-1].getY());
+                        return new Vector2(start_x+x,start_y+felder[x].length-1);
                     }
                 }
             case Ost:
                 for(int y=0; y<felder.length; y++){
                     if(felder[felder.length-1][y].getFeldEigenschaft()==FeldEigenschaft.Tür){
                         System.out.println("Tür gefunden: X"+Integer.toString(felder.length-1)+" Y:"+y);
-                        return new Vector2(felder[felder.length-1][y].getX(),felder[felder.length-1][y].getY());
+                        return new Vector2(start_x+felder.length-1,-start_y+y);
                     }
                 }
             case West:
                 for(int y=0; y<felder.length; y++){
                     if(felder[0][y].getFeldEigenschaft()==FeldEigenschaft.Tür){
                         System.out.println("Tür gefunden: X"+0+" Y:"+y);
-                        return new Vector2(felder[0][y].getX(),felder[0][y].getY());
+                        return new Vector2(start_x+0,-start_y+y);
                     }
                 }
             default:
                 throw new IllegalArgumentException("Ungülige Richtung");
         }
+    }
+
+    public Vector2 findeTür(Richtung richtung, BufferedImage image){
+        //gibt die Stelle der Tür in Pixeln zurück
+        switch(richtung){
+            case Nord:
+                for(int x=0; x<image.getWidth(); x++){
+                    if(ermittleFeldeigenschaft(ermittleRGB(image.getRGB(x,0)))==FeldEigenschaft.Tür){
+
+                        return new Vector2(x,0);
+                    }
+                }
+            case Süd:
+                for(int x=0; x<image.getWidth(); x++){
+                    if(ermittleFeldeigenschaft(ermittleRGB(image.getRGB(x,image.getHeight()-1)))==FeldEigenschaft.Tür){
+
+                        return new Vector2(x,image.getHeight()-1);
+                    }
+                }
+            case Ost:
+                for(int y=0; y<image.getHeight(); y++){
+                    if(ermittleFeldeigenschaft(ermittleRGB(image.getRGB(image.getWidth()-1,y)))==FeldEigenschaft.Tür){
+
+                        return new Vector2(image.getWidth()-1,y);
+                    }
+                }
+            case West:
+                for(int y=0; y<image.getHeight(); y++){
+                    if(ermittleFeldeigenschaft(ermittleRGB(image.getRGB(0,y)))==FeldEigenschaft.Tür){
+
+                        return new Vector2(0,y);
+                    }
+                }
+            default:
+                throw new IllegalArgumentException("Ungülige Richtung");
+        }
+    }
+
+    public void fügeRaumAn(BufferedImage image, Richtung richtung){
+        Vector2 türVater;
+        Vector2 türKind;
+        Vector2 startpunktKind;
+
+        türVater=findeTür(richtung);
+        türKind=findeTür(Richtung.GegenRichtung(richtung), image);
+
+        startpunktKind=berechneStartpunkt(richtung,türVater,türKind);
+
+        switch (richtung){
+            case Nord:
+                RaumNord=new Raum(image,startpunktKind);
+                break;
+            case Süd:
+                RaumSüd=new Raum(image,startpunktKind);
+                break;
+            case West:
+                RaumWest=new Raum(image,startpunktKind);
+                break;
+            case Ost:
+                RaumOst=new Raum(image,startpunktKind);
+                break;
+        }
+    }
+
+    private static Vector2 berechneStartpunkt(Richtung richtung, Vector2 türVater, Vector2 türKind){
+        //in Pixel
+        switch (richtung){
+            case Nord:
+
+                return new Vector2(türVater.x-türKind.x,türVater.y+25);
+
+            case Süd:
+
+                return new Vector2(türVater.x-türKind.x,türVater.y-49);
+
+            case West:
+
+                return new Vector2(türVater.x-25,türKind.y-türVater.y);
+
+            case Ost:
+
+                return new Vector2(türVater.x+1,türKind.y-türVater.y);
+
+        }
+
+        throw new RuntimeException("Startpunkt verkackt");
     }
 
     private void erstelleRaumFelder(BufferedImage image, int start_x, int start_y) {
@@ -280,6 +371,22 @@ public class Raum {
         rgb[1] = (feld >> 8) & 0xff;
         rgb[2] = (feld) & 0xff;
         return rgb;
+    }
+
+    private static FeldEigenschaft ermittleFeldeigenschaft(int[] rgb){
+        int r = rgb[0];
+        int g = rgb[1];
+        int b = rgb[2];
+
+        if(r==0 && g==255 && b==0) {
+            return FeldEigenschaft.Tür;
+        }else if(r==255 && g==0 && b==0){
+            return FeldEigenschaft.Gegnerspawn;
+        }else if(r==255 && g==255 && b==0){
+            return FeldEigenschaft.Spielerspawn;
+        }else{
+            return FeldEigenschaft.Keine;
+        }
     }
 
     public void raumBetreten(){

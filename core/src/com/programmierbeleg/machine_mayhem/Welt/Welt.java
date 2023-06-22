@@ -8,6 +8,7 @@ import com.programmierbeleg.machine_mayhem.Spiel;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Feld;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner.Fernkampf_1;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Spieler;
+import sun.security.provider.ConfigFile;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -36,15 +37,34 @@ public class Welt {
 
         BufferedImage bild2 = null;
         try{
-            bild2 = ImageIO.read(new File("assets/Räume/raum5.png"));
+            bild2 = ImageIO.read(new File("assets/Räume/raum1.png"));
         }catch(IOException e){
             System.err.println("Raum konnte nicht geladen erden");
         }
 
+        BufferedImage bild3 = null;
+        try{
+            bild3 = ImageIO.read(new File("assets/Räume/raum2.png"));
+        }catch(IOException e){
+            System.err.println("Raum konnte nicht geladen erden");
+        }
+
+        BufferedImage bild4 = null;
+        try{
+            bild4 = ImageIO.read(new File("assets/Räume/raum3.png"));
+        }catch(IOException e){
+            System.err.println("Raum konnte nicht geladen erden");
+        }
+
+
         startraum=new Raum(bild1,0,0);
-        startraum.setRaumWest(new Raum(bild2,new Vector2(25,25)));
+        startraum.fügeRaumAn(bild2,Richtung.West);
+        startraum.getRaumWest().fügeRaumAn(bild3,Richtung.West);
+        startraum.getRaumWest().getRaumWest().fügeRaumAn(bild4,Richtung.West);
         SpielAnzeige.räume.add(startraum);
         SpielAnzeige.räume.add(startraum.getRaumWest());
+        SpielAnzeige.räume.add(startraum.getRaumWest().getRaumWest());
+        SpielAnzeige.räume.add(startraum.getRaumWest().getRaumWest().getRaumWest());
         SpielAnzeige.spieler.get(0).setAktuellerRaum(startraum);
         /*
         boolean kollisionEntdeckt=false;
