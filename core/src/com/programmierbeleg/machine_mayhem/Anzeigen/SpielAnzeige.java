@@ -135,6 +135,7 @@ public class SpielAnzeige extends ScreenAdapter {
                     batch.draw(spieler.get(i).getTextur(), spieler.get(i).getX(), spieler.get(i).getY(),
                             spieler.get(i).getBreite()/2, spieler.get(i).getHöhe()/2,
                             spieler.get(i).getBreite(), spieler.get(i).getHöhe(), 1.0f, 1.0f, spieler.get(i).getWinkelInt());
+
                 }
 
             }

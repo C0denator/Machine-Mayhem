@@ -1,8 +1,10 @@
 package com.programmierbeleg.machine_mayhem.Welt;
 
+import com.badlogic.gdx.math.Vector2;
 import com.programmierbeleg.machine_mayhem.Anzeigen.SpielAnzeige;
 import com.programmierbeleg.machine_mayhem.Daten.FeldEigenschaft;
 import com.programmierbeleg.machine_mayhem.Daten.FeldTextur;
+import com.programmierbeleg.machine_mayhem.Daten.Richtung;
 import com.programmierbeleg.machine_mayhem.Spiel;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Feld;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner.Fernkampf_1;
@@ -10,6 +12,7 @@ import com.programmierbeleg.machine_mayhem.SpielObjekte.Spieler;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Vector;
 
 public class Raum {
     private Raum RaumNord;
@@ -23,6 +26,7 @@ public class Raum {
 
 
     private Feld[][] felder;
+    private float feldGröße;
     private int gegnerAnzahl;
     private boolean sichtbar;
     private boolean bossRaum;
@@ -31,15 +35,53 @@ public class Raum {
     public Raum(BufferedImage image, int start_x, int start_y){
         sichtbar=true;
         kampfAktiv=false;
+        feldGröße=16*Spiel.instanz.skalierung;
         alsRechteck=new Rectangle(-start_x,-start_y,image.getWidth(),image.getHeight());
-        erstelleRaumFelder(image, start_x, start_y);
+        erstelleRaumFelder(image, start_x, -start_y);
     }
 
-    public Raum(BufferedImage image){
+    public Raum(BufferedImage image, Vector2 vector2){
         sichtbar=true;
         kampfAktiv=false;
-        alsRechteck=new Rectangle(-start_x,-start_y,image.getWidth(),image.getHeight());
-        erstelleRaumFelder(image, 0, 0);
+        alsRechteck=new Rectangle((int)-vector2.x,(int)-vector2.y,image.getWidth(),image.getHeight());
+        erstelleRaumFelder(image, (int) vector2.x, (int) -vector2.y);
+    }
+
+
+
+    public Vector2 findeTür(Richtung richtung){
+        switch(richtung){
+            case Nord:
+                for(int x=0; x<felder.length; x++){
+                    if(felder[x][0].getFeldEigenschaft()==FeldEigenschaft.Tür){
+                        System.out.println("Tür gefunden: X"+x+" Y:"+0);
+                        return new Vector2(felder[x][0].getX(),felder[x][0].getY());
+                    }
+                }
+            case Süd:
+                for(int x=0; x<felder.length; x++){
+                    if(felder[x][felder[x].length-1].getFeldEigenschaft()==FeldEigenschaft.Tür){
+                        System.out.println("Tür gefunden: X"+x+" Y:"+Integer.toString(felder[x].length-1));
+                        return new Vector2(felder[x][felder[x].length-1].getX(),felder[x][felder[x].length-1].getY());
+                    }
+                }
+            case Ost:
+                for(int y=0; y<felder.length; y++){
+                    if(felder[felder.length-1][y].getFeldEigenschaft()==FeldEigenschaft.Tür){
+                        System.out.println("Tür gefunden: X"+Integer.toString(felder.length-1)+" Y:"+y);
+                        return new Vector2(felder[felder.length-1][y].getX(),felder[felder.length-1][y].getY());
+                    }
+                }
+            case West:
+                for(int y=0; y<felder.length; y++){
+                    if(felder[0][y].getFeldEigenschaft()==FeldEigenschaft.Tür){
+                        System.out.println("Tür gefunden: X"+0+" Y:"+y);
+                        return new Vector2(felder[0][y].getX(),felder[0][y].getY());
+                    }
+                }
+            default:
+                throw new IllegalArgumentException("Ungülige Richtung");
+        }
     }
 
     private void erstelleRaumFelder(BufferedImage image, int start_x, int start_y) {
@@ -62,7 +104,7 @@ public class Raum {
                         felder[x][y]=new Feld
                                 (ermittleFeldtextur(image,x,y), FeldEigenschaft.Keine, this,
                                         (x+start_x)*16* Spiel.instanz.skalierung,
-                                        (-(y-start_y))*16*Spiel.instanz.skalierung,
+                                        (-y-start_y)*16*Spiel.instanz.skalierung,
                                         false);
                         ermittleRotation(felder[x][y],image,x,y);
                     } else if (g==255 && b==0) {
@@ -70,7 +112,7 @@ public class Raum {
                         felder[x][y]=new Feld
                                 (FeldTextur.TürZu, FeldEigenschaft.Tür, this,
                                         (x+start_x)*16* Spiel.instanz.skalierung,
-                                        (-(y-start_y))*16*Spiel.instanz.skalierung,
+                                        (-y-start_y)*16*Spiel.instanz.skalierung,
                                         true);
                         ermittleRotation(felder[x][y],image,x,y);
                     } else{
@@ -78,7 +120,7 @@ public class Raum {
                         felder[x][y]=new Feld
                                 (FeldTextur.Unbekannt, FeldEigenschaft.Keine, this,
                                         (x+start_x)*16* Spiel.instanz.skalierung,
-                                        (-(y-start_y))*16*Spiel.instanz.skalierung,
+                                        (-y-start_y)*16*Spiel.instanz.skalierung,
                                         false);
                     }
 
@@ -89,27 +131,27 @@ public class Raum {
                         felder[x][y]=new Feld
                                 (FeldTextur.Boden_1, FeldEigenschaft.Keine, this,
                                 (x+start_x)*16* Spiel.instanz.skalierung,
-                                        (-(y-start_y))*16*Spiel.instanz.skalierung,
+                                        (-y-start_y)*16*Spiel.instanz.skalierung,
                                         true);
                     } else if (g==0 && b==0) {
                         //Normaler Boden mit Gegnerspawn
                         felder[x][y]=new Feld
                                 (FeldTextur.Boden_1, FeldEigenschaft.Gegnerspawn, this,
                                         (x+start_x)*16* Spiel.instanz.skalierung,
-                                        (-(y-start_y))*16*Spiel.instanz.skalierung,
+                                        (-y-start_y)*16*Spiel.instanz.skalierung,
                                         true);
                         SpielAnzeige.gegner.add(new Fernkampf_1((x+start_x)*16* Spiel.instanz.skalierung,
-                                (-(y-start_y))*16*Spiel.instanz.skalierung));
+                                (-y-start_y)*16*Spiel.instanz.skalierung));
                     } else if (g==255 && b==0) {
                         //Normaler Boden mit Spielerspawn
                         felder[x][y]=new Feld
                                 (FeldTextur.Boden_1, FeldEigenschaft.Spielerspawn, this,
                                         (x+start_x)*16* Spiel.instanz.skalierung,
-                                        (-(y-start_y))*16*Spiel.instanz.skalierung,
+                                        (-y-start_y)*16*Spiel.instanz.skalierung,
                                         true);
                         if(SpielAnzeige.spieler.size()<1){
                             Spieler spieler = new Spieler((x+start_x)*16* Spiel.instanz.skalierung,
-                                    (-(y-start_y))*16*Spiel.instanz.skalierung);
+                                    (-y-start_y)*16*Spiel.instanz.skalierung);
                             SpielAnzeige.spieler.add(spieler);
                             SpielAnzeige.physikObjekte.add(spieler);
                         }
@@ -118,7 +160,7 @@ public class Raum {
                         felder[x][y]=new Feld
                                 (FeldTextur.Unbekannt, FeldEigenschaft.Keine, this,
                                         (x+start_x)*16* Spiel.instanz.skalierung,
-                                        (-(y-start_y))*16*Spiel.instanz.skalierung,
+                                        (-y-start_y)*16*Spiel.instanz.skalierung,
                                         false);
                     }
                 }else{
@@ -126,7 +168,7 @@ public class Raum {
                     felder[x][y]=new Feld
                             (FeldTextur.Unbekannt, FeldEigenschaft.Keine, this,
                                     (x-start_x)*16* Spiel.instanz.skalierung,
-                                    (-(y-start_y))*16*Spiel.instanz.skalierung,
+                                    (-y-start_y)*16*Spiel.instanz.skalierung,
                                     false);
                 }
                 ///////////////////////////////////////
@@ -134,6 +176,8 @@ public class Raum {
             }
         }
     }
+
+    //private void erstelleRaumFelder(BufferedImage image, Vector2)
 
     private static void ermittleRotation(Feld feld, BufferedImage image, int x, int y){
         //ermittelt, ob und wie sich eine Textur drehen muss

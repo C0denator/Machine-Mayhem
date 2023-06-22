@@ -1,7 +1,9 @@
 package com.programmierbeleg.machine_mayhem.Welt;
 
+import com.badlogic.gdx.math.Vector2;
 import com.programmierbeleg.machine_mayhem.Anzeigen.SpielAnzeige;
 import com.programmierbeleg.machine_mayhem.Daten.FeldTextur;
+import com.programmierbeleg.machine_mayhem.Daten.Richtung;
 import com.programmierbeleg.machine_mayhem.Spiel;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Feld;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner.Fernkampf_1;
@@ -40,9 +42,9 @@ public class Welt {
         }
 
         startraum=new Raum(bild1,0,0);
-        startraum.setRaumOst(new Raum(bild2,30,30));
+        startraum.setRaumWest(new Raum(bild2,new Vector2(25,25)));
         SpielAnzeige.räume.add(startraum);
-        SpielAnzeige.räume.add(startraum.getRaumOst());
+        SpielAnzeige.räume.add(startraum.getRaumWest());
         SpielAnzeige.spieler.get(0).setAktuellerRaum(startraum);
         /*
         boolean kollisionEntdeckt=false;
