@@ -54,33 +54,33 @@ public class Raum {
 
 
     public Vector2 findeTür(Richtung richtung){
-        //gibt die Stelle der Tür in Pixeln zurück
+        //gibt die Stelle der Tür in Pixeln/Feldern zurück
         switch(richtung){
             case Nord:
                 for(int x=0; x<felder.length; x++){
                     if(felder[x][0].getFeldEigenschaft()==FeldEigenschaft.Tür){
-                        System.out.println("Tür gefunden: X"+x+" Y:"+0);
+
                         return new Vector2(start_x+x,start_y+0);
                     }
                 }
             case Süd:
                 for(int x=0; x<felder.length; x++){
                     if(felder[x][felder[x].length-1].getFeldEigenschaft()==FeldEigenschaft.Tür){
-                        System.out.println("Tür gefunden: X"+x+" Y:"+Integer.toString(felder[x].length-1));
+
                         return new Vector2(start_x+x,start_y+felder[x].length-1);
                     }
                 }
             case Ost:
                 for(int y=0; y<felder.length; y++){
                     if(felder[felder.length-1][y].getFeldEigenschaft()==FeldEigenschaft.Tür){
-                        System.out.println("Tür gefunden: X"+Integer.toString(felder.length-1)+" Y:"+y);
+
                         return new Vector2(start_x+felder.length-1,-start_y+y);
                     }
                 }
             case West:
                 for(int y=0; y<felder.length; y++){
                     if(felder[0][y].getFeldEigenschaft()==FeldEigenschaft.Tür){
-                        System.out.println("Tür gefunden: X"+0+" Y:"+y);
+
                         return new Vector2(start_x+0,-start_y+y);
                     }
                 }
@@ -125,6 +125,38 @@ public class Raum {
         }
     }
 
+    public Feld findeTürObjekt(Richtung richtung){
+        //gibt die Tür als Referenz zurück
+        switch(richtung){
+            case Nord:
+                for(int x=0; x<felder.length; x++){
+                    if(felder[x][0].getFeldEigenschaft()==FeldEigenschaft.Tür){
+                        return  felder[x][0];
+                    }
+                }
+            case Süd:
+                for(int x=0; x<felder.length; x++){
+                    if(felder[x][felder[0].length-1].getFeldEigenschaft()==FeldEigenschaft.Tür){
+                        return  felder[x][felder[0].length-1];
+                    }
+                }
+            case Ost:
+                for(int y=0; y<felder[felder.length-1].length; y++){
+                    if(felder[felder.length-1][y].getFeldEigenschaft()==FeldEigenschaft.Tür){
+                        return  felder[felder.length-1][y];
+                    }
+                }
+            case West:
+                for(int y=0; y<felder[0].length; y++){
+                    if(felder[0][y].getFeldEigenschaft()==FeldEigenschaft.Tür){
+                        return  felder[0][y];
+                    }
+                }
+            default:
+                throw new IllegalArgumentException("Ungülige Richtung");
+        }
+    }
+
     public void fügeRaumAn(BufferedImage image, Richtung richtung){
         Vector2 türVater;
         Vector2 türKind;
@@ -138,15 +170,19 @@ public class Raum {
         switch (richtung){
             case Nord:
                 RaumNord=new Raum(image,startpunktKind);
+                RaumNord.setRaumSüd(this);
                 break;
             case Süd:
                 RaumSüd=new Raum(image,startpunktKind);
+                RaumSüd.setRaumNord(this);
                 break;
             case West:
                 RaumWest=new Raum(image,startpunktKind);
+                RaumWest.setRaumOst(this);
                 break;
             case Ost:
                 RaumOst=new Raum(image,startpunktKind);
+                RaumOst.setRaumWest(this);
                 break;
         }
     }
@@ -483,5 +519,21 @@ public class Raum {
 
     public void setKampfAktiv(boolean kampfAktiv) {
         this.kampfAktiv = kampfAktiv;
+    }
+
+    public boolean hasNord(){
+        return RaumNord!=null;
+    }
+
+    public boolean hasSüd(){
+        return RaumSüd!=null;
+    }
+
+    public boolean hasOst(){
+        return RaumOst!=null;
+    }
+
+    public boolean hasWest(){
+        return RaumWest!=null;
     }
 }

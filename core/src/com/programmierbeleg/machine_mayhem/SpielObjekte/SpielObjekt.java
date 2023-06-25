@@ -40,7 +40,7 @@ public abstract class SpielObjekt {
         this.y+=y*delta;
     }
 
-    public boolean kollidiert(SpielObjekt o){
+    public boolean kollidiertMit(SpielObjekt o){
         //true: Objekte brühren sich
         //false: sie tun es nicht
         Rectangle r1 = new Rectangle(x,y,breite,höhe);

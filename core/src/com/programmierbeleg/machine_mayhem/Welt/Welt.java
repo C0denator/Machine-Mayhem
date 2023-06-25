@@ -56,16 +56,24 @@ public class Welt {
             System.err.println("Raum konnte nicht geladen erden");
         }
 
+        BufferedImage bild5 = null;
+        try{
+            bild5 = ImageIO.read(new File("assets/Räume/raum4.png"));
+        }catch(IOException e){
+            System.err.println("Raum konnte nicht geladen erden");
+        }
 
         startraum=new Raum(bild1,0,0);
-        startraum.fügeRaumAn(bild2,Richtung.West);
-        startraum.getRaumWest().fügeRaumAn(bild3,Richtung.West);
-        startraum.getRaumWest().getRaumWest().fügeRaumAn(bild4,Richtung.West);
+        startraum.fügeRaumAn(bild2,Richtung.Nord);
+        startraum.fügeRaumAn(bild3,Richtung.Ost);
+        startraum.fügeRaumAn(bild4,Richtung.Süd);
+        startraum.fügeRaumAn(bild5,Richtung.West);
         SpielAnzeige.räume.add(startraum);
+        SpielAnzeige.räume.add(startraum.getRaumNord());
+        SpielAnzeige.räume.add(startraum.getRaumOst());
+        SpielAnzeige.räume.add(startraum.getRaumSüd());
         SpielAnzeige.räume.add(startraum.getRaumWest());
-        SpielAnzeige.räume.add(startraum.getRaumWest().getRaumWest());
-        SpielAnzeige.räume.add(startraum.getRaumWest().getRaumWest().getRaumWest());
-        SpielAnzeige.spieler.get(0).setAktuellerRaum(startraum);
+        SpielAnzeige.spieler.get(0).ändereAktuellenRaum(startraum);
         /*
         boolean kollisionEntdeckt=false;
         while(raumAnzahl<maxRaumAnzahl){

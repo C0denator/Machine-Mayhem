@@ -3,6 +3,7 @@ package com.programmierbeleg.machine_mayhem.SpielObjekte;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
+import com.programmierbeleg.machine_mayhem.Daten.Richtung;
 import com.programmierbeleg.machine_mayhem.Interfaces.EinmalProFrame;
 import com.programmierbeleg.machine_mayhem.Spiel;
 import com.programmierbeleg.machine_mayhem.Welt.Raum;
@@ -21,6 +22,7 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
     private double winkel;
 
     private Raum aktuellerRaum;
+    private Feld[] benachbarteTüren;
 
     //Angriffsparameter
     private int schaden;
@@ -62,7 +64,7 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
         boolean alleLaufbar=true;
         for(int x=0; x<r.getFelder().length; x++){
             for(int y=0; y<r.getFelder()[x].length;y++){
-                if(zukünftigerSpieler.kollidiert(r.getFelder()[x][y]) && !r.getFelder()[x][y].isLaufbar()){
+                if(zukünftigerSpieler.kollidiertMit(r.getFelder()[x][y]) && !r.getFelder()[x][y].isLaufbar()){
                     alleLaufbar=false;
                 }
                 if(!alleLaufbar) break;
@@ -133,6 +135,49 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
         //System.out.println(winkel);
     }
 
+    private void prüfeNachTüren(){
+        //hat der Spieler den Raum gewechselt?
+        if(benachbarteTüren[0]!=null && benachbarteTüren[0].kollidiertMit(this)){
+            ändereAktuellenRaum(benachbarteTüren[0].getRaum());
+        }else if(benachbarteTüren[1]!=null && benachbarteTüren[1].kollidiertMit(this)){
+            ändereAktuellenRaum(benachbarteTüren[1].getRaum());
+        }else if(benachbarteTüren[2]!=null && benachbarteTüren[2].kollidiertMit(this)){
+            ändereAktuellenRaum(benachbarteTüren[2].getRaum());
+        }else if(benachbarteTüren[3]!=null && benachbarteTüren[3].kollidiertMit(this)){
+            ändereAktuellenRaum(benachbarteTüren[3].getRaum());
+        }
+    }
+
+    public void ändereAktuellenRaum(Raum raum){
+        aktuellerRaum=raum;
+
+        benachbarteTüren=null;
+        benachbarteTüren=new Feld[4];
+
+        if(aktuellerRaum.hasNord()){
+            benachbarteTüren[0]=aktuellerRaum.getRaumNord().findeTürObjekt(Richtung.Süd);
+        }
+
+        if(aktuellerRaum.hasOst()){
+            benachbarteTüren[1]=aktuellerRaum.getRaumOst().findeTürObjekt(Richtung.West);
+        }
+
+        if(aktuellerRaum.hasSüd()){
+            benachbarteTüren[2]=aktuellerRaum.getRaumSüd().findeTürObjekt(Richtung.Nord);
+        }
+
+        if(aktuellerRaum.hasWest()){
+            benachbarteTüren[3]=aktuellerRaum.getRaumWest().findeTürObjekt(Richtung.Ost);
+        }
+    }
+
+    @Override
+    public void einmalProFrame(float delta) {
+        prüfeNachTüren();
+        prüfeEingabe(delta);
+        schauAufMauzeiger();
+    }
+
 
     public double getWinkel() {
         return winkel;
@@ -146,18 +191,8 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
         this.winkel = winkel;
     }
 
-    @Override
-    public void einmalProFrame(float delta) {
-        prüfeEingabe(delta);
-        schauAufMauzeiger();
-    }
-
     public Raum getAktuellerRaum() {
         return aktuellerRaum;
-    }
-
-    public void setAktuellerRaum(Raum aktuellerRaum) {
-        this.aktuellerRaum = aktuellerRaum;
     }
 
     public int getKollisionsBreite() {
