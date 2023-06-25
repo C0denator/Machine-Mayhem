@@ -50,9 +50,11 @@ public class Animation implements EinmalProFrame {
 
                 //letztes Bild im Array?
                 if(indexAktuelleTextur<texturen.length-1){
+                    //nein
                     indexAktuelleTextur++;
                     sendeTextur();
                 }else{
+                    //ja
                     if(loop){
                         indexAktuelleTextur=0;
                         sendeTextur();

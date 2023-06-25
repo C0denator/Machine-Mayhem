@@ -1,99 +1,102 @@
 package com.programmierbeleg.machine_mayhem.Welt;
 
-import com.badlogic.gdx.math.Vector2;
 import com.programmierbeleg.machine_mayhem.Anzeigen.SpielAnzeige;
-import com.programmierbeleg.machine_mayhem.Daten.FeldTextur;
 import com.programmierbeleg.machine_mayhem.Daten.Richtung;
-import com.programmierbeleg.machine_mayhem.Spiel;
-import com.programmierbeleg.machine_mayhem.SpielObjekte.Feld;
-import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner.Fernkampf_1;
-import com.programmierbeleg.machine_mayhem.SpielObjekte.Spieler;
-import sun.security.provider.ConfigFile;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 public class Welt {
     private Raum startraum;
     private int raumAnzahl;
     private int maxRaumAnzahl;
+    private File räumeOrdner;
+    //der Ordner mit allen Räumen
+    private File[] räume;
+    //alle Räume als Array
 
 
-    public Welt(int maxRaumAnzahl)  {
+    public Welt(int maxRaumAnzahl) {
+        räumeOrdner = new File("assets/Räume");
+        räume = räumeOrdner.listFiles();
+
+
         this.maxRaumAnzahl=maxRaumAnzahl;
         raumAnzahl=0;
         generiereWelt();
     }
 
-    public void generiereWelt(){
-        BufferedImage bild1 = null;
-        try{
-            bild1 = ImageIO.read(new File("assets/Räume/start.png"));
-        }catch(IOException e){
-            System.err.println("Startraum konnte nicht geladen erden");
-        }
+    public void generiereWelt() {
+        //BufferedImage bild1 = ImageIO.read(räume[0]);
+        Random rnd = new Random();
+        //rnd.nextInt(räume.length);
 
-        BufferedImage bild2 = null;
         try{
-            bild2 = ImageIO.read(new File("assets/Räume/raum1.png"));
-        }catch(IOException e){
-            System.err.println("Raum konnte nicht geladen erden");
-        }
+            startraum=new Raum(ImageIO.read(new File("assets/start.png")),0,0);
+            SpielAnzeige.räume.add(startraum);
+            Raum derzeitigerRaum = startraum;
 
-        BufferedImage bild3 = null;
-        try{
-            bild3 = ImageIO.read(new File("assets/Räume/raum2.png"));
-        }catch(IOException e){
-            System.err.println("Raum konnte nicht geladen erden");
-        }
-
-        BufferedImage bild4 = null;
-        try{
-            bild4 = ImageIO.read(new File("assets/Räume/raum3.png"));
-        }catch(IOException e){
-            System.err.println("Raum konnte nicht geladen erden");
-        }
-
-        BufferedImage bild5 = null;
-        try{
-            bild5 = ImageIO.read(new File("assets/Räume/raum4.png"));
-        }catch(IOException e){
-            System.err.println("Raum konnte nicht geladen erden");
-        }
-
-        startraum=new Raum(bild1,0,0);
-        startraum.fügeRaumAn(bild2,Richtung.Nord);
-        startraum.fügeRaumAn(bild3,Richtung.Ost);
-        startraum.fügeRaumAn(bild4,Richtung.Süd);
-        startraum.fügeRaumAn(bild5,Richtung.West);
-        SpielAnzeige.räume.add(startraum);
-        SpielAnzeige.räume.add(startraum.getRaumNord());
-        SpielAnzeige.räume.add(startraum.getRaumOst());
-        SpielAnzeige.räume.add(startraum.getRaumSüd());
-        SpielAnzeige.räume.add(startraum.getRaumWest());
-        SpielAnzeige.spieler.get(0).ändereAktuellenRaum(startraum);
-        /*
-        boolean kollisionEntdeckt=false;
-        while(raumAnzahl<maxRaumAnzahl){
-            if(startraum==null){
-                BufferedImage bild = null;
-                try{
-                    bild = ImageIO.read(new File("assets/Räume/start.png"));
-                }catch(IOException e){
-                    System.err.println("Startraum konnte nicht geladen erden");
+            while(raumAnzahl<maxRaumAnzahl){
+                if(raumAnzahl<maxRaumAnzahl && !derzeitigerRaum.hasNord()){
+                    derzeitigerRaum.fügeRaumAn(ImageIO.read(räume[rnd.nextInt(räume.length)]), Richtung.Nord);
+                    SpielAnzeige.räume.add(derzeitigerRaum.getRaumNord());
+                    raumAnzahl++;
                 }
-                startraum=new Raum(bild);
-                SpielAnzeige.räume.add(startraum);
-                SpielAnzeige.spieler.get(0).setAktuellerRaum(startraum);
-                raumAnzahl++;
-            }else{
+
+                if(raumAnzahl<maxRaumAnzahl && !derzeitigerRaum.hasSüd()){
+                    derzeitigerRaum.fügeRaumAn(ImageIO.read(räume[rnd.nextInt(räume.length)]), Richtung.Süd);
+                    SpielAnzeige.räume.add(derzeitigerRaum.getRaumSüd());
+                    raumAnzahl++;
+                }
+
+                if(raumAnzahl<maxRaumAnzahl && !derzeitigerRaum.hasOst()){
+                    derzeitigerRaum.fügeRaumAn(ImageIO.read(räume[rnd.nextInt(räume.length)]), Richtung.Ost);
+                    SpielAnzeige.räume.add(derzeitigerRaum.getRaumOst());
+                    raumAnzahl++;
+                }
+
+                if(raumAnzahl<maxRaumAnzahl && !derzeitigerRaum.hasWest()){
+                    derzeitigerRaum.fügeRaumAn(ImageIO.read(räume[rnd.nextInt(räume.length)]), Richtung.West);
+                    SpielAnzeige.räume.add(derzeitigerRaum.getRaumWest());
+                    raumAnzahl++;
+                }
+
+                if(raumAnzahl<maxRaumAnzahl){
+                    int tmp = rnd.nextInt(4);
+                    switch (tmp){
+                        case 0:
+                            if(derzeitigerRaum.hasNord()) {
+                                derzeitigerRaum = derzeitigerRaum.getRaumNord();
+                            }
+                            break;
+                        case 1:
+                            if(derzeitigerRaum.hasOst()) {
+                                derzeitigerRaum = derzeitigerRaum.getRaumOst();
+                            }
+                            break;
+                        case 2:
+                            if(derzeitigerRaum.hasSüd()) {
+                                derzeitigerRaum = derzeitigerRaum.getRaumSüd();
+                            }
+                            break;
+                        case 3:
+                            if(derzeitigerRaum.hasWest()) {
+                                derzeitigerRaum = derzeitigerRaum.getRaumWest();
+                            }
+                            break;
+                    }
+                }
 
             }
+
+        }catch (IOException e){
+            System.err.println("Fehler beim Laden der Raum-Dateien");
         }
 
-        */
+        SpielAnzeige.spieler.get(0).ändereAktuellenRaum(startraum);
 
     }
 }

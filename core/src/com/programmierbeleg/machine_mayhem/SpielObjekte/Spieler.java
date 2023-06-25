@@ -49,33 +49,49 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
 
     }
 
-    private boolean prüfeKollision(Raum r, Vector2 v, float delta){
-        //prüft ob die zukünftigen Felder, die der Spieler berühren wird, laufbar sind, oder nicht
-        //true: Bewegung erlaubt
-
-        //Ein imaginärer Spieler -> mit diesem wird die Kollision geprüft
-        Spieler zukünftigerSpieler = new Spieler(x,y);
-        //zukünftigerSpieler.setBreite(kollisionsBreite);
-        //zukünftigerSpieler.setHöhe(kollisionsHöhe);
-        zukünftigerSpieler.bewegen(v,delta);
-
-        //alle Felder finden, die berührt werden
-        //falls eines davon nicht laufbar ist -> false
-        boolean alleLaufbar=true;
-        for(int x=0; x<r.getFelder().length; x++){
-            for(int y=0; y<r.getFelder()[x].length;y++){
-                if(zukünftigerSpieler.kollidiertMit(r.getFelder()[x][y]) && !r.getFelder()[x][y].isLaufbar()){
-                    alleLaufbar=false;
-                }
-                if(!alleLaufbar) break;
-            }
-            if(!alleLaufbar) break;
-        }
-
-
-        return alleLaufbar;
+    @Override
+    public void einmalProFrame(float delta) {
+        prüfeNachTüren();
+        prüfeEingabe(delta);
+        schauAufMauzeiger();
     }
 
+
+    private void prüfeNachTüren(){
+        //hat der Spieler den Raum gewechselt?
+        if(benachbarteTüren[0]!=null && benachbarteTüren[0].kollidiertMit(this)){
+            ändereAktuellenRaum(benachbarteTüren[0].getRaum());
+        }else if(benachbarteTüren[1]!=null && benachbarteTüren[1].kollidiertMit(this)){
+            ändereAktuellenRaum(benachbarteTüren[1].getRaum());
+        }else if(benachbarteTüren[2]!=null && benachbarteTüren[2].kollidiertMit(this)){
+            ändereAktuellenRaum(benachbarteTüren[2].getRaum());
+        }else if(benachbarteTüren[3]!=null && benachbarteTüren[3].kollidiertMit(this)){
+            ändereAktuellenRaum(benachbarteTüren[3].getRaum());
+        }
+    }
+
+    public void ändereAktuellenRaum(Raum raum){
+        aktuellerRaum=raum;
+
+        benachbarteTüren=null;
+        benachbarteTüren=new Feld[4];
+
+        if(aktuellerRaum.hasNord()){
+            benachbarteTüren[0]=aktuellerRaum.getRaumNord().findeTürObjekt(Richtung.Süd);
+        }
+
+        if(aktuellerRaum.hasOst()){
+            benachbarteTüren[1]=aktuellerRaum.getRaumOst().findeTürObjekt(Richtung.West);
+        }
+
+        if(aktuellerRaum.hasSüd()){
+            benachbarteTüren[2]=aktuellerRaum.getRaumSüd().findeTürObjekt(Richtung.Nord);
+        }
+
+        if(aktuellerRaum.hasWest()){
+            benachbarteTüren[3]=aktuellerRaum.getRaumWest().findeTürObjekt(Richtung.Ost);
+        }
+    }
 
     public void prüfeEingabe(float delta){
         bewegungsVektor.x=0.0f;
@@ -121,6 +137,33 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
         }
     }
 
+    private boolean prüfeKollision(Raum r, Vector2 v, float delta){
+        //prüft ob die zukünftigen Felder, die der Spieler berühren wird, laufbar sind, oder nicht
+        //true: Bewegung erlaubt
+
+        //Ein imaginärer Spieler -> mit diesem wird die Kollision geprüft
+        Spieler zukünftigerSpieler = new Spieler(x,y);
+        //zukünftigerSpieler.setBreite(kollisionsBreite);
+        //zukünftigerSpieler.setHöhe(kollisionsHöhe);
+        zukünftigerSpieler.bewegen(v,delta);
+
+        //alle Felder finden, die berührt werden
+        //falls eines davon nicht laufbar ist -> false
+        boolean alleLaufbar=true;
+        for(int x=0; x<r.getFelder().length; x++){
+            for(int y=0; y<r.getFelder()[x].length;y++){
+                if(zukünftigerSpieler.kollidiertMit(r.getFelder()[x][y]) && !r.getFelder()[x][y].isLaufbar()){
+                    alleLaufbar=false;
+                }
+                if(!alleLaufbar) break;
+            }
+            if(!alleLaufbar) break;
+        }
+
+
+        return alleLaufbar;
+    }
+
     public void schauAufMauzeiger(){
         //setzt den Winkel so, dass Spieler in Richtung Mauszeiger schaut
         double a = Gdx.input.getX()-(Gdx.graphics.getWidth()/2.0f);
@@ -134,50 +177,6 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
 
         //System.out.println(winkel);
     }
-
-    private void prüfeNachTüren(){
-        //hat der Spieler den Raum gewechselt?
-        if(benachbarteTüren[0]!=null && benachbarteTüren[0].kollidiertMit(this)){
-            ändereAktuellenRaum(benachbarteTüren[0].getRaum());
-        }else if(benachbarteTüren[1]!=null && benachbarteTüren[1].kollidiertMit(this)){
-            ändereAktuellenRaum(benachbarteTüren[1].getRaum());
-        }else if(benachbarteTüren[2]!=null && benachbarteTüren[2].kollidiertMit(this)){
-            ändereAktuellenRaum(benachbarteTüren[2].getRaum());
-        }else if(benachbarteTüren[3]!=null && benachbarteTüren[3].kollidiertMit(this)){
-            ändereAktuellenRaum(benachbarteTüren[3].getRaum());
-        }
-    }
-
-    public void ändereAktuellenRaum(Raum raum){
-        aktuellerRaum=raum;
-
-        benachbarteTüren=null;
-        benachbarteTüren=new Feld[4];
-
-        if(aktuellerRaum.hasNord()){
-            benachbarteTüren[0]=aktuellerRaum.getRaumNord().findeTürObjekt(Richtung.Süd);
-        }
-
-        if(aktuellerRaum.hasOst()){
-            benachbarteTüren[1]=aktuellerRaum.getRaumOst().findeTürObjekt(Richtung.West);
-        }
-
-        if(aktuellerRaum.hasSüd()){
-            benachbarteTüren[2]=aktuellerRaum.getRaumSüd().findeTürObjekt(Richtung.Nord);
-        }
-
-        if(aktuellerRaum.hasWest()){
-            benachbarteTüren[3]=aktuellerRaum.getRaumWest().findeTürObjekt(Richtung.Ost);
-        }
-    }
-
-    @Override
-    public void einmalProFrame(float delta) {
-        prüfeNachTüren();
-        prüfeEingabe(delta);
-        schauAufMauzeiger();
-    }
-
 
     public double getWinkel() {
         return winkel;
