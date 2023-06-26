@@ -22,7 +22,6 @@ public class Raum {
 
     private int start_x;
     private int start_y;
-    private Rectangle alsRechteck;
 
 
     private Feld[][] felder;
@@ -38,7 +37,6 @@ public class Raum {
         feldGröße=16*Spiel.instanz.skalierung;
         this.start_x=start_x;
         this.start_y=start_y;
-        alsRechteck=new Rectangle(-start_x,-start_y,image.getWidth(),image.getHeight());
         erstelleRaumFelder(image, start_x, -start_y);
     }
 
@@ -47,7 +45,6 @@ public class Raum {
         kampfAktiv=false;
         start_x=(int)vector2.x;
         start_y=(int)vector2.y;
-        alsRechteck=new Rectangle((int)-vector2.x,(int)-vector2.y,image.getWidth(),image.getHeight());
         erstelleRaumFelder(image, (int) vector2.x, (int) -vector2.y);
     }
 

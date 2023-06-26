@@ -8,6 +8,11 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.programmierbeleg.machine_mayhem.Anzeigen.Hauptmenü;
+import com.programmierbeleg.machine_mayhem.Anzeigen.SpielAnzeige;
+import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner.Gegner;
+import com.programmierbeleg.machine_mayhem.SpielObjekte.SpielObjekt;
+import com.programmierbeleg.machine_mayhem.SpielObjekte.Spieler;
+import com.programmierbeleg.machine_mayhem.Welt.Raum;
 
 public class Spiel extends Game {
 	public static Spiel instanz;
@@ -68,10 +73,25 @@ public class Spiel extends Game {
 	}
 
 	public void renderDebug(SpriteBatch batch){
+		int objekte =0;
+
+		try{
+			for(Raum r : SpielAnzeige.räume){
+				objekte+=(r.getFelder().length*r.getFelder()[0].length);
+			}
+
+			objekte+=SpielAnzeige.spieler.size();
+			objekte+=SpielAnzeige.gegner.size();
+			objekte+=SpielAnzeige.projektile.size();
+		}catch (NullPointerException e){
+			objekte=-1;
+		}
+
 		if(debug){
 			bitmapFont.draw(batch,Integer.toString(Gdx.graphics.getFramesPerSecond()),0,Gdx.graphics.getHeight());
 			bitmapFont.draw(batch,"X: "+Integer.toString(Gdx.input.getX()),0,Gdx.graphics.getHeight()-12);
 			bitmapFont.draw(batch,"Y: "+Integer.toString(Gdx.input.getY()),0,Gdx.graphics.getHeight()-24);
+			bitmapFont.draw(batch,"Spielobjekte: "+objekte,0,Gdx.graphics.getHeight()-36);
 		}
 	}
 
