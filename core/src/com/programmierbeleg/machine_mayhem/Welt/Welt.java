@@ -135,8 +135,9 @@ public class Welt {
             System.err.println("Fehler beim Laden der Raum-Dateien");
         }
 
+        startraum.setGegnerAnzahl(0);
         SpielAnzeige.spieler.get(0).ändereAktuellenRaum(startraum);
-        startraum.raumBetreten();
+        startraum.öffneTüren();
 
     }
 

@@ -51,7 +51,7 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
 
     @Override
     public void einmalProFrame(float delta) {
-        prüfeNachTüren();
+        if(!aktuellerRaum.isKampfAktiv()) prüfeNachTüren();
         prüfeEingabe(delta);
         schauAufMauzeiger();
     }
@@ -59,13 +59,13 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
 
     private void prüfeNachTüren(){
         //hat der Spieler den Raum gewechselt?
-        if(benachbarteTüren[0]!=null && benachbarteTüren[0].kollidiertMit(this)){
+        if(benachbarteTüren[0]!=null && benachbarteTüren[0].kollidiertMit(this) && !aktuellerRaum.kollidiertMitTüren(this)){
             ändereAktuellenRaum(benachbarteTüren[0].getRaum());
-        }else if(benachbarteTüren[1]!=null && benachbarteTüren[1].kollidiertMit(this)){
+        }else if(benachbarteTüren[1]!=null && benachbarteTüren[1].kollidiertMit(this) && !aktuellerRaum.kollidiertMitTüren(this)){
             ändereAktuellenRaum(benachbarteTüren[1].getRaum());
-        }else if(benachbarteTüren[2]!=null && benachbarteTüren[2].kollidiertMit(this)){
+        }else if(benachbarteTüren[2]!=null && benachbarteTüren[2].kollidiertMit(this) && !aktuellerRaum.kollidiertMitTüren(this)){
             ändereAktuellenRaum(benachbarteTüren[2].getRaum());
-        }else if(benachbarteTüren[3]!=null && benachbarteTüren[3].kollidiertMit(this)){
+        }else if(benachbarteTüren[3]!=null && benachbarteTüren[3].kollidiertMit(this) && !aktuellerRaum.kollidiertMitTüren(this)){
             ändereAktuellenRaum(benachbarteTüren[3].getRaum());
         }
     }

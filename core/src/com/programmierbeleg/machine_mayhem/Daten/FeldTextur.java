@@ -7,9 +7,8 @@ public enum FeldTextur {
     //Die Textur die ein Feld hat
 
     Boden_1(Spiel.instanz.atlas.findRegion("boden")),
-    TürOffen(Spiel.instanz.atlas.findRegion("tür2_offen")),
-    TürMitte(Spiel.instanz.atlas.findRegion("tür2_mitte")),
-    TürZu(Spiel.instanz.atlas.findRegion("tür2_zu")),
+    TürZu(Spiel.instanz.atlas.findRegion("tür1_zu")),
+    TürOffen(Spiel.instanz.atlas.findRegion("tür1_offen")),
     Wand_block(Spiel.instanz.atlas.findRegion("wand_block")),
     Wand_ecke(Spiel.instanz.atlas.findRegion("wand_ecke")),
     Wand_ende(Spiel.instanz.atlas.findRegion("wand_ende")),

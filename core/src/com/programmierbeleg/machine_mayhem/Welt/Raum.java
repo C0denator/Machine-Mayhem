@@ -16,7 +16,6 @@ import com.programmierbeleg.machine_mayhem.SpielObjekte.Tür;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Vector;
 
 public class Raum implements EinmalProFrame {
     private Raum RaumNord;
@@ -30,8 +29,7 @@ public class Raum implements EinmalProFrame {
 
     private Feld[][] felder;
     private ArrayList<Feld> gegnerSpawns;
-    private ArrayList<Feld> potentielleTüren;
-    private ArrayList<Tür> realeTüren;
+    private ArrayList<Tür> türen;
     private ArrayList<Gegner> aktiveGegner;
     private float feldGröße;
     private int gegnerAnzahl;
@@ -46,8 +44,7 @@ public class Raum implements EinmalProFrame {
         start_x=(int)vector2.x;
         start_y=(int)vector2.y;
         aktiveGegner = new ArrayList<>();
-        potentielleTüren=new ArrayList<>();
-        realeTüren=new ArrayList<>();
+        türen =new ArrayList<>();
         gegnerAnzahl=5;
         erstelleRaumFelder(image, (int) vector2.x, (int) -vector2.y);
         SpielAnzeige.physikObjekte.add(this);
@@ -76,6 +73,38 @@ public class Raum implements EinmalProFrame {
         }
     }
 
+    public void raumBetreten(){
+        sichtbar=true;
+        if(gegnerAnzahl>0){
+            kampfAktiv=true;
+            if(hasNord()){
+                getRaumNord().schließeTüren();
+            }
+            if(hasSüd()){
+                getRaumSüd().schließeTüren();
+            }
+            if(hasOst()){
+                getRaumOst().schließeTüren();
+            }
+            if(hasWest()){
+                getRaumWest().schließeTüren();
+            }
+        }
+    }
+
+    public void öffneTüren(){
+        for(Tür t : türen){
+            t.öffnen();
+        }
+    }
+
+    public void schließeTüren(){
+        for(Tür t : türen){
+            t.schließen();
+        }
+    }
+
+
     public boolean kollidiertMit(Raum r){
         //Prüft, ob der Raum mit dem übergebenen Raum kollidiert
         Rectangle r1 = new Rectangle(felder[0][0].getX(),felder[0][0].getY(),
@@ -87,6 +116,19 @@ public class Raum implements EinmalProFrame {
                 r.felder[0][0].getHöhe()*r.felder[0].length);
 
         return r1.overlaps(r2);
+    }
+
+    public boolean kollidiertMitTüren(Spieler s){
+        //prüft ob der Spieler eine Tür des Raumes berührt (wichtig für den Raumwechsel)
+        Rectangle r1 = new Rectangle(s.getX(),s.getY(),s.getBreite(),s.getHöhe());
+        Rectangle r2;
+
+        for(Tür t : türen){
+            r2 = new Rectangle(t.getX(),t.getY(),t.getBreite(),t.getHöhe());
+            if(r1.overlaps(r2)) return true;
+        }
+
+        return false;
     }
 
     public Vector2 findeTür(Richtung richtung){
@@ -284,7 +326,7 @@ public class Raum implements EinmalProFrame {
                                 ((x+start_x)*16* Spiel.instanz.skalierung,
                                         (-y-start_y)*16*Spiel.instanz.skalierung,
                                         this);
-                        potentielleTüren.add(felder[x][y]);
+                        türen.add((Tür)felder[x][y]);
                         ermittleRotation(felder[x][y],image,x,y);
                     } else{
                         //FEHLER
@@ -467,13 +509,6 @@ public class Raum implements EinmalProFrame {
             return FeldEigenschaft.Spielerspawn;
         }else{
             return FeldEigenschaft.Keine;
-        }
-    }
-
-    public void raumBetreten(){
-        sichtbar=true;
-        if(gegnerAnzahl>0){
-            kampfAktiv=true;
         }
     }
 

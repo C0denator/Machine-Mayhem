@@ -53,58 +53,79 @@ robot
   orig: 16, 16
   offset: 0, 0
   index: 3
-tür2_mitte
+tür1
   rotate: false
   xy: 2, 20
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: -1
-tür2_offen
+  index: 1
+tür1
   rotate: false
   xy: 20, 38
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: -1
-tür2_zu
+  index: 2
+tür1
   rotate: false
   xy: 38, 56
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: -1
-wand_block
+  index: 3
+tür1
   rotate: false
   xy: 260, 278
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
-  index: -1
-wand_ecke
+  index: 4
+tür1_offen
   rotate: false
   xy: 278, 296
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-wand_ende
+tür1_zu
   rotate: false
   xy: 296, 314
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-wand_füllung
+wand_block
   rotate: false
   xy: 2, 2
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-wand_gerade
+wand_ecke
   rotate: false
   xy: 20, 20
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wand_ende
+  rotate: false
+  xy: 38, 38
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wand_füllung
+  rotate: false
+  xy: 56, 56
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wand_gerade
+  rotate: false
+  xy: 260, 260
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
