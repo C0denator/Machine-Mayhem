@@ -9,8 +9,8 @@ import com.programmierbeleg.machine_mayhem.Spiel;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Feld;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner.Fernkampf_1;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Spieler;
+import com.badlogic.gdx.math.Rectangle;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Vector;
 
@@ -51,7 +51,18 @@ public class Raum {
         erstelleRaumFelder(image, (int) vector2.x, (int) -vector2.y);
     }
 
+    public boolean kollidiertMit(Raum r){
+        //Prüft, ob der Raum mit dem übergebenen Raum kollidiert
+        Rectangle r1 = new Rectangle(felder[0][0].getX(),felder[0][0].getY(),
+                felder[0][0].getBreite()*felder.length,
+                felder[0][0].getHöhe()*felder[0].length);
 
+        Rectangle r2 = new Rectangle(r.felder[0][0].getX(),r.felder[0][0].getY(),
+                r.felder[0][0].getBreite()*r.felder.length,
+                r.felder[0][0].getHöhe()*r.felder[0].length);
+
+        return r1.overlaps(r2);
+    }
 
     public Vector2 findeTür(Richtung richtung){
         //gibt die Stelle der Tür in Pixeln/Feldern zurück
@@ -157,7 +168,7 @@ public class Raum {
         }
     }
 
-    public void fügeRaumAn(BufferedImage image, Richtung richtung){
+    public Raum fügeRaumAn(BufferedImage image, Richtung richtung){
         Vector2 türVater;
         Vector2 türKind;
         Vector2 startpunktKind;
@@ -171,20 +182,26 @@ public class Raum {
             case Nord:
                 RaumNord=new Raum(image,startpunktKind);
                 RaumNord.setRaumSüd(this);
-                break;
+                return RaumNord;
+
             case Süd:
                 RaumSüd=new Raum(image,startpunktKind);
                 RaumSüd.setRaumNord(this);
-                break;
+                return RaumSüd;
+
             case West:
                 RaumWest=new Raum(image,startpunktKind);
                 RaumWest.setRaumOst(this);
-                break;
+                return RaumWest;
+
             case Ost:
                 RaumOst=new Raum(image,startpunktKind);
                 RaumOst.setRaumWest(this);
-                break;
+                return RaumOst;
+
         }
+
+        return null;
     }
 
     private static Vector2 berechneStartpunkt(Richtung richtung, Vector2 türVater, Vector2 türKind){
@@ -267,8 +284,7 @@ public class Raum {
                                         (x+start_x)*16* Spiel.instanz.skalierung,
                                         (-y-start_y)*16*Spiel.instanz.skalierung,
                                         true);
-                        SpielAnzeige.gegner.add(new Fernkampf_1((x+start_x)*16* Spiel.instanz.skalierung,
-                                (-y-start_y)*16*Spiel.instanz.skalierung));
+                        //SpielAnzeige.gegner.add(new Fernkampf_1((x+start_x)*16* Spiel.instanz.skalierung, (-y-start_y)*16*Spiel.instanz.skalierung));
                     } else if (g==255 && b==0) {
                         //Normaler Boden mit Spielerspawn
                         felder[x][y]=new Feld

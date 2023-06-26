@@ -77,7 +77,7 @@ public class SpielAnzeige extends ScreenAdapter {
             }
         });
 
-        Welt welt = new Welt(4);
+        Welt welt = new Welt(10);
 
     }
 
