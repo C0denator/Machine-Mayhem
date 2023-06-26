@@ -33,7 +33,7 @@ public class Fernkampf_1 extends Gegner{
     }
 
     @Override
-    protected void denke() {
+    public void denke() {
 
     }
 }

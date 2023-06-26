@@ -91,6 +91,8 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
         if(aktuellerRaum.hasWest()){
             benachbarteTüren[3]=aktuellerRaum.getRaumWest().findeTürObjekt(Richtung.Ost);
         }
+
+        aktuellerRaum.raumBetreten();
     }
 
     public void prüfeEingabe(float delta){

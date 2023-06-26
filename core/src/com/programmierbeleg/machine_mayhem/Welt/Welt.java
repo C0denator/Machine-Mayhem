@@ -1,5 +1,6 @@
 package com.programmierbeleg.machine_mayhem.Welt;
 
+import com.badlogic.gdx.math.Vector2;
 import com.programmierbeleg.machine_mayhem.Anzeigen.SpielAnzeige;
 import com.programmierbeleg.machine_mayhem.Daten.Richtung;
 
@@ -35,7 +36,7 @@ public class Welt {
         int randomInt;
 
         try{
-            startraum=new Raum(ImageIO.read(new File("assets/start.png")),0,0);
+            startraum=new Raum(ImageIO.read(new File("assets/start.png")),new Vector2());
             SpielAnzeige.räume.add(startraum);
             Raum derzeitigerRaum = startraum;
 
@@ -135,6 +136,7 @@ public class Welt {
         }
 
         SpielAnzeige.spieler.get(0).ändereAktuellenRaum(startraum);
+        startraum.raumBetreten();
 
     }
 

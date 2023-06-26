@@ -12,7 +12,7 @@ import com.badlogic.gdx.tools.texturepacker.TexturePacker;
 public class DesktopLauncher {
 
 	private static int foregroundFPS=60;
-	private static boolean vollbildAn=true;
+	private static boolean vollbildAn=false;
 	private static int breite=1920;
 	private static int höhe=1080;
 

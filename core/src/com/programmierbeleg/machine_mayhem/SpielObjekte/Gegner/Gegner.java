@@ -18,5 +18,5 @@ public abstract class Gegner extends SpielObjekt {
     }
 
     protected abstract boolean angriff();
-    protected abstract void denke();
+    public abstract void denke();
 }

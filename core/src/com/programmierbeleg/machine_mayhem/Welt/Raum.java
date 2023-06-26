@@ -5,16 +5,20 @@ import com.programmierbeleg.machine_mayhem.Anzeigen.SpielAnzeige;
 import com.programmierbeleg.machine_mayhem.Daten.FeldEigenschaft;
 import com.programmierbeleg.machine_mayhem.Daten.FeldTextur;
 import com.programmierbeleg.machine_mayhem.Daten.Richtung;
+import com.programmierbeleg.machine_mayhem.Interfaces.EinmalProFrame;
 import com.programmierbeleg.machine_mayhem.Spiel;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Feld;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner.Fernkampf_1;
+import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner.Gegner;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Spieler;
 import com.badlogic.gdx.math.Rectangle;
+import com.programmierbeleg.machine_mayhem.SpielObjekte.Tür;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Vector;
 
-public class Raum {
+public class Raum implements EinmalProFrame {
     private Raum RaumNord;
     private Raum RaumSüd;
     private Raum RaumWest;
@@ -25,27 +29,51 @@ public class Raum {
 
 
     private Feld[][] felder;
+    private ArrayList<Feld> gegnerSpawns;
+    private ArrayList<Feld> potentielleTüren;
+    private ArrayList<Tür> realeTüren;
+    private ArrayList<Gegner> aktiveGegner;
     private float feldGröße;
     private int gegnerAnzahl;
+    //die Anzahl an Gegner die besiegt werden müssen, bevor die Türen wieder geöffnet werden
     private boolean sichtbar;
     private boolean bossRaum;
     private boolean kampfAktiv;
 
-    public Raum(BufferedImage image, int start_x, int start_y){
-        sichtbar=true;
-        kampfAktiv=false;
-        feldGröße=16*Spiel.instanz.skalierung;
-        this.start_x=start_x;
-        this.start_y=start_y;
-        erstelleRaumFelder(image, start_x, -start_y);
-    }
-
-    private Raum(BufferedImage image, Vector2 vector2){
-        sichtbar=true;
+    public Raum(BufferedImage image, Vector2 vector2){
+        sichtbar=false;
         kampfAktiv=false;
         start_x=(int)vector2.x;
         start_y=(int)vector2.y;
+        aktiveGegner = new ArrayList<>();
+        potentielleTüren=new ArrayList<>();
+        realeTüren=new ArrayList<>();
+        gegnerAnzahl=5;
         erstelleRaumFelder(image, (int) vector2.x, (int) -vector2.y);
+        SpielAnzeige.physikObjekte.add(this);
+    }
+
+    @Override
+    public void einmalProFrame(float delta) {
+        if(sichtbar && kampfAktiv){
+            if(aktiveGegner.size()>0){
+                for(Gegner g : aktiveGegner){
+                    g.denke();
+                }
+            }else{
+                if(gegnerAnzahl>0){
+                    for(Feld f : gegnerSpawns){
+                        if(gegnerAnzahl>0){
+                            Gegner g = new Fernkampf_1(f.getX(),f.getY());
+                            aktiveGegner.add(g);
+                            SpielAnzeige.gegner.add(g);
+                        }
+                    }
+                }else{
+                    kampfAktiv=false;
+                }
+            }
+        }
     }
 
     public boolean kollidiertMit(Raum r){
@@ -227,6 +255,8 @@ public class Raum {
 
     private void erstelleRaumFelder(BufferedImage image, int start_x, int start_y) {
         felder=new Feld[image.getWidth()][image.getHeight()];
+        gegnerSpawns = new ArrayList<>();
+
         int[] rgb = new int[3];
         int r;
         int g;
@@ -250,11 +280,11 @@ public class Raum {
                         ermittleRotation(felder[x][y],image,x,y);
                     } else if (g==255 && b==0) {
                         //Tür
-                        felder[x][y]=new Feld
-                                (FeldTextur.TürZu, FeldEigenschaft.Tür, this,
-                                        (x+start_x)*16* Spiel.instanz.skalierung,
+                        felder[x][y]=new Tür
+                                ((x+start_x)*16* Spiel.instanz.skalierung,
                                         (-y-start_y)*16*Spiel.instanz.skalierung,
-                                        true);
+                                        this);
+                        potentielleTüren.add(felder[x][y]);
                         ermittleRotation(felder[x][y],image,x,y);
                     } else{
                         //FEHLER
@@ -281,7 +311,7 @@ public class Raum {
                                         (x+start_x)*16* Spiel.instanz.skalierung,
                                         (-y-start_y)*16*Spiel.instanz.skalierung,
                                         true);
-                        //SpielAnzeige.gegner.add(new Fernkampf_1((x+start_x)*16* Spiel.instanz.skalierung, (-y-start_y)*16*Spiel.instanz.skalierung));
+                        gegnerSpawns.add(felder[x][y]);
                     } else if (g==255 && b==0) {
                         //Normaler Boden mit Spielerspawn
                         felder[x][y]=new Feld
@@ -338,35 +368,37 @@ public class Raum {
             wandO=true;
         }
 
-
-        switch (feld.getFeldTextur()){
-            case Wand_gerade:
-                if(wandN && wandS){
-                    feld.setWinkel(90);
-                }
-                break;
-            case Wand_ecke:
-                if(wandW && wandN){
-                    feld.setWinkel(-90);
-                }else if(wandN && wandO){
-                    feld.setWinkel(-180);
-                }else if(wandO && wandS){
-                    feld.setWinkel(-270);
-                }
-                break;
-            case Wand_ende:
-                if(wandN){
-                    feld.setWinkel(-90);
-                }else if(wandO){
-                    feld.setWinkel(-180);
-                }else if(wandS){
-                    feld.setWinkel(-270);
-                }
-            case TürZu:
-                if(wandN && wandS){
-                    feld.setWinkel(-90);
-                }
+        if(feld.getFeldEigenschaft()==FeldEigenschaft.Tür){
+            if(wandN && wandS){
+                feld.setWinkel(90);
+            }
+        }else{
+            switch (feld.getFeldTextur()){
+                case Wand_gerade:
+                    if(wandN && wandS){
+                        feld.setWinkel(90);
+                    }
+                    break;
+                case Wand_ecke:
+                    if(wandW && wandN){
+                        feld.setWinkel(-90);
+                    }else if(wandN && wandO){
+                        feld.setWinkel(-180);
+                    }else if(wandO && wandS){
+                        feld.setWinkel(-270);
+                    }
+                    break;
+                case Wand_ende:
+                    if(wandN){
+                        feld.setWinkel(-90);
+                    }else if(wandO){
+                        feld.setWinkel(-180);
+                    }else if(wandS){
+                        feld.setWinkel(-270);
+                    }
+            }
         }
+
 
     }
 
