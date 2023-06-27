@@ -51,12 +51,13 @@ public class SpielAnzeige extends ScreenAdapter {
         zoomLevel=1.0f;
         viewport=new ScreenViewport(camera);
 
-        if(räume == null) räume= new ArrayList<Raum>();
-        if(spieler == null) spieler= new ArrayList<Spieler>();
-        if(gegner == null) gegner=new ArrayList<Gegner>();
-        if(projektile == null) projektile= new ArrayList<Projektil>();
-        if(physikObjekte == null) physikObjekte = new ArrayList<>();
+        räume= new ArrayList<Raum>();
+        spieler= new ArrayList<Spieler>();
+        gegner=new ArrayList<Gegner>();
+        projektile= new ArrayList<Projektil>();
+        physikObjekte = new ArrayList<>();
         knöpfe = new ArrayList<Knopf>();
+        /////////////////
         knöpfe.add(new Knopf(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()*0.8f,200,30,"Fortfahren"){
             @Override
             public void action(){
@@ -80,6 +81,7 @@ public class SpielAnzeige extends ScreenAdapter {
                 Gdx.app.exit();
             }
         });
+        //////////////
 
         Welt welt = new Welt(10);
 
@@ -137,6 +139,14 @@ public class SpielAnzeige extends ScreenAdapter {
                 }
             }
         }
+        if(gegner!=null) {
+            for (int i = 0; i < gegner.size(); i++) {
+                if(gegner.get(i).isSichtbar()) {
+                    batch.draw(gegner.get(i).getTextur(), gegner.get(i).getX(), gegner.get(i).getY(), gegner.get(i).getBreite(), gegner.get(i).getHöhe());
+                }
+
+            }
+        }
         if(spieler!=null) {
             for (int i = 0; i < spieler.size(); i++) {
                 if(spieler.get(i).isSichtbar()) {
@@ -145,14 +155,6 @@ public class SpielAnzeige extends ScreenAdapter {
                             spieler.get(i).getBreite()/2, spieler.get(i).getHöhe()/2,
                             spieler.get(i).getBreite(), spieler.get(i).getHöhe(), 1.0f, 1.0f, spieler.get(i).getWinkelInt());
 
-                }
-
-            }
-        }
-        if(gegner!=null) {
-            for (int i = 0; i < gegner.size(); i++) {
-                if(gegner.get(i).isSichtbar()) {
-                    batch.draw(gegner.get(i).getTextur(), gegner.get(i).getX(), gegner.get(i).getY(), gegner.get(i).getBreite(), gegner.get(i).getHöhe());
                 }
 
             }
@@ -166,6 +168,8 @@ public class SpielAnzeige extends ScreenAdapter {
         ////////////////////////////////////////////////////////////
         batch.end();
 
+
+        //Wird nur angezeigt, wenn Spiel pausiert ist:
         if(pausiert){
             Gdx.gl.glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
