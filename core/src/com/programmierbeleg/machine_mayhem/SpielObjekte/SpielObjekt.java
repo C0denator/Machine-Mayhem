@@ -12,21 +12,35 @@ public abstract class SpielObjekt {
     protected int breite;
     protected int höhe;
 
+    protected float winkel;
+
     protected TextureRegion textur;
     private boolean Sichtbar;
-    private String klassenName;
-    /*Identifikator --> !Muss exakt mit dem Klassennamen übereinstimmen
-        Die Methode getClass().getSimpleName() funktioniert nicht, da anonyme Klasse
-    */
 
 
-    public SpielObjekt(float x, float y, int breite, int höhe, boolean Sichtbar, String klassenName){
+    public SpielObjekt(float x, float y, int breite, int höhe, boolean Sichtbar){
         this.breite=breite*Spiel.instanz.skalierung;
         this.höhe=höhe*Spiel.instanz.skalierung;
         this.x=x;
         this.y=y;
         this.Sichtbar=Sichtbar;
-        this.klassenName=klassenName;
+    }
+
+    public SpielObjekt(float x, float y, int breite, int höhe){
+        this.breite=breite*Spiel.instanz.skalierung;
+        this.höhe=höhe*Spiel.instanz.skalierung;
+        this.x=x;
+        this.y=y;
+        this.Sichtbar=true;
+    }
+
+    public SpielObjekt(float x, float y, int breite, int höhe, int winkel){
+        this.breite=breite*Spiel.instanz.skalierung;
+        this.höhe=höhe*Spiel.instanz.skalierung;
+        this.x=x;
+        this.y=y;
+        this.winkel=winkel;
+        this.Sichtbar=true;
     }
 
 
@@ -41,7 +55,7 @@ public abstract class SpielObjekt {
     }
 
     public boolean kollidiertMit(SpielObjekt o){
-        //true: Objekte brühren sich
+        //true: Objekte berühren sich
         //false: sie tun es nicht
         Rectangle r1 = new Rectangle(x,y,breite,höhe);
         Rectangle r2 = new Rectangle(o.getX(),o.getY(),o.getBreite(),o.getHöhe());
@@ -96,11 +110,9 @@ public abstract class SpielObjekt {
         this.textur = textur;
     }
 
-    public String getKlassenName() {
-        return klassenName;
-    }
-
-    public void setKlassenName(String klassenName) {
-        this.klassenName = klassenName;
+    public String toString(){
+        String s="";
+        s+="X: "+x+"| Y: "+y+"| Breite: "+breite+"| Höhe: "+höhe+"| Winkel: "+Float.toString(winkel);
+        return s;
     }
 }

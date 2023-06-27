@@ -15,7 +15,7 @@ public class Feld extends SpielObjekt{
     public Feld(FeldTextur textur, FeldEigenschaft feldEigenschaft, Raum raum,
                 float x, float y, boolean laufbar) {
         super(x, y, 16, 16,
-                true, "Feld");
+                true);
         this.feldEigenschaft = feldEigenschaft;
         this.feldTextur=textur;
         this.raum=raum;

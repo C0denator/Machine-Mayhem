@@ -98,4 +98,8 @@ public class Animation implements EinmalProFrame {
         //wenn man manuell die aktuelle Textur bekommen will
         return texturen[indexAktuelleTextur];
     }
+
+    public boolean isPausiert() {
+        return pausiert;
+    }
 }

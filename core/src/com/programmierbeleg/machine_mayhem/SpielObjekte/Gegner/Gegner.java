@@ -14,7 +14,7 @@ public abstract class Gegner extends SpielObjekt {
         super (x, y,
                 Spiel.instanz.atlas.findRegion("robot",1).getRegionWidth(),
                 Spiel.instanz.atlas.findRegion("robot",1).getRegionHeight(),
-                true,"Gegner");
+                true);
     }
 
     protected abstract boolean angriff();

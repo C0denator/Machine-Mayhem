@@ -6,126 +6,175 @@ filter: Nearest, Nearest
 repeat: none
 Fragezeichen
   rotate: false
-  xy: 2, 56
+  xy: 2, 72
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-SpielerTest
+Spieler_idle
   rotate: false
-  xy: 260, 314
+  xy: 260, 330
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+Spieler_lauf1
+  rotate: false
+  xy: 2, 54
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+Spieler_lauf2
+  rotate: false
+  xy: 20, 72
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 badlogic
   rotate: false
-  xy: 2, 74
+  xy: 2, 90
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
 boden
   rotate: false
-  xy: 2, 38
+  xy: 260, 312
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
+laser_gelb
+  rotate: false
+  xy: 2, 2
+  size: 6, 14
+  orig: 6, 14
+  offset: 0, 0
+  index: 1
+laser_gelb
+  rotate: false
+  xy: 20, 20
+  size: 6, 14
+  orig: 6, 14
+  offset: 0, 0
+  index: 2
+laser_rot
+  rotate: false
+  xy: 38, 38
+  size: 6, 14
+  orig: 6, 14
+  offset: 0, 0
+  index: 1
+laser_rot
+  rotate: false
+  xy: 56, 56
+  size: 6, 14
+  orig: 6, 14
+  offset: 0, 0
+  index: 2
 robot
   rotate: false
-  xy: 20, 56
+  xy: 278, 330
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 1
 robot
   rotate: false
-  xy: 260, 296
+  xy: 2, 36
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 2
 robot
   rotate: false
-  xy: 278, 314
+  xy: 20, 54
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 3
-tür1
+schrot
   rotate: false
-  xy: 2, 20
+  xy: 38, 72
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 1
 tür1
   rotate: false
-  xy: 20, 38
+  xy: 260, 294
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 1
+tür1
+  rotate: false
+  xy: 278, 312
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 2
 tür1
   rotate: false
-  xy: 38, 56
+  xy: 296, 330
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 3
 tür1
   rotate: false
-  xy: 260, 278
+  xy: 2, 18
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 4
 tür1_offen
   rotate: false
-  xy: 278, 296
+  xy: 20, 36
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 tür1_zu
   rotate: false
-  xy: 296, 314
+  xy: 38, 54
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 wand_block
   rotate: false
-  xy: 2, 2
+  xy: 56, 72
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 wand_ecke
   rotate: false
-  xy: 20, 20
+  xy: 260, 276
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 wand_ende
   rotate: false
-  xy: 38, 38
+  xy: 278, 294
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 wand_füllung
   rotate: false
-  xy: 56, 56
+  xy: 296, 312
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 wand_gerade
   rotate: false
-  xy: 260, 260
+  xy: 314, 330
   size: 16, 16
   orig: 16, 16
   offset: 0, 0

@@ -17,7 +17,7 @@ public class Knopf extends SpielObjekt {
     private SpriteBatch batch;
 
     public Knopf(float x, float y, int breite, int höhe, String schriftzug){
-        super(x,y,breite,höhe,true,"Knopf");
+        super(x,y,breite,höhe,true);
         this.schriftzug=schriftzug;
         this.x=x-breite* Spiel.instanz.skalierung/2;
         this.y=y-höhe* Spiel.instanz.skalierung/2;

@@ -2,9 +2,12 @@ package com.programmierbeleg.machine_mayhem.SpielObjekte;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.programmierbeleg.machine_mayhem.Anzeigen.SpielAnzeige;
 import com.programmierbeleg.machine_mayhem.Daten.Richtung;
 import com.programmierbeleg.machine_mayhem.Interfaces.EinmalProFrame;
+import com.programmierbeleg.machine_mayhem.Sonstiges.Animation;
 import com.programmierbeleg.machine_mayhem.Spiel;
 import com.programmierbeleg.machine_mayhem.Welt.Raum;
 
@@ -19,10 +22,11 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
     private int kollisionsHöhe;
     private float geschwindigkeit;
     private Vector2 bewegungsVektor;
-    private double winkel;
 
     private Raum aktuellerRaum;
     private Feld[] benachbarteTüren;
+
+    private Animation laufAnimation;
 
     //Angriffsparameter
     private int schaden;
@@ -33,19 +37,25 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
     private ArrayList<Projektil> spielerProjektile;
 
     public Spieler(float x, float y){
-        super(x,y,Spiel.instanz.atlas.findRegion("SpielerTest").getRegionWidth()-1,
-                Spiel.instanz.atlas.findRegion("SpielerTest").getRegionHeight()-1,
-                true, "Spieler");
+        super(x,y,Spiel.instanz.atlas.findRegion("Spieler_idle").getRegionWidth()-1,
+                Spiel.instanz.atlas.findRegion("Spieler_idle").getRegionHeight()-1,
+                0);
         leben=100;
         maxLeben=100;
         geschwindigkeit=75.0f *Spiel.instanz.skalierung;
         bewegungsVektor =new Vector2(0.0f,0.0f);
-        winkel=0.0;
 
         kollisionsBreite=15;
         kollisionsHöhe=15;
 
-        textur= Spiel.instanz.atlas.findRegion("SpielerTest");
+        textur= Spiel.instanz.atlas.findRegion("Spieler_idle");
+        laufAnimation = new Animation(this, new TextureRegion[]{
+                Spiel.instanz.atlas.findRegion("Spieler_lauf1"),
+                Spiel.instanz.atlas.findRegion("Spieler_idle"),
+                Spiel.instanz.atlas.findRegion("Spieler_lauf2"),
+                Spiel.instanz.atlas.findRegion("Spieler_idle"),
+        }, 0.25f,true);
+        SpielAnzeige.physikObjekte.add(laufAnimation);
 
     }
 
@@ -125,17 +135,27 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
             //es werden also 3 Vektoren geprüft
             if(prüfeKollision(aktuellerRaum,bewegungsVektor,delta)){
                 bewegen(bewegungsVektor,delta);
+                if(laufAnimation.isPausiert()) laufAnimation.starteVonVorn();
             }else if(prüfeKollision(aktuellerRaum,new Vector2(bewegungsVektor.x,0.0f),delta)){
                 bewegen(bewegungsVektor.x,0.0f, delta);
+                if(laufAnimation.isPausiert()) laufAnimation.starteVonVorn();
             }else if(prüfeKollision(aktuellerRaum,new Vector2(0.0f,bewegungsVektor.y),delta)) {
                 bewegen(0.0f,bewegungsVektor.y, delta);
+                if(laufAnimation.isPausiert()) laufAnimation.starteVonVorn();
             } else if (prüfeKollision(aktuellerRaum, new Vector2(0.1f, 0.1f),delta)) {
                 bewegen(0.1f, 0.1f, delta);
+                if(laufAnimation.isPausiert()) laufAnimation.starteVonVorn();
+            }else{
+                if(!laufAnimation.isPausiert()) laufAnimation.stop();
+                setTextur(Spiel.instanz.atlas.findRegion("Spieler_idle"));
             }
 
             //x=(float)(Math.round(x*10.0)/10.0f);
             //y=(float)(Math.round(y*10.0)/10.0f);
             System.out.println("X: "+x+"| Y: "+y);
+        }else{
+            if(!laufAnimation.isPausiert()) laufAnimation.stop();
+            setTextur(Spiel.instanz.atlas.findRegion("Spieler_idle"));
         }
     }
 
@@ -170,17 +190,19 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
         //setzt den Winkel so, dass Spieler in Richtung Mauszeiger schaut
         double a = Gdx.input.getX()-(Gdx.graphics.getWidth()/2.0f);
         double b = Gdx.input.getY()-(Gdx.graphics.getHeight()/2.0f);
+        double ergebnis;
 
         if(a>=0){
-            winkel= -((180/Math.PI)*Math.atan(b/a)+90.0);
+            ergebnis= -((180/Math.PI)*Math.atan(b/a)+90.0);
         }else{
-            winkel= -((180/Math.PI)*Math.atan(b/a)-90.0);
+            ergebnis= -((180/Math.PI)*Math.atan(b/a)-90.0);
         }
 
-        //System.out.println(winkel);
+        winkel=(float)ergebnis;
+
     }
 
-    public double getWinkel() {
+    public float getWinkel() {
         return winkel;
     }
 
@@ -188,9 +210,6 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
         return (int)Math.round(winkel);
     }
 
-    public void setWinkel(double winkel) {
-        this.winkel = winkel;
-    }
 
     public Raum getAktuellerRaum() {
         return aktuellerRaum;
