@@ -14,7 +14,7 @@ public class Feld extends SpielObjekt{
     private int winkel;
     public Feld(FeldTextur textur, FeldEigenschaft feldEigenschaft, Raum raum,
                 float x, float y, boolean laufbar) {
-        super(x, y, 16, 16,
+        super(x, y, 16, 16, 0,
                 true);
         this.feldEigenschaft = feldEigenschaft;
         this.feldTextur=textur;

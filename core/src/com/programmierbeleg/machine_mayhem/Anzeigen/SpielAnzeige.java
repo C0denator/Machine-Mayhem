@@ -2,6 +2,7 @@ package com.programmierbeleg.machine_mayhem.Anzeigen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -36,6 +37,8 @@ public class SpielAnzeige extends ScreenAdapter {
     public static SpielAnzeige instanz;
     private boolean pausiert = false;
 
+    private static float zoomLevel;
+
     public SpielAnzeige(){
         if(instanz==null){
             instanz=this;
@@ -45,6 +48,7 @@ public class SpielAnzeige extends ScreenAdapter {
 
         batch=new SpriteBatch();
         camera=new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        zoomLevel=1.0f;
         viewport=new ScreenViewport(camera);
 
         if(räume == null) räume= new ArrayList<Raum>();
@@ -81,8 +85,13 @@ public class SpielAnzeige extends ScreenAdapter {
 
     }
 
+
+
+
     @Override
     public void render(float delta) {
+        camera.zoom = zoomLevel;
+
         if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
             if(pausiert) pausiert=false;
             else pausiert=true;
@@ -186,9 +195,18 @@ public class SpielAnzeige extends ScreenAdapter {
         this.pausiert = pausiert;
     }
 
-    @Override
-    public void dispose() {
-        super.dispose();
-        System.out.println("Moin");
+
+
+    public static float getZoomLevel() {
+        return zoomLevel;
+    }
+
+    public static void setZoomLevel(float zoom) {
+        zoomLevel = zoom;
+        if(zoomLevel<0.25f) {
+            zoomLevel=0.25f;
+        }else if(zoomLevel>1.5f){
+            zoomLevel=1.5f;
+        }
     }
 }

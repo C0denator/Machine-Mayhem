@@ -17,31 +17,19 @@ public abstract class SpielObjekt {
     protected TextureRegion textur;
     private boolean Sichtbar;
 
+    public final int ID;
 
-    public SpielObjekt(float x, float y, int breite, int höhe, boolean Sichtbar){
-        this.breite=breite*Spiel.instanz.skalierung;
-        this.höhe=höhe*Spiel.instanz.skalierung;
-        this.x=x;
-        this.y=y;
-        this.Sichtbar=Sichtbar;
-    }
 
-    public SpielObjekt(float x, float y, int breite, int höhe){
-        this.breite=breite*Spiel.instanz.skalierung;
-        this.höhe=höhe*Spiel.instanz.skalierung;
-        this.x=x;
-        this.y=y;
-        this.Sichtbar=true;
-    }
-
-    public SpielObjekt(float x, float y, int breite, int höhe, int winkel){
+    public SpielObjekt(float x, float y, int breite, int höhe, float winkel, boolean Sichtbar){
         this.breite=breite*Spiel.instanz.skalierung;
         this.höhe=höhe*Spiel.instanz.skalierung;
         this.x=x;
         this.y=y;
         this.winkel=winkel;
-        this.Sichtbar=true;
+        this.Sichtbar=Sichtbar;
+        this.ID= Spiel.id_vergeber.vergebeID();
     }
+
 
 
     public void bewegen(Vector2 v, float delta){
@@ -112,7 +100,11 @@ public abstract class SpielObjekt {
 
     public String toString(){
         String s="";
-        s+="X: "+x+"| Y: "+y+"| Breite: "+breite+"| Höhe: "+höhe+"| Winkel: "+Float.toString(winkel);
+        s+="ID: "+ID+"| X: "+x+"| Y: "+y+"| Breite: "+breite+"| Höhe: "+höhe+"| Winkel: "+Float.toString(winkel);
         return s;
+    }
+
+    public boolean equals(SpielObjekt o){
+        return ID==o.ID;
     }
 }

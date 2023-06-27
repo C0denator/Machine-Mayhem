@@ -31,6 +31,7 @@ public class Raum implements EinmalProFrame {
     private ArrayList<Feld> gegnerSpawns;
     private ArrayList<Tür> türen;
     private ArrayList<Gegner> aktiveGegner;
+
     private float feldGröße;
     private int gegnerAnzahl;
     //die Anzahl an Gegner die besiegt werden müssen, bevor die Türen wieder geöffnet werden
@@ -48,6 +49,8 @@ public class Raum implements EinmalProFrame {
         gegnerAnzahl=5;
         erstelleRaumFelder(image, (int) vector2.x, (int) -vector2.y);
         SpielAnzeige.physikObjekte.add(this);
+
+        aktiveGegner.remove(this);
     }
 
     @Override
@@ -61,7 +64,7 @@ public class Raum implements EinmalProFrame {
                 if(gegnerAnzahl>0){
                     for(Feld f : gegnerSpawns){
                         if(gegnerAnzahl>0){
-                            Gegner g = new Fernkampf_1(f.getX(),f.getY());
+                            Gegner g = new Fernkampf_1(f.getX(),f.getY(), this);
                             aktiveGegner.add(g);
                             SpielAnzeige.gegner.add(g);
                         }
@@ -615,5 +618,9 @@ public class Raum implements EinmalProFrame {
 
     public boolean hasWest(){
         return RaumWest!=null;
+    }
+
+    public ArrayList<Gegner> getAktiveGegner() {
+        return aktiveGegner;
     }
 }

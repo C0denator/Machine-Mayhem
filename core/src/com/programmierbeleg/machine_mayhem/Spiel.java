@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.programmierbeleg.machine_mayhem.Anzeigen.Hauptmenü;
 import com.programmierbeleg.machine_mayhem.Anzeigen.SpielAnzeige;
+import com.programmierbeleg.machine_mayhem.Sonstiges.ID_Vergeber;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner.Gegner;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.SpielObjekt;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Spieler;
@@ -16,18 +17,19 @@ import com.programmierbeleg.machine_mayhem.Welt.Raum;
 
 public class Spiel extends Game {
 	public static Spiel instanz;
+	public static ID_Vergeber id_vergeber;
 	private BitmapFont bitmapFont;
 	private SpriteBatch mainBatch;
 	private boolean debug=true;
 	public float delta;
 	public TextureAtlas atlas;
 	public ScreenAdapter aktiverBildschirm;
-
 	public final int skalierung=3;
 
 	public static Spiel starteSpiel() throws IllegalStateException{
 		if(instanz==null){
 			instanz=new Spiel();
+			id_vergeber=ID_Vergeber.erstelleID_Vergeber();
 		}else{
 			throw new IllegalStateException("Nicht mehr als eine Spiel-Instanz erlaubt");
 		}

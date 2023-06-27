@@ -39,7 +39,7 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
     public Spieler(float x, float y){
         super(x,y,Spiel.instanz.atlas.findRegion("Spieler_idle").getRegionWidth()-1,
                 Spiel.instanz.atlas.findRegion("Spieler_idle").getRegionHeight()-1,
-                0);
+                0, true);
         leben=100;
         maxLeben=100;
         geschwindigkeit=75.0f *Spiel.instanz.skalierung;
@@ -106,6 +106,13 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
     }
 
     public void prüfeEingabe(float delta){
+
+        if(Gdx.input.isButtonJustPressed(Input.Buttons.FORWARD) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_ADD)){
+            SpielAnzeige.setZoomLevel(SpielAnzeige.getZoomLevel()-0.25f);
+        }else if(Gdx.input.isButtonJustPressed(Input.Buttons.BACK ) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_SUBTRACT)){
+            SpielAnzeige.setZoomLevel(SpielAnzeige.getZoomLevel()+0.25f);
+        }
+
         bewegungsVektor.x=0.0f;
         bewegungsVektor.y=0.0f;
 

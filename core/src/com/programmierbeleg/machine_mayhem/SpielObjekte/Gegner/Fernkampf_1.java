@@ -4,13 +4,14 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.programmierbeleg.machine_mayhem.Anzeigen.SpielAnzeige;
 import com.programmierbeleg.machine_mayhem.Sonstiges.Animation;
 import com.programmierbeleg.machine_mayhem.Spiel;
+import com.programmierbeleg.machine_mayhem.Welt.Raum;
 
 public class Fernkampf_1 extends Gegner{
 
     Animation angriffAnimation;
 
-    public Fernkampf_1(float x, float y){
-        super(x,y);
+    public Fernkampf_1(float x, float y, Raum raum){
+        super(x,y, raum);
         textur =Spiel.instanz.atlas.findRegion("robot",1);
 
         leben=50;
