@@ -1,25 +1,20 @@
 package com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner;
 
 import com.programmierbeleg.machine_mayhem.Anzeigen.SpielAnzeige;
+import com.programmierbeleg.machine_mayhem.Interfaces.EinmalProFrame;
+import com.programmierbeleg.machine_mayhem.Sonstiges.LöschKlasse;
 import com.programmierbeleg.machine_mayhem.Spiel;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.SpielObjekt;
 import com.programmierbeleg.machine_mayhem.Welt.Raum;
 
 import java.util.ArrayList;
 
-public abstract class Gegner extends SpielObjekt {
+public abstract class Gegner extends SpielObjekt implements EinmalProFrame {
     protected int leben;
     protected int maxLeben;
     protected int laufGeschwindigkeit;
 
     private Raum raum;
-
-    private ArrayList<Gegner> globaleListe;
-    //die ArrayList gegner in Spielanzeige
-    private ArrayList<Gegner> lokaleListe;
-    //die ArrayList aktiveGegner in Raum
-
-    //Referenzen, um sich selber löschen zu können
 
     private float sekundenBisNächsterAngriff;
 
@@ -29,8 +24,17 @@ public abstract class Gegner extends SpielObjekt {
                 Spiel.instanz.atlas.findRegion("robot",1).getRegionHeight(),
                 0, true);
         this.raum=raum;
-        lokaleListe=raum.getAktiveGegner();
-        globaleListe= SpielAnzeige.gegner;
+
+        if(SpielAnzeige.physikObjekte==null){
+            System.err.println("Fehler: SpielAnzeige.physikObjekte ist null");
+        }else{
+            SpielAnzeige.physikObjekte.add(this);
+        }
+    }
+
+    @Override
+    public void einmalProFrame(float delta) {
+
     }
 
     public void bekommeSchaden(int schaden){
@@ -42,22 +46,7 @@ public abstract class Gegner extends SpielObjekt {
 
     public void stirb(){
         //alle Referenzen auf dieses Objekt werden auf null gesetzt
-        int index=0;
-        int debug=0;
-        for(int i=0; i<lokaleListe.size(); i++){
-            if(lokaleListe.get(i).equals(this)){
-                lokaleListe.remove(i);
-                debug++;
-            }
-        }
-        for(int i=0; i<globaleListe.size(); i++){
-            if(globaleListe.get(i).equals(this)){
-                globaleListe.remove(i);
-                debug++;
-            }
-        }
-
-        if(debug!=2) System.err.print("Fehler beim Löschen des Gegners: "+toString()+" Debug: "+debug);
+        LöschKlasse.lösche(this,new ArrayList[]{SpielAnzeige.gegner, SpielAnzeige.physikObjekte});
     }
     protected abstract boolean angriff();
     public abstract void denke();

@@ -2,9 +2,13 @@ package com.programmierbeleg.machine_mayhem.SpielObjekte;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.programmierbeleg.machine_mayhem.Anzeigen.SpielAnzeige;
 import com.programmierbeleg.machine_mayhem.Interfaces.EinmalProFrame;
+import com.programmierbeleg.machine_mayhem.Sonstiges.LöschKlasse;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner.Gegner;
 import com.programmierbeleg.machine_mayhem.Welt.Raum;
+
+import java.util.ArrayList;
 
 public class Projektil extends SpielObjekt implements EinmalProFrame {
 
@@ -21,17 +25,32 @@ public class Projektil extends SpielObjekt implements EinmalProFrame {
         this.bewegungsVektor=bewegungsVektor;
         this.schaden=schaden;
         this.aktiverRaum=raum;
+
+        if(SpielAnzeige.physikObjekte==null){
+            System.err.println("Fehler: SpielAnzeige.physikObjekte ist null");
+        }else{
+            SpielAnzeige.physikObjekte.add(this);
+        }
     }
 
     @Override
     public void einmalProFrame(float delta) {
         bewegen(bewegungsVektor, delta);
 
-        for(Gegner g : aktiverRaum.getAktiveGegner()){
+        for(Gegner g : SpielAnzeige.gegner){
             if(g.kollidiertMit(this)){
-
+                g.bekommeSchaden(schaden);
+                löschen();
             }
         }
+
+        if(aktiverRaum.kollidiertMitWand(this)){
+            löschen();
+        }
+    }
+
+    public void löschen(){
+        LöschKlasse.lösche(this, new ArrayList[]{SpielAnzeige.projektile, SpielAnzeige.physikObjekte});
     }
 
     public int getSchaden() {

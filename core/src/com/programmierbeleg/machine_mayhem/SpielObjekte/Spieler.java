@@ -36,7 +36,7 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
     //Angabe in Sekunden
     private ArrayList<Projektil> spielerProjektile;
 
-    public Spieler(float x, float y){
+    public Spieler(float x, float y, Raum raum){
         super(x,y,Spiel.instanz.atlas.findRegion("Spieler_idle").getRegionWidth()-1,
                 Spiel.instanz.atlas.findRegion("Spieler_idle").getRegionHeight()-1,
                 0, true);
@@ -44,6 +44,7 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
         maxLeben=100;
         geschwindigkeit=75.0f *Spiel.instanz.skalierung;
         bewegungsVektor =new Vector2(0.0f,0.0f);
+        aktuellerRaum=raum;
 
         kollisionsBreite=15;
         kollisionsHöhe=15;
@@ -55,15 +56,51 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
                 Spiel.instanz.atlas.findRegion("Spieler_lauf2"),
                 Spiel.instanz.atlas.findRegion("Spieler_idle"),
         }, 0.25f,true);
-        SpielAnzeige.physikObjekte.add(laufAnimation);
 
+        benachbarteTüren=new Feld[4];
+
+        if(SpielAnzeige.physikObjekte==null){
+            System.err.println("Fehler: SpielAnzeige.physikObjekte ist null");
+        }else{
+            SpielAnzeige.physikObjekte.add(this);
+        }
+
+    }
+
+    private Spieler(float x, float y, Raum raum, boolean fake){
+        super(x,y,Spiel.instanz.atlas.findRegion("Spieler_idle").getRegionWidth()-1,
+                Spiel.instanz.atlas.findRegion("Spieler_idle").getRegionHeight()-1,
+                0, true);
+        leben=100;
+        maxLeben=100;
+        geschwindigkeit=75.0f *Spiel.instanz.skalierung;
+        bewegungsVektor =new Vector2(0.0f,0.0f);
+        aktuellerRaum=raum;
+
+        kollisionsBreite=15;
+        kollisionsHöhe=15;
+
+        textur= Spiel.instanz.atlas.findRegion("Spieler_idle");
+        laufAnimation = new Animation(this, new TextureRegion[]{
+                Spiel.instanz.atlas.findRegion("Spieler_lauf1"),
+                Spiel.instanz.atlas.findRegion("Spieler_idle"),
+                Spiel.instanz.atlas.findRegion("Spieler_lauf2"),
+                Spiel.instanz.atlas.findRegion("Spieler_idle"),
+        }, 0.25f,true);
+
+        benachbarteTüren=new Feld[4];
     }
 
     @Override
     public void einmalProFrame(float delta) {
-        if(!aktuellerRaum.isKampfAktiv()) prüfeNachTüren();
-        prüfeEingabe(delta);
-        schauAufMauzeiger();
+        if(aktuellerRaum!=null){
+            if(!aktuellerRaum.isKampfAktiv()) prüfeNachTüren();
+            prüfeEingabe(delta);
+            schauAufMauzeiger();
+        }else{
+            System.err.println("Aktueller Raum des Spielers ist null!");
+        }
+
     }
 
 
@@ -171,26 +208,24 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
         //true: Bewegung erlaubt
 
         //Ein imaginärer Spieler -> mit diesem wird die Kollision geprüft
-        Spieler zukünftigerSpieler = new Spieler(x,y);
+        SpielObjekt zukünftigerSpieler = new SpielObjekt(x,y, 15, 15, 0, false);
+        //Spieler zukünftigerSpieler = new Spieler(x,y,aktuellerRaum,false);
         //zukünftigerSpieler.setBreite(kollisionsBreite);
         //zukünftigerSpieler.setHöhe(kollisionsHöhe);
         zukünftigerSpieler.bewegen(v,delta);
 
         //alle Felder finden, die berührt werden
         //falls eines davon nicht laufbar ist -> false
-        boolean alleLaufbar=true;
         for(int x=0; x<r.getFelder().length; x++){
             for(int y=0; y<r.getFelder()[x].length;y++){
                 if(zukünftigerSpieler.kollidiertMit(r.getFelder()[x][y]) && !r.getFelder()[x][y].isLaufbar()){
-                    alleLaufbar=false;
+                    return false;
                 }
-                if(!alleLaufbar) break;
+
             }
-            if(!alleLaufbar) break;
         }
 
-
-        return alleLaufbar;
+        return true;
     }
 
     public void schauAufMauzeiger(){

@@ -6,10 +6,12 @@ import com.programmierbeleg.machine_mayhem.Daten.FeldEigenschaft;
 import com.programmierbeleg.machine_mayhem.Daten.FeldTextur;
 import com.programmierbeleg.machine_mayhem.Daten.Richtung;
 import com.programmierbeleg.machine_mayhem.Interfaces.EinmalProFrame;
+import com.programmierbeleg.machine_mayhem.Sonstiges.ID_Vergeber;
 import com.programmierbeleg.machine_mayhem.Spiel;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Feld;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner.Fernkampf_1;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner.Gegner;
+import com.programmierbeleg.machine_mayhem.SpielObjekte.SpielObjekt;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Spieler;
 import com.badlogic.gdx.math.Rectangle;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Tür;
@@ -26,11 +28,13 @@ public class Raum implements EinmalProFrame {
     private int start_x;
     private int start_y;
 
+    public final int ID;
+
 
     private Feld[][] felder;
     private ArrayList<Feld> gegnerSpawns;
     private ArrayList<Tür> türen;
-    private ArrayList<Gegner> aktiveGegner;
+
 
     private float feldGröße;
     private int gegnerAnzahl;
@@ -42,22 +46,26 @@ public class Raum implements EinmalProFrame {
     public Raum(BufferedImage image, Vector2 vector2){
         sichtbar=false;
         kampfAktiv=false;
+        ID= ID_Vergeber.instanz.vergebeID();
         start_x=(int)vector2.x;
         start_y=(int)vector2.y;
-        aktiveGegner = new ArrayList<>();
         türen =new ArrayList<>();
         gegnerAnzahl=5;
         erstelleRaumFelder(image, (int) vector2.x, (int) -vector2.y);
-        SpielAnzeige.physikObjekte.add(this);
 
-        aktiveGegner.remove(this);
+        if(SpielAnzeige.physikObjekte==null){
+            System.err.println("Fehler: SpielAnzeige.physikObjekte ist null");
+        }else{
+            SpielAnzeige.physikObjekte.add(this);
+        }
+
     }
 
     @Override
     public void einmalProFrame(float delta) {
         if(sichtbar && kampfAktiv){
-            if(aktiveGegner.size()>0){
-                for(Gegner g : aktiveGegner){
+            if(SpielAnzeige.gegner.size()>0){
+                for(Gegner g : SpielAnzeige.gegner){
                     g.denke();
                 }
             }else{
@@ -65,7 +73,6 @@ public class Raum implements EinmalProFrame {
                     for(Feld f : gegnerSpawns){
                         if(gegnerAnzahl>0){
                             Gegner g = new Fernkampf_1(f.getX(),f.getY(), this);
-                            aktiveGegner.add(g);
                             SpielAnzeige.gegner.add(g);
                         }
                     }
@@ -121,8 +128,19 @@ public class Raum implements EinmalProFrame {
         return r1.overlaps(r2);
     }
 
+    public boolean kollidiertMitWand(SpielObjekt objekt){
+
+        for(int x=0; x<felder.length; x++){
+            for(int y=0; y<felder[x].length; y++){
+                if(!felder[x][y].isLaufbar() && felder[x][y].kollidiertMit(objekt)) return true;
+            }
+        }
+
+        return false;
+    }
+
     public boolean kollidiertMitTüren(Spieler s){
-        //prüft ob der Spieler eine Tür des Raumes berührt (wichtig für den Raumwechsel)
+        //prüft ob der übergebene Spieler eine Tür des Raumes berührt (wichtig für den Raumwechsel)
         Rectangle r1 = new Rectangle(s.getX(),s.getY(),s.getBreite(),s.getHöhe());
         Rectangle r2;
 
@@ -206,31 +224,31 @@ public class Raum implements EinmalProFrame {
         }
     }
 
-    public Feld findeTürObjekt(Richtung richtung){
-        //gibt die Tür als Referenz zurück
+    public Tür findeTürObjekt(Richtung richtung){
+        //gibt eine Tür als Referenz zurück
         switch(richtung){
             case Nord:
                 for(int x=0; x<felder.length; x++){
                     if(felder[x][0].getFeldEigenschaft()==FeldEigenschaft.Tür){
-                        return  felder[x][0];
+                        return (Tür) felder[x][0];
                     }
                 }
             case Süd:
                 for(int x=0; x<felder.length; x++){
                     if(felder[x][felder[0].length-1].getFeldEigenschaft()==FeldEigenschaft.Tür){
-                        return  felder[x][felder[0].length-1];
+                        return (Tür) felder[x][felder[0].length-1];
                     }
                 }
             case Ost:
                 for(int y=0; y<felder[felder.length-1].length; y++){
                     if(felder[felder.length-1][y].getFeldEigenschaft()==FeldEigenschaft.Tür){
-                        return  felder[felder.length-1][y];
+                        return (Tür) felder[felder.length-1][y];
                     }
                 }
             case West:
                 for(int y=0; y<felder[0].length; y++){
                     if(felder[0][y].getFeldEigenschaft()==FeldEigenschaft.Tür){
-                        return  felder[0][y];
+                        return (Tür) felder[0][y];
                     }
                 }
             default:
@@ -239,6 +257,7 @@ public class Raum implements EinmalProFrame {
     }
 
     public Raum fügeRaumAn(BufferedImage image, Richtung richtung){
+        //fügt einen Raum an (! Abfrage nach Kollision muss vorher erfolgen)
         Vector2 türVater;
         Vector2 türKind;
         Vector2 startpunktKind;
@@ -275,6 +294,7 @@ public class Raum implements EinmalProFrame {
     }
 
     private static Vector2 berechneStartpunkt(Richtung richtung, Vector2 türVater, Vector2 türKind){
+        //ermittelt den Startpunkt für die Erstellung eines zukünftigen Raumes anhand der Türen von Vater und (zukünftiges) Kind
         //in Pixel
         switch (richtung){
             case Nord:
@@ -299,6 +319,8 @@ public class Raum implements EinmalProFrame {
     }
 
     private void erstelleRaumFelder(BufferedImage image, int start_x, int start_y) {
+        //dekodiert das übergebene Bild, und erstellt damit alle Felder des Raumes
+
         felder=new Feld[image.getWidth()][image.getHeight()];
         gegnerSpawns = new ArrayList<>();
 
@@ -322,7 +344,7 @@ public class Raum implements EinmalProFrame {
                                         (x+start_x)*16* Spiel.instanz.skalierung,
                                         (-y-start_y)*16*Spiel.instanz.skalierung,
                                         false);
-                        ermittleRotation(felder[x][y],image,x,y);
+                        setzeRotation(felder[x][y],image,x,y);
                     } else if (g==255 && b==0) {
                         //Tür
                         felder[x][y]=new Tür
@@ -330,7 +352,7 @@ public class Raum implements EinmalProFrame {
                                         (-y-start_y)*16*Spiel.instanz.skalierung,
                                         this);
                         türen.add((Tür)felder[x][y]);
-                        ermittleRotation(felder[x][y],image,x,y);
+                        setzeRotation(felder[x][y],image,x,y);
                     } else{
                         //FEHLER
                         felder[x][y]=new Feld
@@ -366,9 +388,8 @@ public class Raum implements EinmalProFrame {
                                         true);
                         if(SpielAnzeige.spieler.size()<1){
                             Spieler spieler = new Spieler((x+start_x)*16* Spiel.instanz.skalierung,
-                                    (-y-start_y)*16*Spiel.instanz.skalierung);
+                                    (-y-start_y)*16*Spiel.instanz.skalierung, this);
                             SpielAnzeige.spieler.add(spieler);
-                            SpielAnzeige.physikObjekte.add(spieler);
                         }
                     }else{
                         //FEHLER
@@ -394,8 +415,8 @@ public class Raum implements EinmalProFrame {
 
     //private void erstelleRaumFelder(BufferedImage image, Vector2)
 
-    private static void ermittleRotation(Feld feld, BufferedImage image, int x, int y){
-        //ermittelt, ob und wie sich eine Textur drehen muss
+    private static void setzeRotation(Feld feld, BufferedImage image, int x, int y){
+        //ermittelt, ob und wie sich das übergebene Feld drehen muss
         boolean wandN=false;
         boolean wandS=false;
         boolean wandO=false;
@@ -620,7 +641,12 @@ public class Raum implements EinmalProFrame {
         return RaumWest!=null;
     }
 
-    public ArrayList<Gegner> getAktiveGegner() {
-        return aktiveGegner;
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Raum){
+            return ID==((Raum) obj).ID;
+        }else{
+            return false;
+        }
     }
 }

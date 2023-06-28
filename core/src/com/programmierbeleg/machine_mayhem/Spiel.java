@@ -17,7 +17,6 @@ import com.programmierbeleg.machine_mayhem.Welt.Raum;
 
 public class Spiel extends Game {
 	public static Spiel instanz;
-	public static ID_Vergeber id_vergeber;
 	private BitmapFont bitmapFont;
 	private SpriteBatch mainBatch;
 	private boolean debug=true;
@@ -28,8 +27,8 @@ public class Spiel extends Game {
 
 	public static Spiel starteSpiel() throws IllegalStateException{
 		if(instanz==null){
+			ID_Vergeber.erstelleID_Vergeber();
 			instanz=new Spiel();
-			id_vergeber=ID_Vergeber.erstelleID_Vergeber();
 		}else{
 			throw new IllegalStateException("Nicht mehr als eine Spiel-Instanz erlaubt");
 		}

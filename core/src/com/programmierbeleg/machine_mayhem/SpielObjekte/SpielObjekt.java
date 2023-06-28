@@ -3,9 +3,11 @@ package com.programmierbeleg.machine_mayhem.SpielObjekte;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.programmierbeleg.machine_mayhem.Sonstiges.ID_Vergeber;
 import com.programmierbeleg.machine_mayhem.Spiel;
+import com.programmierbeleg.machine_mayhem.Welt.Raum;
 
-public abstract class SpielObjekt {
+public class SpielObjekt {
 
     protected float x;
     protected float y;
@@ -27,7 +29,7 @@ public abstract class SpielObjekt {
         this.y=y;
         this.winkel=winkel;
         this.Sichtbar=Sichtbar;
-        this.ID= Spiel.id_vergeber.vergebeID();
+        this.ID= ID_Vergeber.instanz.vergebeID();
     }
 
 
@@ -47,6 +49,14 @@ public abstract class SpielObjekt {
         //false: sie tun es nicht
         Rectangle r1 = new Rectangle(x,y,breite,höhe);
         Rectangle r2 = new Rectangle(o.getX(),o.getY(),o.getBreite(),o.getHöhe());
+        return r1.overlaps(r2);
+    }
+
+    public boolean kollidiertMit(Rectangle r2){
+        //dasselbe wie oben, nur das ein Rectangle übergeben wird
+        //true: Objekte berühren sich
+        //false: sie tun es nicht
+        Rectangle r1 = new Rectangle(x,y,breite,höhe);
         return r1.overlaps(r2);
     }
 
@@ -104,7 +114,12 @@ public abstract class SpielObjekt {
         return s;
     }
 
-    public boolean equals(SpielObjekt o){
-        return ID==o.ID;
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof SpielObjekt){
+            return ID==((SpielObjekt) obj).ID;
+        }else{
+            return false;
+        }
     }
 }

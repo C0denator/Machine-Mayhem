@@ -33,8 +33,6 @@ public class Tür extends Feld {
                 Spiel.instanz.atlas.findRegion("tür1_zu"),
         },0.1f,false);
 
-        SpielAnzeige.physikObjekte.add(öffnen);
-        SpielAnzeige.physikObjekte.add(schließen);
     }
 
     public void öffnen(){

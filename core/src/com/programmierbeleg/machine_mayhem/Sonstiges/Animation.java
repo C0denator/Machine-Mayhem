@@ -21,16 +21,6 @@ public class Animation implements EinmalProFrame {
     private float aktuelleZeit;
 
 
-    public Animation(SpielObjekt klasse, TextureRegion[] texturen, float sBisZumNächstenBild){
-        this.objekt =klasse;
-        this.texturen=texturen;
-        this.sekundenBisZumNächstenBild =sBisZumNächstenBild;
-        indexAktuelleTextur=0;
-        aktuelleZeit=0.0f;
-        pausiert=true;
-        this.loop=true;
-    }
-
     public Animation(SpielObjekt klasse, TextureRegion[] texturen, float sBisZumNächstenBild, boolean loop){
         this.objekt =klasse;
         this.texturen=texturen;
@@ -39,6 +29,12 @@ public class Animation implements EinmalProFrame {
         aktuelleZeit=0.0f;
         pausiert=true;
         this.loop=loop;
+
+        if(SpielAnzeige.physikObjekte==null){
+            System.err.println("Fehler: SpielAnzeige.physikObjekte ist null");
+        }else{
+            SpielAnzeige.physikObjekte.add(this);
+        }
     }
 
     @Override

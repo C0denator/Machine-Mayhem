@@ -11,7 +11,7 @@ public class ID_Vergeber {
 
     public int vergebeID(){
         zähler++;
-        System.out.println("Id vergeben: "+Integer.toString(zähler));
+        //System.out.println("Id vergeben: "+Integer.toString(zähler));
         return zähler;
     }
 
@@ -20,7 +20,7 @@ public class ID_Vergeber {
             instanz=new ID_Vergeber();
             return instanz;
         }else{
-            throw new RuntimeException("Verkackt :(");
+            throw new RuntimeException("Nicht mehr als eine ID-Instanz erlaubt");
         }
 
     }

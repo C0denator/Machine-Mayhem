@@ -25,7 +25,6 @@ public class Fernkampf_1 extends Gegner{
                 Spiel.instanz.atlas.findRegion("robot",2)
         },0.25f,true);
         angriffAnimation.starteVonVorn();
-        SpielAnzeige.physikObjekte.add(angriffAnimation);
     }
 
     @Override
