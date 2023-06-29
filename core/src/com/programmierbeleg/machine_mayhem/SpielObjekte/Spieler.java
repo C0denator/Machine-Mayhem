@@ -24,6 +24,8 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
     private Vector2 bewegungsVektor;
 
     private Raum aktuellerRaum;
+    private Raum vorherigerRaum;
+    //für die Tür-Animationen notwendig
     private Feld[] benachbarteTüren;
 
     private Animation laufAnimation;
@@ -112,7 +114,7 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
         abklingzeitTimer-=delta;
         if(abklingzeitTimer<=0){
             if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)){
-                SpielAnzeige.projektile.add(new Projektil(x,y,winkel,Spiel.instanz.atlas.findRegion("laser_gelb",1),10, new Vector2(
+                SpielAnzeige.projektile.add(new Projektil(x,y,winkel,Spiel.instanz.atlas.findRegion("laser_gelb",1),100, new Vector2(
                         (float) (-Math.sin( (winkel/180) * Math.PI)) * schussSpeed,
                         (float) (Math.cos( (winkel/180) * Math.PI)) * schussSpeed),
                         aktuellerRaum));
@@ -136,6 +138,7 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
     }
 
     public void ändereAktuellenRaum(Raum raum){
+        vorherigerRaum=aktuellerRaum;
         aktuellerRaum=raum;
 
         benachbarteTüren=null;
@@ -157,7 +160,7 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
             benachbarteTüren[3]=aktuellerRaum.getRaumWest().findeTürObjekt(Richtung.Ost);
         }
 
-        aktuellerRaum.raumBetreten();
+        aktuellerRaum.raumBetreten(vorherigerRaum);
     }
 
     public void prüfeEingabe(float delta){
@@ -195,16 +198,16 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
             //es wird geprüft ob der Spieler sich in die gewünschte Richtung bewegen kann
             //falls nicht wird geprüft ob der Spieler sich an der Wand entlang bewegen kann
             //es werden also 3 Vektoren geprüft
-            if(prüfeKollision(aktuellerRaum,bewegungsVektor,delta)){
+            if(prüfeKollision(aktuellerRaum, vorherigerRaum, bewegungsVektor,delta)){
                 bewegen(bewegungsVektor,delta);
                 if(laufAnimation.isPausiert()) laufAnimation.starteVonVorn();
-            }else if(prüfeKollision(aktuellerRaum,new Vector2(bewegungsVektor.x,0.0f),delta)){
+            }else if(prüfeKollision(aktuellerRaum, vorherigerRaum, new Vector2(bewegungsVektor.x,0.0f),delta)){
                 bewegen(bewegungsVektor.x,0.0f, delta);
                 if(laufAnimation.isPausiert()) laufAnimation.starteVonVorn();
-            }else if(prüfeKollision(aktuellerRaum,new Vector2(0.0f,bewegungsVektor.y),delta)) {
+            }else if(prüfeKollision(aktuellerRaum, vorherigerRaum, new Vector2(0.0f,bewegungsVektor.y),delta)) {
                 bewegen(0.0f,bewegungsVektor.y, delta);
                 if(laufAnimation.isPausiert()) laufAnimation.starteVonVorn();
-            } else if (prüfeKollision(aktuellerRaum, new Vector2(0.1f, 0.1f),delta)) {
+            } else if (prüfeKollision(aktuellerRaum, vorherigerRaum, new Vector2(0.1f, 0.1f),delta)) {
                 bewegen(0.1f, 0.1f, delta);
                 if(laufAnimation.isPausiert()) laufAnimation.starteVonVorn();
             }else{
@@ -221,7 +224,7 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
         }
     }
 
-    private boolean prüfeKollision(Raum r, Vector2 v, float delta){
+    private boolean prüfeKollision(Raum aktuellerRaum, Raum vorherigerRaum, Vector2 v, float delta){
         //prüft ob die zukünftigen Felder, die der Spieler berühren wird, laufbar sind, oder nicht
         //true: Bewegung erlaubt
 
@@ -234,12 +237,22 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
 
         //alle Felder finden, die berührt werden
         //falls eines davon nicht laufbar ist -> false
-        for(int x=0; x<r.getFelder().length; x++){
-            for(int y=0; y<r.getFelder()[x].length;y++){
-                if(zukünftigerSpieler.kollidiertMit(r.getFelder()[x][y]) && !r.getFelder()[x][y].isLaufbar()){
+        for(int x=0; x<aktuellerRaum.getFelder().length; x++){
+            for(int y=0; y<aktuellerRaum.getFelder()[x].length;y++){
+                if(zukünftigerSpieler.kollidiertMit(aktuellerRaum.getFelder()[x][y]) && !aktuellerRaum.getFelder()[x][y].isLaufbar()){
                     return false;
                 }
 
+            }
+        }
+
+        if(vorherigerRaum!=null){
+            for(int x=0; x<vorherigerRaum.getFelder().length; x++){
+                for(int y=0; y<vorherigerRaum.getFelder()[x].length;y++){
+                    if(zukünftigerSpieler.kollidiertMit(vorherigerRaum.getFelder()[x][y]) && !vorherigerRaum.getFelder()[x][y].isLaufbar()){
+                        return false;
+                    }
+                }
             }
         }
 

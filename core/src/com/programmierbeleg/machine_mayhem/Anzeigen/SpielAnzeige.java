@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.programmierbeleg.machine_mayhem.Interfaces.EinmalProFrame;
+import com.programmierbeleg.machine_mayhem.Sonstiges.LöschKlasse;
 import com.programmierbeleg.machine_mayhem.Spiel;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner.Gegner;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Knopf;
@@ -194,6 +195,9 @@ public class SpielAnzeige extends ScreenAdapter {
                 knöpfe.get(i).render();
             }
         }
+
+        //
+        LöschKlasse.löschZyklus();
     }
 
     @Override

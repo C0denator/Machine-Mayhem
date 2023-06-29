@@ -63,7 +63,7 @@ public class Projektil extends SpielObjekt implements EinmalProFrame {
     }
 
     public void löschen(){
-        LöschKlasse.lösche(this, new ArrayList[]{SpielAnzeige.projektile, SpielAnzeige.physikObjekte});
+        LöschKlasse.lösche(this);
     }
 
     public int getSchaden() {

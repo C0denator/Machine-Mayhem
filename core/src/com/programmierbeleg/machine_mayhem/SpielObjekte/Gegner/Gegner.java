@@ -46,7 +46,8 @@ public abstract class Gegner extends SpielObjekt implements EinmalProFrame {
 
     public void stirb(){
         //alle Referenzen auf dieses Objekt werden auf null gesetzt
-        LöschKlasse.lösche(this,new ArrayList[]{SpielAnzeige.gegner, SpielAnzeige.physikObjekte});
+        LöschKlasse.lösche(this);
+        raum.setGegnerAnzahl(raum.getGegnerAnzahl()-1);
     }
     protected abstract boolean angriff();
     public abstract void denke();
