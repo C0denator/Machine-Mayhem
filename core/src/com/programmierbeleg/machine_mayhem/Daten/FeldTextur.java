@@ -6,29 +6,25 @@ import com.programmierbeleg.machine_mayhem.Spiel;
 public enum FeldTextur {
     //Die Textur die ein Feld hat
 
-    Boden_1(new TextureRegion[] {Spiel.instanz.atlas.findRegion("boden")}),
-    Wand_NSWO(new TextureRegion[] {Spiel.instanz.atlas.findRegion("wand_nswo")}),
-    Wand_NS(new TextureRegion[] {Spiel.instanz.atlas.findRegion("wand_ns")}),
+    Boden_1(Spiel.instanz.atlas.findRegion("boden")),
+    TürZu(Spiel.instanz.atlas.findRegion("tür1_zu")),
+    TürOffen(Spiel.instanz.atlas.findRegion("tür1_offen")),
+    Wand_block(Spiel.instanz.atlas.findRegion("wand_block")),
+    Wand_ecke(Spiel.instanz.atlas.findRegion("wand_ecke")),
+    Wand_ende(Spiel.instanz.atlas.findRegion("wand_ende")),
+    Wand_füllung(Spiel.instanz.atlas.findRegion("wand_füllung")),
+    Wand_gerade(Spiel.instanz.atlas.findRegion("wand_gerade")),
 
-    Wand_WO(new TextureRegion[] {Spiel.instanz.atlas.findRegion("wand_wo")}),
-    Wand_NO(new TextureRegion[] {Spiel.instanz.atlas.findRegion("wand_no")}),
-    Wand_SO(new TextureRegion[] {Spiel.instanz.atlas.findRegion("wand_so")}),
-    Wand_SW(new TextureRegion[] {Spiel.instanz.atlas.findRegion("wand_sw")}),
-    Wand_NW(new TextureRegion[] {Spiel.instanz.atlas.findRegion("wand_nw")}),
-    Wand_NWO(new TextureRegion[] {Spiel.instanz.atlas.findRegion("wand_nwo")}),
-    Wand_NSO(new TextureRegion[] {Spiel.instanz.atlas.findRegion("wand_nso")}),
-    Wand_SWO(new TextureRegion[] {Spiel.instanz.atlas.findRegion("wand_swo")}),
-    Wand_NSW(new TextureRegion[] {Spiel.instanz.atlas.findRegion("wand_nsw")}),
-    Unbekannt(new TextureRegion[] {Spiel.instanz.atlas.findRegion("Fragezeichen")})
-    ;
-    private final TextureRegion[] texturen;
 
-    private FeldTextur(TextureRegion[] texturen) {
-        this.texturen = texturen;
+    Unbekannt(Spiel.instanz.atlas.findRegion("Fragezeichen"));
+    private final TextureRegion textur;
+
+    private FeldTextur(TextureRegion textur) {
+        this.textur = textur;
     }
 
-    public TextureRegion[] getTexturen() {
-        return texturen;
+    public TextureRegion getTextur() {
+        return textur;
     }
 
 }

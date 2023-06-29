@@ -1,33 +1,37 @@
 package com.programmierbeleg.machine_mayhem.SpielObjekte;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.programmierbeleg.machine_mayhem.Sonstiges.ID_Vergeber;
 import com.programmierbeleg.machine_mayhem.Spiel;
+import com.programmierbeleg.machine_mayhem.Welt.Raum;
 
-public abstract class SpielObjekt {
+public class SpielObjekt {
 
     protected float x;
     protected float y;
     protected int breite;
     protected int höhe;
 
-    protected TextureRegion[] texturen;
+    protected float winkel;
+
+    protected TextureRegion textur;
     private boolean Sichtbar;
-    private String klassenName;
-    /*Identifikator --> !Muss exakt mit dem Klassennamen übereinstimmen
-        Die Methode getClass().getSimpleName() funktioniert nicht, da anonyme Klasse
-    */
+
+    public final int ID;
 
 
-    public SpielObjekt(float x, float y, int breite, int höhe, boolean Sichtbar, String klassenName){
+    public SpielObjekt(float x, float y, int breite, int höhe, float winkel, boolean Sichtbar){
         this.breite=breite*Spiel.instanz.skalierung;
         this.höhe=höhe*Spiel.instanz.skalierung;
-        this.x=x-this.breite/2.0f;
-        this.y=y-this.höhe/2.0f;
+        this.x=x;
+        this.y=y;
+        this.winkel=winkel;
         this.Sichtbar=Sichtbar;
-        this.klassenName=klassenName;
+        this.ID= ID_Vergeber.instanz.vergebeID();
     }
+
 
 
     public void bewegen(Vector2 v, float delta){
@@ -38,6 +42,22 @@ public abstract class SpielObjekt {
     public void bewegen(float x, float y, float delta){
         this.x+=x*delta;
         this.y+=y*delta;
+    }
+
+    public boolean kollidiertMit(SpielObjekt o){
+        //true: Objekte berühren sich
+        //false: sie tun es nicht
+        Rectangle r1 = new Rectangle(x,y,breite,höhe);
+        Rectangle r2 = new Rectangle(o.getX(),o.getY(),o.getBreite(),o.getHöhe());
+        return r1.overlaps(r2);
+    }
+
+    public boolean kollidiertMit(Rectangle r2){
+        //dasselbe wie oben, nur das ein Rectangle übergeben wird
+        //true: Objekte berühren sich
+        //false: sie tun es nicht
+        Rectangle r1 = new Rectangle(x,y,breite,höhe);
+        return r1.overlaps(r2);
     }
 
     public float getX() {
@@ -80,19 +100,34 @@ public abstract class SpielObjekt {
         Sichtbar = sichtbar;
     }
 
-    public TextureRegion[] getTexturen() {
-        return texturen;
+    public TextureRegion getTextur() {
+        return textur;
     }
 
-    public void setTexturen(TextureRegion[] texturen) {
-        this.texturen = texturen;
+    public void setTextur(TextureRegion textur) {
+        this.textur = textur;
     }
 
-    public String getKlassenName() {
-        return klassenName;
+    public float getWinkel() {
+        return winkel;
     }
 
-    public void setKlassenName(String klassenName) {
-        this.klassenName = klassenName;
+    public void setWinkel(float winkel) {
+        this.winkel = winkel;
+    }
+
+    public String toString(){
+        String s="";
+        s+="ID: "+ID+"| X: "+x+"| Y: "+y+"| Breite: "+breite+"| Höhe: "+höhe+"| Winkel: "+Float.toString(winkel);
+        return s;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof SpielObjekt){
+            return ID==((SpielObjekt) obj).ID;
+        }else{
+            return false;
+        }
     }
 }

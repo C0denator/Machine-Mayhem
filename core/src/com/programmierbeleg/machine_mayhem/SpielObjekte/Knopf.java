@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.programmierbeleg.machine_mayhem.Spiel;
 
 public class Knopf extends SpielObjekt {
 
@@ -16,8 +17,10 @@ public class Knopf extends SpielObjekt {
     private SpriteBatch batch;
 
     public Knopf(float x, float y, int breite, int höhe, String schriftzug){
-        super(x,y,breite,höhe,true,"Knopf");
+        super(x,y,breite,höhe,0, true);
         this.schriftzug=schriftzug;
+        this.x=x-breite* Spiel.instanz.skalierung/2;
+        this.y=y-höhe* Spiel.instanz.skalierung/2;
         linienbreite=5.0f;
 
         shaperenderer = new ShapeRenderer();
@@ -25,9 +28,10 @@ public class Knopf extends SpielObjekt {
         batch =new SpriteBatch();
     }
 
-    public void render(float delta){
+    public void render(){
         shaperenderer.begin(ShapeRenderer.ShapeType.Filled);
 
+        //prüft ob der Mauszeiger den Knopf berührt
         if(Gdx.input.getX() >= x && Gdx.input.getX() <= x+breite &&
                 Gdx.graphics.getHeight()-Gdx.input.getY() >= y &&
                 Gdx.graphics.getHeight()-Gdx.input.getY() <= y+höhe){
@@ -83,7 +87,7 @@ public class Knopf extends SpielObjekt {
     }
 
     public void action(){
-
+        //muss überschrieben werden
     }
 
     public void dispose(){

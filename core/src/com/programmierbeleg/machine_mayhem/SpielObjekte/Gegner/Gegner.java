@@ -1,22 +1,57 @@
 package com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner;
 
+import com.programmierbeleg.machine_mayhem.Anzeigen.SpielAnzeige;
+import com.programmierbeleg.machine_mayhem.Interfaces.EinmalProFrame;
+import com.programmierbeleg.machine_mayhem.Sonstiges.LöschKlasse;
 import com.programmierbeleg.machine_mayhem.Spiel;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.SpielObjekt;
+import com.programmierbeleg.machine_mayhem.Welt.Raum;
 
-public abstract class Gegner extends SpielObjekt {
+import java.util.ArrayList;
+
+public abstract class Gegner extends SpielObjekt implements EinmalProFrame {
     protected int leben;
     protected int maxLeben;
     protected int laufGeschwindigkeit;
 
+    private Raum raum;
+
     private float sekundenBisNächsterAngriff;
 
-    public Gegner (float x, float y) {
+    public Gegner (float x, float y, Raum raum) {
         super (x, y,
                 Spiel.instanz.atlas.findRegion("robot",1).getRegionWidth(),
                 Spiel.instanz.atlas.findRegion("robot",1).getRegionHeight(),
-                true,"Gegner");
+                0, true);
+        this.raum=raum;
+
+        if(SpielAnzeige.physikObjekte==null){
+            System.err.println("Fehler: SpielAnzeige.physikObjekte ist null");
+        }else{
+            SpielAnzeige.physikObjekte.add(this);
+        }
     }
 
+    @Override
+    public void einmalProFrame(float delta) {
+
+    }
+
+    public void bekommeSchaden(int schaden){
+        leben-=schaden;
+        if(leben<=0){
+            stirb();
+        }
+    }
+
+    public void stirb(){
+        //alle Referenzen auf dieses Objekt werden auf null gesetzt
+        LöschKlasse.lösche(this);
+        raum.setGegnerAnzahl(raum.getGegnerAnzahl()-1);
+    }
     protected abstract boolean angriff();
-    protected abstract void denke();
+    public abstract void denke();
+
+
+
 }

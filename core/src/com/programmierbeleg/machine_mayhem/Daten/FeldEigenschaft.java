@@ -9,5 +9,4 @@ public enum FeldEigenschaft {
     Spielerspawn,
     Itemspawn;
 
-
 }
