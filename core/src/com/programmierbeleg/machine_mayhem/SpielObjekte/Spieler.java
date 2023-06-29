@@ -36,6 +36,10 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
     //Angabe in Sekunden
     private ArrayList<Projektil> spielerProjektile;
 
+    private float schussAbklingzeit = 0.5f;
+    private float abklingzeitTimer=schussAbklingzeit;
+    private int schussSpeed=500;
+
     public Spieler(float x, float y, Raum raum){
         super(x,y,Spiel.instanz.atlas.findRegion("Spieler_idle").getRegionWidth()-1,
                 Spiel.instanz.atlas.findRegion("Spieler_idle").getRegionHeight()-1,
@@ -97,10 +101,24 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
             if(!aktuellerRaum.isKampfAktiv()) prüfeNachTüren();
             prüfeEingabe(delta);
             schauAufMauzeiger();
+            prüfeSchießen(delta);
         }else{
             System.err.println("Aktueller Raum des Spielers ist null!");
         }
 
+    }
+
+    private void prüfeSchießen(float delta){
+        abklingzeitTimer-=delta;
+        if(abklingzeitTimer<=0){
+            if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)){
+                SpielAnzeige.projektile.add(new Projektil(x,y,winkel,Spiel.instanz.atlas.findRegion("laser_gelb",1),10, new Vector2(
+                        (float) (-Math.sin( (winkel/180) * Math.PI)) * schussSpeed,
+                        (float) (Math.cos( (winkel/180) * Math.PI)) * schussSpeed),
+                        aktuellerRaum));
+                abklingzeitTimer=schussAbklingzeit;
+            }
+        }
     }
 
 
@@ -241,6 +259,7 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
         }
 
         winkel=(float)ergebnis;
+        System.out.println(Float.toString(winkel));
 
     }
 

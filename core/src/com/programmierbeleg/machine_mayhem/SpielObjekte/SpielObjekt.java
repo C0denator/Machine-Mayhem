@@ -108,6 +108,14 @@ public class SpielObjekt {
         this.textur = textur;
     }
 
+    public float getWinkel() {
+        return winkel;
+    }
+
+    public void setWinkel(float winkel) {
+        this.winkel = winkel;
+    }
+
     public String toString(){
         String s="";
         s+="ID: "+ID+"| X: "+x+"| Y: "+y+"| Breite: "+breite+"| Höhe: "+höhe+"| Winkel: "+Float.toString(winkel);

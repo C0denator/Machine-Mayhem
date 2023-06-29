@@ -12,7 +12,6 @@ public class LöschKlasse {
 
         for(int i=0; i<übergebeneListen.length; i++){
             for(int j=0; j<übergebeneListen[i].size(); j++){
-
                 if(übergebeneListen[i]!=null && übergebeneListen[i].get(j)!=null){
                     if(zuLöschendesObjekt.getClass().equals(übergebeneListen[i].get(j).getClass())){
                         if(zuLöschendesObjekt.equals(übergebeneListen[i].get(j))){

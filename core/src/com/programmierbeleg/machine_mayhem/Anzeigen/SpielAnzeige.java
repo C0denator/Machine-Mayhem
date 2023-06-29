@@ -139,6 +139,18 @@ public class SpielAnzeige extends ScreenAdapter {
                 }
             }
         }
+        if(projektile!=null) {
+            for (int i = 0; i < projektile.size(); i++) {
+                if(projektile.get(i).isSichtbar()) {
+                    //batch.draw(spieler.get(i).getTexturen()[0], spieler.get(i).getX(), spieler.get(i).getY(), spieler.get(i).getBreite(), spieler.get(i).getHöhe());
+                    batch.draw(projektile.get(i).getTextur(), projektile.get(i).getX(), projektile.get(i).getY(),
+                            projektile.get(i).getBreite()/2, projektile.get(i).getHöhe()/2,
+                            projektile.get(i).getBreite(), projektile.get(i).getHöhe(), 1.0f, 1.0f, projektile.get(i).getWinkel());
+
+                }
+
+            }
+        }
         if(gegner!=null) {
             for (int i = 0; i < gegner.size(); i++) {
                 if(gegner.get(i).isSichtbar()) {
@@ -156,11 +168,6 @@ public class SpielAnzeige extends ScreenAdapter {
                             spieler.get(i).getBreite(), spieler.get(i).getHöhe(), 1.0f, 1.0f, spieler.get(i).getWinkelInt());
 
                 }
-
-            }
-        }
-        if(projektile!=null) {
-            for (int i = 0; i < projektile.size(); i++) {
 
             }
         }
