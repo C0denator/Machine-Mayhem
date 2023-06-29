@@ -2,6 +2,7 @@ package com.programmierbeleg.machine_mayhem.SpielObjekte;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.programmierbeleg.machine_mayhem.Anzeigen.SpielAnzeige;
@@ -42,6 +43,8 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
     private float abklingzeitTimer=schussAbklingzeit;
     private int schussSpeed=500;
 
+    private Sound schussSound;
+
     public Spieler(float x, float y, Raum raum){
         super(x,y,Spiel.instanz.atlas.findRegion("Spieler_idle").getRegionWidth()-1,
                 Spiel.instanz.atlas.findRegion("Spieler_idle").getRegionHeight()-1,
@@ -70,6 +73,8 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
         }else{
             SpielAnzeige.physikObjekte.add(this);
         }
+
+        schussSound=Gdx.audio.newSound(Gdx.files.internal("Sounds/laser.wav"));
 
     }
 
@@ -118,6 +123,7 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
                         (float) (-Math.sin( (winkel/180) * Math.PI)) * schussSpeed,
                         (float) (Math.cos( (winkel/180) * Math.PI)) * schussSpeed),
                         aktuellerRaum));
+                schussSound.play(0.2f);
                 abklingzeitTimer=schussAbklingzeit;
             }
         }

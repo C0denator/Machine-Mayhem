@@ -70,10 +70,12 @@ public class Raum implements EinmalProFrame {
                 }
             }else{
                 if(gegnerAnzahl>0){
+                    int tmp = gegnerAnzahl;
                     for(Feld f : gegnerSpawns){
-                        if(gegnerAnzahl>0){
+                        if(tmp>0){
                             Gegner g = new Fernkampf_1(f.getX(),f.getY(), this);
                             SpielAnzeige.gegner.add(g);
+                            tmp--;
                         }
                     }
                 }else{

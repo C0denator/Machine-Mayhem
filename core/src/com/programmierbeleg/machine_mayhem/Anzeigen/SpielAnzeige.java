@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -38,6 +39,8 @@ public class SpielAnzeige extends ScreenAdapter {
     public static SpielAnzeige instanz;
     private boolean pausiert = false;
 
+    private Sound musik;
+
     private static float zoomLevel;
 
     public SpielAnzeige(){
@@ -46,6 +49,9 @@ public class SpielAnzeige extends ScreenAdapter {
         }else{
             new IllegalStateException("Mehrere SpielAnzeige-Instanzen :(");
         }
+
+        musik=Gdx.audio.newSound(Gdx.files.internal("Sounds/musik_1.mp3"));
+        musik.loop(0.1f);
 
         batch=new SpriteBatch();
         camera=new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
@@ -68,6 +74,7 @@ public class SpielAnzeige extends ScreenAdapter {
         knöpfe.add(new Knopf(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()*0.3f,200,30,"Zurück zum Hauptmenü"){
             @Override
             public void action(){
+                musik.stop();
                 spieler=null;
                 räume=null;
                 gegner=null;
