@@ -11,7 +11,7 @@ import com.badlogic.gdx.tools.texturepacker.TexturePacker;
 
 public class DesktopLauncher {
 
-	private static int foregroundFPS=60;
+	private static int foregroundFPS=120;
 	private static boolean vollbildAn=false;
 	private static int breite=1920;
 	private static int höhe=1080;
@@ -40,6 +40,7 @@ public class DesktopLauncher {
 			config.setWindowedMode(breite,höhe);
 		}
 		new Lwjgl3Application(Spiel.starteSpiel(), config);
+
 		System.out.println("Spiel gestartet");
 	}
 }
