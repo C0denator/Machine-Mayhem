@@ -81,7 +81,9 @@ public class Spiel extends Game {
 				objekte+=(r.getFelder().length*r.getFelder()[0].length);
 			}
 
-			objekte+=SpielAnzeige.spieler.size();
+			if(SpielAnzeige.spieler1!=null) objekte++;
+			if(SpielAnzeige.spieler2!=null) objekte++;
+
 			objekte+=SpielAnzeige.gegner.size();
 			objekte+=SpielAnzeige.projektile.size();
 		}catch (NullPointerException e){
@@ -106,5 +108,7 @@ public class Spiel extends Game {
 	public void resize(int width, int height) {
 		aktiverBildschirm.resize(width,height);
 	}
+
+
 
 }

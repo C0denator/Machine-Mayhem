@@ -43,6 +43,8 @@ public class Raum implements EinmalProFrame {
     private boolean bossRaum;
     private boolean kampfAktiv;
 
+    float timer = 0.0f;
+
     public Raum(BufferedImage image, Vector2 vector2){
         sichtbar=false;
         kampfAktiv=false;
@@ -69,7 +71,8 @@ public class Raum implements EinmalProFrame {
                     g.denke();
                 }
             }else{
-                if(gegnerAnzahl>0){
+                if(gegnerAnzahl>0 && timer<=0){
+                    timer=2.0f;
                     int tmp = gegnerAnzahl;
                     for(Feld f : gegnerSpawns){
                         if(tmp>0){
@@ -96,6 +99,10 @@ public class Raum implements EinmalProFrame {
                 }
             }
         }
+    }
+
+    private void spawneGegner(float sBisZumSpawn){
+
     }
 
     public void raumBetreten(Raum vorherigerRaum){
@@ -429,10 +436,12 @@ public class Raum implements EinmalProFrame {
                                         (x+start_x)*16* Spiel.instanz.skalierung,
                                         (-y-start_y)*16*Spiel.instanz.skalierung,
                                         true);
-                        if(SpielAnzeige.spieler.size()<1){
-                            Spieler spieler = new Spieler((x+start_x)*16* Spiel.instanz.skalierung,
+                        if(SpielAnzeige.spieler1==null){
+                            SpielAnzeige.spieler1 = new Spieler((x+start_x)*16* Spiel.instanz.skalierung,
                                     (-y-start_y)*16*Spiel.instanz.skalierung, this);
-                            SpielAnzeige.spieler.add(spieler);
+                        }else if(SpielAnzeige.spieler2==null){
+                            SpielAnzeige.spieler2 = new Spieler((x+start_x)*16* Spiel.instanz.skalierung,
+                                    (-y-start_y)*16*Spiel.instanz.skalierung, this);
                         }
                     }else{
                         //FEHLER

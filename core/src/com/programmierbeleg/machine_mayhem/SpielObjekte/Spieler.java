@@ -104,13 +104,22 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
 
     @Override
     public void einmalProFrame(float delta) {
-        if(aktuellerRaum!=null){
-            if(!aktuellerRaum.isKampfAktiv()) prüfeNachTüren();
-            prüfeEingabe(delta);
-            schauAufMauzeiger();
-            prüfeSchießen(delta);
+        System.out.println("Leben"+Integer.toString(leben));
+
+        if(leben>0){
+            if(aktuellerRaum!=null){
+                if(!aktuellerRaum.isKampfAktiv()) prüfeNachTüren();
+                prüfeEingabe(delta);
+                schauAufMauzeiger();
+                prüfeSchießen(delta);
+            }else{
+                System.err.println("Aktueller Raum des Spielers ist null!");
+            }
         }else{
-            System.err.println("Aktueller Raum des Spielers ist null!");
+            if(!SpielAnzeige.instanz.isGameOver()){
+                laufAnimation.stop();
+                SpielAnzeige.instanz.gameOver();
+            }
         }
 
     }
@@ -172,9 +181,9 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
     public void prüfeEingabe(float delta){
 
         if(Gdx.input.isButtonJustPressed(Input.Buttons.FORWARD) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_ADD)){
-            SpielAnzeige.setZoomLevel(SpielAnzeige.getZoomLevel()-0.25f);
+            SpielAnzeige.instanz.setZoomLevel(SpielAnzeige.instanz.getZoomLevel()-0.25f);
         }else if(Gdx.input.isButtonJustPressed(Input.Buttons.BACK ) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_SUBTRACT)){
-            SpielAnzeige.setZoomLevel(SpielAnzeige.getZoomLevel()+0.25f);
+            SpielAnzeige.instanz.setZoomLevel(SpielAnzeige.instanz.getZoomLevel()+0.25f);
         }
 
         bewegungsVektor.x=0.0f;
@@ -278,7 +287,7 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
         }
 
         winkel=(float)ergebnis;
-        System.out.println(Float.toString(winkel));
+        //System.out.println(Float.toString(winkel));
 
     }
 
@@ -301,5 +310,13 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
 
     public int getGetKollisionsHöhe() {
         return kollisionsHöhe;
+    }
+
+    public int getLeben() {
+        return leben;
+    }
+
+    public int getMaxLeben() {
+        return maxLeben;
     }
 }

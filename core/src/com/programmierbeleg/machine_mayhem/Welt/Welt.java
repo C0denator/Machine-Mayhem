@@ -136,7 +136,8 @@ public class Welt {
         }
 
         startraum.setGegnerAnzahl(0);
-        SpielAnzeige.spieler.get(0).ändereAktuellenRaum(startraum);
+        SpielAnzeige.spieler1.ändereAktuellenRaum(startraum);
+        if(SpielAnzeige.spieler2!=null)  SpielAnzeige.spieler2.ändereAktuellenRaum(startraum);
         startraum.öffneTüren();
 
     }

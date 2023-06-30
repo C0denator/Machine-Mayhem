@@ -27,12 +27,16 @@ public class SpielAnzeige extends ScreenAdapter {
 
 
     private SpriteBatch batch;
+
+    private ShapeRenderer shapeRenderer;
     public static ArrayList<Raum> räume;
-    public static ArrayList<Spieler> spieler;
     public static ArrayList<Gegner> gegner;
     public static ArrayList<Projektil> projektile;
     public static ArrayList<EinmalProFrame> physikObjekte;
     public static ArrayList<Knopf> knöpfe;
+
+    public static Spieler spieler1;
+    public static Spieler spieler2;
     private OrthographicCamera camera;
     private Viewport viewport;
 
@@ -40,8 +44,10 @@ public class SpielAnzeige extends ScreenAdapter {
     private boolean pausiert = false;
 
     private Sound musik;
+    private static boolean gameOver;
+    private float gameOverAlpha;
 
-    private static float zoomLevel;
+    private float zoomLevel;
 
     public SpielAnzeige(){
         if(instanz==null){
@@ -50,16 +56,18 @@ public class SpielAnzeige extends ScreenAdapter {
             new IllegalStateException("Mehrere SpielAnzeige-Instanzen :(");
         }
 
-        musik=Gdx.audio.newSound(Gdx.files.internal("Sounds/musik_1.mp3"));
-        musik.loop(0.1f);
+        musik=Gdx.audio.newSound(Gdx.files.internal("Sounds/musik_2.mp3"));
+        musik.loop(0.15f);
+
+        gameOver=false;
 
         batch=new SpriteBatch();
+        shapeRenderer=new ShapeRenderer();
         camera=new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         zoomLevel=1.0f;
         viewport=new ScreenViewport(camera);
 
         räume= new ArrayList<Raum>();
-        spieler= new ArrayList<Spieler>();
         gegner=new ArrayList<Gegner>();
         projektile= new ArrayList<Projektil>();
         physikObjekte = new ArrayList<>();
@@ -74,13 +82,7 @@ public class SpielAnzeige extends ScreenAdapter {
         knöpfe.add(new Knopf(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()*0.3f,200,30,"Zurück zum Hauptmenü"){
             @Override
             public void action(){
-                musik.stop();
-                spieler=null;
-                räume=null;
-                gegner=null;
-                projektile=null;
-                physikObjekte=null;
-                Spiel.instanz.aktiverBildschirm=new Hauptmenü();
+                zumHauptmenü();
             }
         });
         knöpfe.add(new Knopf(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()*0.2f,200,30,"Zurück zum Desktop"){
@@ -113,12 +115,11 @@ public class SpielAnzeige extends ScreenAdapter {
             }
         }
 
-        if(spieler.size()==1){
-            camera.position.set(spieler.get(0).getX()+spieler.get(0).getBreite()/2,spieler.get(0).getY()+spieler.get(0).getHöhe()/2,0);
+        if(spieler1!=null && spieler2==null){
+            camera.position.set(spieler1.getX()+spieler1.getBreite()/2,spieler1.getY()+spieler1.getHöhe()/2,0);
             camera.update();
         }else{
-            System.err.println("FEHLER: spieler != 1");
-            System.err.println("Spielergröße: "+spieler.size());
+            System.err.println("FEHLER: Ungültige Spieleranzahl");
         }
 
         Gdx.gl.glClearColor(0.4f,0.4f,0.4f,1);
@@ -167,25 +168,70 @@ public class SpielAnzeige extends ScreenAdapter {
 
             }
         }
-        if(spieler!=null) {
-            for (int i = 0; i < spieler.size(); i++) {
-                if(spieler.get(i).isSichtbar()) {
-                    //batch.draw(spieler.get(i).getTexturen()[0], spieler.get(i).getX(), spieler.get(i).getY(), spieler.get(i).getBreite(), spieler.get(i).getHöhe());
-                    batch.draw(spieler.get(i).getTextur(), spieler.get(i).getX(), spieler.get(i).getY(),
-                            spieler.get(i).getBreite()/2, spieler.get(i).getHöhe()/2,
-                            spieler.get(i).getBreite(), spieler.get(i).getHöhe(), 1.0f, 1.0f, spieler.get(i).getWinkelInt());
-
-                }
-
-            }
+        if(spieler1!=null) {
+            batch.draw(spieler1.getTextur(), spieler1.getX(), spieler1.getY(),
+                    spieler1.getBreite()/2, spieler1.getHöhe()/2,
+                    spieler1.getBreite(), spieler1.getHöhe(), 1.0f, 1.0f, spieler1.getWinkelInt());
+        }
+        if(spieler2!=null) {
+            batch.draw(spieler2.getTextur(), spieler2.getX(), spieler2.getY(),
+                    spieler2.getBreite()/2, spieler2.getHöhe()/2,
+                    spieler2.getBreite(), spieler2.getHöhe(), 1.0f, 1.0f, spieler2.getWinkelInt());
         }
 
         ////////////////////////////////////////////////////////////
         batch.end();
 
+        ////Lebensbalken:
+        float lBreite=500.0f;
+        float lHöhe=50.0f;
+        float lPosX=10.0f;
+        float lPosY=Gdx.graphics.getHeight()-lHöhe-10;
+        float lRand=5.0f;
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(0.3f,0.3f,0.3f,1.0f);
+        shapeRenderer.rect(lPosX,lPosY,lBreite,lHöhe);
+
+        shapeRenderer.setColor(1.0f,0.0f,0.0f,1.0f);
+        shapeRenderer.rect(lPosX+lRand,lPosY+lRand,lBreite-(lRand*2),lHöhe-(lRand*2));
+
+        float breiteGrün= (lBreite-(lRand*2)) * ((float)spieler1.getLeben()/(float)spieler1.getMaxLeben());
+        if(breiteGrün<0) breiteGrün=0;
+        shapeRenderer.setColor(0.0f,1.0f,0.0f,1.0f);
+        shapeRenderer.rect(lPosX+lRand,lPosY+lRand, breiteGrün,lHöhe-(lRand*2));
+
+        shapeRenderer.end();
+        ////
+
+        ///Ausblenden bei GameOver
+        if(gameOver){
+            musik.stop();
+
+            gameOverAlpha+=delta/4.0f;
+            if(gameOverAlpha>1.0f)gameOverAlpha=1.0f;
+
+            Gdx.gl.glEnable(GL20.GL_BLEND);
+            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+            ShapeRenderer s = new ShapeRenderer();
+            s.setColor(0,0,0,gameOverAlpha);
+            s.setAutoShapeType(true);
+
+            s.begin(ShapeRenderer.ShapeType.Filled);
+            s.rect(0,0,
+                    Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+            s.end();
+            Gdx.gl.glDisable(GL20.GL_BLEND);
+
+            if(gameOverAlpha==1.0f){
+                zumHauptmenü();
+            }
+        }
+        ///
+
 
         //Wird nur angezeigt, wenn Spiel pausiert ist:
-        if(pausiert){
+        if(pausiert && !gameOver){
             Gdx.gl.glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
             ShapeRenderer s = new ShapeRenderer();
@@ -219,16 +265,37 @@ public class SpielAnzeige extends ScreenAdapter {
 
 
 
-    public static float getZoomLevel() {
+    public float getZoomLevel() {
         return zoomLevel;
     }
 
-    public static void setZoomLevel(float zoom) {
+    public void setZoomLevel(float zoom) {
         zoomLevel = zoom;
         if(zoomLevel<0.25f) {
             zoomLevel=0.25f;
         }else if(zoomLevel>1.5f){
             zoomLevel=1.5f;
         }
+    }
+
+    public void gameOver(){
+        //wenn der Spieler verloren hat
+        gameOver=true;
+        gameOverAlpha=0.0f;
+    }
+
+    private void zumHauptmenü(){
+        musik.stop();
+        spieler1=null;
+        spieler2=null;
+        räume=null;
+        gegner=null;
+        projektile=null;
+        physikObjekte=null;
+        Spiel.instanz.aktiverBildschirm=new Hauptmenü();
+    }
+
+    public boolean isGameOver(){
+        return gameOver;
     }
 }
