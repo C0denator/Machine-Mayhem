@@ -1,15 +1,10 @@
 package com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner;
 
-import com.badlogic.gdx.Gdx;
-import com.programmierbeleg.machine_mayhem.Anzeigen.SpielAnzeige;
-import com.programmierbeleg.machine_mayhem.Interfaces.EinmalProFrame;
+import com.badlogic.gdx.math.Vector2;
 import com.programmierbeleg.machine_mayhem.Sonstiges.LöschKlasse;
 import com.programmierbeleg.machine_mayhem.Spiel;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.SpielObjekt;
-import com.programmierbeleg.machine_mayhem.SpielObjekte.Spieler;
 import com.programmierbeleg.machine_mayhem.Welt.Raum;
-
-import java.util.ArrayList;
 
 public abstract class Gegner extends SpielObjekt {
     protected int leben;
@@ -44,10 +39,11 @@ public abstract class Gegner extends SpielObjekt {
         //alle Referenzen auf dieses Objekt werden auf null gesetzt
         LöschKlasse.lösche(this);
         raum.setGegnerAnzahl(raum.getGegnerAnzahl()-1);
+        raum.setPositionLetzterGegner(new Vector2(x,y));
     }
 
     protected float winkelZu(SpielObjekt s){
-        //der Winkel,den ein Projektil haben muss um zum Spieler zu schauen
+        //der Winkel, den ein Projektil haben muss, um zum Spieler zu schauen
         double a = x-s.getX();
         double b = y-s.getY();
         double ergebnis;

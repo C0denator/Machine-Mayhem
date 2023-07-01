@@ -3,18 +3,15 @@ package com.programmierbeleg.machine_mayhem.Welt;
 import com.badlogic.gdx.math.Vector2;
 import com.programmierbeleg.machine_mayhem.Anzeigen.SpielAnzeige;
 import com.programmierbeleg.machine_mayhem.Daten.FeldEigenschaft;
-import com.programmierbeleg.machine_mayhem.Daten.FeldTextur;
+import com.programmierbeleg.machine_mayhem.Daten.ItemEigenschaft;
+import com.programmierbeleg.machine_mayhem.Daten.Texturen;
 import com.programmierbeleg.machine_mayhem.Daten.Richtung;
 import com.programmierbeleg.machine_mayhem.Interfaces.EinmalProFrame;
 import com.programmierbeleg.machine_mayhem.Sonstiges.ID_Vergeber;
-import com.programmierbeleg.machine_mayhem.SpielObjekte.Feld;
+import com.programmierbeleg.machine_mayhem.SpielObjekte.*;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner.Fernkampf_1;
-import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner.Gegner;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner.Schrot_1;
-import com.programmierbeleg.machine_mayhem.SpielObjekte.SpielObjekt;
-import com.programmierbeleg.machine_mayhem.SpielObjekte.Spieler;
 import com.badlogic.gdx.math.Rectangle;
-import com.programmierbeleg.machine_mayhem.SpielObjekte.Tür;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -40,6 +37,8 @@ public class Raum implements EinmalProFrame {
     private float feldGröße;
     private int gegnerAnzahl;
     //die Anzahl an Gegner die besiegt werden müssen, bevor die Türen wieder geöffnet werden
+    private Vector2 positionLetzterGegner;
+    //dort können Items gespawnt werden
     private boolean sichtbar;
     private boolean bossRaum;
     private boolean kampfAktiv;
@@ -81,6 +80,15 @@ public class Raum implements EinmalProFrame {
                 }
                 if(getRaumOst()!=null){
                     getRaumOst().öffneTüren();
+                }
+
+                Random rnd = new Random();
+                if(SpielAnzeige.spieler1.getChanceAufItem()>=(rnd.nextInt(99)+1)){
+                    SpielAnzeige.spieler1.setChanceAufItem(0);
+                    SpielAnzeige.items.add(new Item(ItemEigenschaft.Batterie,
+                            positionLetzterGegner.x, positionLetzterGegner.y));
+                }else{
+                    SpielAnzeige.spieler1.setChanceAufItem(SpielAnzeige.spieler1.getChanceAufItem()+25);
                 }
             }
         }
@@ -399,7 +407,7 @@ public class Raum implements EinmalProFrame {
                     } else{
                         //FEHLER
                         felder[x][y]=new Feld
-                                (FeldTextur.Unbekannt, FeldEigenschaft.Keine, this,
+                                (Texturen.Unbekannt, FeldEigenschaft.Keine, this,
                                         (x+start_x)*16,
                                         (-y-start_y)*16,
                                         true);
@@ -410,14 +418,14 @@ public class Raum implements EinmalProFrame {
                     if(g==255 && b==255){
                         //Normaler Boden
                         felder[x][y]=new Feld
-                                (FeldTextur.Boden_1, FeldEigenschaft.Keine, this,
+                                (Texturen.Boden_1, FeldEigenschaft.Keine, this,
                                 (x+start_x)*16,
                                         (-y-start_y)*16,
                                         true);
                     } else if (g==0 && b==0) {
                         //Normaler Boden mit FernkampfSpawn
                         felder[x][y]=new Feld
-                                (FeldTextur.Boden_1, FeldEigenschaft.FernkampfSpawn, this,
+                                (Texturen.Boden_1, FeldEigenschaft.FernkampfSpawn, this,
                                         (x+start_x)*16,
                                         (-y-start_y)*16,
                                         true);
@@ -425,7 +433,7 @@ public class Raum implements EinmalProFrame {
                     }else if (g==100 && b==0) {
                         //Normaler Boden mit NahkampfSpawn
                         felder[x][y]=new Feld
-                                (FeldTextur.Boden_1, FeldEigenschaft.NahkampfSpawn, this,
+                                (Texturen.Boden_1, FeldEigenschaft.NahkampfSpawn, this,
                                         (x+start_x)*16,
                                         (-y-start_y)*16,
                                         true);
@@ -433,7 +441,7 @@ public class Raum implements EinmalProFrame {
                     } else if (g==255 && b==0) {
                         //Normaler Boden mit Spielerspawn
                         felder[x][y]=new Feld
-                                (FeldTextur.Boden_1, FeldEigenschaft.SpielerSpawn, this,
+                                (Texturen.Boden_1, FeldEigenschaft.SpielerSpawn, this,
                                         (x+start_x)*16,
                                         (-y-start_y)*16,
                                         true);
@@ -447,7 +455,7 @@ public class Raum implements EinmalProFrame {
                     } else{
                         //FEHLER
                         felder[x][y]=new Feld
-                                (FeldTextur.Unbekannt, FeldEigenschaft.Keine, this,
+                                (Texturen.Unbekannt, FeldEigenschaft.Keine, this,
                                         (x+start_x)*16,
                                         (-y-start_y)*16,
                                         true);
@@ -455,7 +463,7 @@ public class Raum implements EinmalProFrame {
                 }else{
                     //FEHLER
                     felder[x][y]=new Feld
-                            (FeldTextur.Unbekannt, FeldEigenschaft.Keine, this,
+                            (Texturen.Unbekannt, FeldEigenschaft.Keine, this,
                                     (x-start_x)*16,
                                     (-y-start_y)*16,
                                     true);
@@ -521,7 +529,7 @@ public class Raum implements EinmalProFrame {
 
     }
 
-    private FeldTextur ermittleFeldtextur(BufferedImage image, int x, int y){
+    private Texturen ermittleFeldtextur(BufferedImage image, int x, int y){
         //ermittelt die richtige Textur für das Feld
         boolean wandN=false;
         boolean wandS=false;
@@ -546,15 +554,15 @@ public class Raum implements EinmalProFrame {
         }
 
         if((wandN && wandS && !wandO && !wandW) || (!wandN && !wandS && wandO && wandW)){
-            return FeldTextur.Wand_gerade;
+            return Texturen.Wand_gerade;
         }else if(w==2){
-            return FeldTextur.Wand_ecke;
+            return Texturen.Wand_ecke;
         }else if(w==1){
-            return FeldTextur.Wand_ende;
+            return Texturen.Wand_ende;
         }else if(w==0 || w==3 || w==4){
-            return FeldTextur.Wand_block;
+            return Texturen.Wand_block;
         }else{
-            return FeldTextur.Unbekannt;
+            return Texturen.Unbekannt;
         }
 
     }
@@ -692,6 +700,10 @@ public class Raum implements EinmalProFrame {
 
     public boolean hasWest(){
         return RaumWest!=null;
+    }
+
+    public void setPositionLetzterGegner(Vector2 positionLetzterGegner) {
+        this.positionLetzterGegner = positionLetzterGegner;
     }
 
     @Override

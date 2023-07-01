@@ -14,11 +14,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.programmierbeleg.machine_mayhem.Interfaces.EinmalProFrame;
 import com.programmierbeleg.machine_mayhem.Sonstiges.LöschKlasse;
 import com.programmierbeleg.machine_mayhem.Spiel;
+import com.programmierbeleg.machine_mayhem.SpielObjekte.*;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner.Gegner;
-import com.programmierbeleg.machine_mayhem.SpielObjekte.Knopf;
-import com.programmierbeleg.machine_mayhem.SpielObjekte.Projektil;
-import com.programmierbeleg.machine_mayhem.SpielObjekte.SpielObjekt;
-import com.programmierbeleg.machine_mayhem.SpielObjekte.Spieler;
 import com.programmierbeleg.machine_mayhem.Welt.Raum;
 import com.programmierbeleg.machine_mayhem.Welt.Welt;
 
@@ -35,6 +32,7 @@ public class SpielAnzeige extends ScreenAdapter {
     public static ArrayList<Projektil> projektile;
     public static ArrayList<EinmalProFrame> physikObjekte;
     public static ArrayList<Knopf> knöpfe;
+    public static ArrayList<Item> items;
 
     public static Spieler spieler1;
     public static Spieler spieler2;
@@ -73,6 +71,7 @@ public class SpielAnzeige extends ScreenAdapter {
         projektile= new ArrayList<Projektil>();
         physikObjekte = new ArrayList<>();
         knöpfe = new ArrayList<Knopf>();
+        items = new ArrayList<Item>();
         /////////////////
         knöpfe.add(new Knopf(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()*0.8f,500,100,"Fortfahren"){
             @Override
@@ -169,6 +168,9 @@ public class SpielAnzeige extends ScreenAdapter {
                 }
 
             }
+        }
+        for(Item i : items){
+            batch.draw(i.getTextur(),i.getX(),i.getY(),i.getBreite(),i.getHöhe());
         }
         if(spieler1!=null) {
             batch.draw(spieler1.getTextur(), spieler1.getX(), spieler1.getY(),

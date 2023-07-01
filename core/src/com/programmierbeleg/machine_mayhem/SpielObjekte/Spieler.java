@@ -32,12 +32,12 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
     private Animation laufAnimation;
 
     //Angriffsparameter
-    private int schaden;
-    private int maxGenauigkeitAbzug;
-    //Angabe in Grad
-    private int reichweite;
-    //Angabe in Sekunden
-    private ArrayList<Projektil> spielerProjektile;
+    private int schaden = 10;
+    private int chanceAufItem;
+    //0-100%
+
+
+
 
     private float schussAbklingzeit = 0.5f;
     private float abklingzeitTimer=schussAbklingzeit;
@@ -75,7 +75,7 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
         }
 
         schussSound=Gdx.audio.newSound(Gdx.files.internal("Sounds/laser.wav"));
-
+        chanceAufItem=0;
     }
 
     private Spieler(float x, float y, Raum raum, boolean fake){
@@ -104,6 +104,7 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
 
     @Override
     public void einmalProFrame(float delta) {
+        System.out.println("Chance auf Item: "+Integer.toString(chanceAufItem));
 
         if(leben>0){
             if(aktuellerRaum!=null){
@@ -127,7 +128,7 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
         abklingzeitTimer-=delta;
         if(abklingzeitTimer<=0){
             if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)){
-                SpielAnzeige.projektile.add(new Projektil(x+breite/2,y, winkel,Spiel.instanz.atlas.findRegion("laser_gelb",1),10, new Vector2(
+                SpielAnzeige.projektile.add(new Projektil(x+breite/2,y, winkel,Spiel.instanz.atlas.findRegion("laser_gelb",1),schaden, new Vector2(
                         (float) (-Math.sin( (winkel/180) * Math.PI)) * schussSpeed,
                         (float) (Math.cos( (winkel/180) * Math.PI)) * schussSpeed),
                         aktuellerRaum, false));
@@ -263,6 +264,11 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
         }
     }
 
+    public void heilen(int anzahl){
+        leben+=anzahl;
+        if(leben>maxLeben)leben=maxLeben;
+    }
+
     public float getWinkel() {
         return winkel;
     }
@@ -290,5 +296,13 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
 
     public int getMaxLeben() {
         return maxLeben;
+    }
+
+    public int getChanceAufItem() {
+        return chanceAufItem;
+    }
+
+    public void setChanceAufItem(int chanceAufItem) {
+        this.chanceAufItem = chanceAufItem;
     }
 }

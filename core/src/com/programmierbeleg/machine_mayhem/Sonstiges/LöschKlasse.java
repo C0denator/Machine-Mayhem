@@ -2,6 +2,7 @@ package com.programmierbeleg.machine_mayhem.Sonstiges;
 
 import com.programmierbeleg.machine_mayhem.Anzeigen.SpielAnzeige;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner.Gegner;
+import com.programmierbeleg.machine_mayhem.SpielObjekte.Item;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Projektil;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.SpielObjekt;
 
@@ -41,6 +42,20 @@ public class LöschKlasse {
                     for(int j=0; j< SpielAnzeige.projektile.size(); j++){
                         if(SpielAnzeige.projektile.get(j)!=null && SpielAnzeige.projektile.get(j).equals(zuLöschendeObjekte.get(i))){
                             SpielAnzeige.projektile.remove(j);
+                        }
+                    }
+
+                    for(int j=0; j< SpielAnzeige.physikObjekte.size(); j++){
+                        if(SpielAnzeige.physikObjekte.get(j)!=null && SpielAnzeige.physikObjekte.get(j).equals(zuLöschendeObjekte.get(i))){
+                            SpielAnzeige.physikObjekte.remove(j);
+                        }
+                    }
+                }
+
+                if (zuLöschendeObjekte.get(i) instanceof Item){
+                    for(int j=0; j< SpielAnzeige.items.size(); j++){
+                        if(SpielAnzeige.items.get(j)!=null && SpielAnzeige.items.get(j).equals(zuLöschendeObjekte.get(i))){
+                            SpielAnzeige.items.remove(j);
                         }
                     }
 
