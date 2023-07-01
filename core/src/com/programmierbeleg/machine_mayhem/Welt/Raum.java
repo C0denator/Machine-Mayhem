@@ -7,7 +7,6 @@ import com.programmierbeleg.machine_mayhem.Daten.FeldTextur;
 import com.programmierbeleg.machine_mayhem.Daten.Richtung;
 import com.programmierbeleg.machine_mayhem.Interfaces.EinmalProFrame;
 import com.programmierbeleg.machine_mayhem.Sonstiges.ID_Vergeber;
-import com.programmierbeleg.machine_mayhem.Spiel;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Feld;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner.Fernkampf_1;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner.Gegner;
@@ -54,7 +53,7 @@ public class Raum implements EinmalProFrame {
         start_x=(int)vector2.x;
         start_y=(int)vector2.y;
         türen =new ArrayList<>();
-        gegnerAnzahl=5;
+        gegnerAnzahl=0;
         erstelleRaumFelder(image, (int) vector2.x, (int) -vector2.y);
 
         if(SpielAnzeige.physikObjekte==null){
@@ -68,53 +67,40 @@ public class Raum implements EinmalProFrame {
     @Override
     public void einmalProFrame(float delta) {
         if(sichtbar && kampfAktiv){
-            if(SpielAnzeige.gegner.size()>0){
-//                for(Gegner g : SpielAnzeige.gegner){
-//                    g.denke(delta);
-//                }
-            }else{
-                if(gegnerAnzahl>0 && timer<=0){
-                    timer=2.0f;
-                    int tmp = gegnerAnzahl;
-                    for(Feld f : gegnerSpawns){
-                        if(tmp>0){
-                            if(new Random().nextInt(2)==0){
-                                Gegner g = new Fernkampf_1(f.getX(),f.getY(), this);
-                                SpielAnzeige.gegner.add(g);
-                            }else{
-                                Gegner g = new Schrot_1(f.getX(),f.getY(), this);
-                                SpielAnzeige.gegner.add(g);
-                            }
-                            tmp--;
-                        }
-                    }
-                }else{
-                    kampfAktiv=false;
-                    öffneTüren();
-                    if(getRaumNord()!=null){
-                        getRaumNord().öffneTüren();
-                    }
-                    if(getRaumSüd()!=null){
-                        getRaumSüd().öffneTüren();
-                    }
-                    if(getRaumWest()!=null){
-                        getRaumWest().öffneTüren();
-                    }
-                    if(getRaumOst()!=null){
-                        getRaumOst().öffneTüren();
-                    }
+            if(gegnerAnzahl<=0){
+                kampfAktiv=false;
+                öffneTüren();
+                if(getRaumNord()!=null){
+                    getRaumNord().öffneTüren();
+                }
+                if(getRaumSüd()!=null){
+                    getRaumSüd().öffneTüren();
+                }
+                if(getRaumWest()!=null){
+                    getRaumWest().öffneTüren();
+                }
+                if(getRaumOst()!=null){
+                    getRaumOst().öffneTüren();
                 }
             }
         }
     }
 
-    private void spawneGegner(float sBisZumSpawn){
-
+    private void spawneGegner(){
+        for(Feld f : gegnerSpawns){
+            if(f.getFeldEigenschaft()==FeldEigenschaft.FernkampfSpawn){
+                SpielAnzeige.gegner.add(new Fernkampf_1(f.getX(),f.getY(),this));
+                gegnerAnzahl++;
+            }else if(f.getFeldEigenschaft()==FeldEigenschaft.NahkampfSpawn){
+                SpielAnzeige.gegner.add(new Schrot_1(f.getX(),f.getY(),this));
+                gegnerAnzahl++;
+            }
+        }
     }
 
     public void raumBetreten(Raum vorherigerRaum){
-        sichtbar=true;
-        if(gegnerAnzahl>0){
+        if(!sichtbar){
+            sichtbar=true;
             kampfAktiv=true;
 
             if(getRaumNord()!=null && vorherigerRaum.equals(getRaumNord())){
@@ -138,7 +124,7 @@ public class Raum implements EinmalProFrame {
                 findeTürObjekt(Richtung.Süd).schließen();
                 findeTürObjekt(Richtung.Ost).schließen();
             }
-
+            spawneGegner();
         }
     }
 
@@ -429,9 +415,17 @@ public class Raum implements EinmalProFrame {
                                         (-y-start_y)*16,
                                         true);
                     } else if (g==0 && b==0) {
-                        //Normaler Boden mit Gegnerspawn
+                        //Normaler Boden mit FernkampfSpawn
                         felder[x][y]=new Feld
-                                (FeldTextur.Boden_1, FeldEigenschaft.Gegnerspawn, this,
+                                (FeldTextur.Boden_1, FeldEigenschaft.FernkampfSpawn, this,
+                                        (x+start_x)*16,
+                                        (-y-start_y)*16,
+                                        true);
+                        gegnerSpawns.add(felder[x][y]);
+                    }else if (g==100 && b==0) {
+                        //Normaler Boden mit NahkampfSpawn
+                        felder[x][y]=new Feld
+                                (FeldTextur.Boden_1, FeldEigenschaft.NahkampfSpawn, this,
                                         (x+start_x)*16,
                                         (-y-start_y)*16,
                                         true);
@@ -439,7 +433,7 @@ public class Raum implements EinmalProFrame {
                     } else if (g==255 && b==0) {
                         //Normaler Boden mit Spielerspawn
                         felder[x][y]=new Feld
-                                (FeldTextur.Boden_1, FeldEigenschaft.Spielerspawn, this,
+                                (FeldTextur.Boden_1, FeldEigenschaft.SpielerSpawn, this,
                                         (x+start_x)*16,
                                         (-y-start_y)*16,
                                         true);
@@ -450,7 +444,7 @@ public class Raum implements EinmalProFrame {
                             SpielAnzeige.spieler2 = new Spieler((x+start_x)*16,
                                     (-y-start_y)*16, this);
                         }
-                    }else{
+                    } else{
                         //FEHLER
                         felder[x][y]=new Feld
                                 (FeldTextur.Unbekannt, FeldEigenschaft.Keine, this,
@@ -587,9 +581,9 @@ public class Raum implements EinmalProFrame {
         if(r==0 && g==255 && b==0) {
             return FeldEigenschaft.Tür;
         }else if(r==255 && g==0 && b==0){
-            return FeldEigenschaft.Gegnerspawn;
+            return FeldEigenschaft.FernkampfSpawn;
         }else if(r==255 && g==255 && b==0){
-            return FeldEigenschaft.Spielerspawn;
+            return FeldEigenschaft.SpielerSpawn;
         }else{
             return FeldEigenschaft.Keine;
         }
