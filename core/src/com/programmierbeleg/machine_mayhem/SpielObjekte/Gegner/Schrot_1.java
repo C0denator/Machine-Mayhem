@@ -11,35 +11,31 @@ import com.programmierbeleg.machine_mayhem.Welt.Raum;
 
 import java.util.Random;
 
-public class Fernkampf_1 extends Gegner implements EinmalProFrame {
+public class Schrot_1 extends Gegner implements EinmalProFrame {
 
-    Animation AnimationAngriffStart;
-    Animation AnimationAngriffEnde;
+    Animation animationRecharge;
     private float timer;
     private Random rnd;
     private Vector2 bewegungsVektor;
     private float speed = 30.0f;
 
-    private float schussSpeed = 300.0f;
+    private float schussSpeed = 50.0f;
 
-    public Fernkampf_1(float x, float y, Raum raum){
+    public Schrot_1(float x, float y, Raum raum){
         super(x,y, raum);
-        textur =Spiel.instanz.atlas.findRegion("robot",1);
+        textur =Spiel.instanz.atlas.findRegion("schrot_idle");
 
-        leben=30;
-        maxLeben=30;
+        leben=40;
+        maxLeben=40;
         laufGeschwindigkeit=100;
 
-        AnimationAngriffStart=new Animation(this,new TextureRegion[]{
-                Spiel.instanz.atlas.findRegion("robot",1),
-                Spiel.instanz.atlas.findRegion("robot",2),
-                Spiel.instanz.atlas.findRegion("robot",3),
-        },0.2f,false);
-        AnimationAngriffEnde =new Animation(this,new TextureRegion[]{
-                Spiel.instanz.atlas.findRegion("robot",3),
-                Spiel.instanz.atlas.findRegion("robot",2),
-                Spiel.instanz.atlas.findRegion("robot",1),
-        },0.2f,false);
+        animationRecharge =new Animation(this,new TextureRegion[]{
+                Spiel.instanz.atlas.findRegion("schrot_recharge",4),
+                Spiel.instanz.atlas.findRegion("schrot_recharge",3),
+                Spiel.instanz.atlas.findRegion("schrot_recharge",2),
+                Spiel.instanz.atlas.findRegion("schrot_recharge",1),
+                Spiel.instanz.atlas.findRegion("schrot_idle"),
+        },0.4f,false);
 
         if(SpielAnzeige.physikObjekte==null){
             System.err.println("Fehler: SpielAnzeige.physikObjekte ist null");
@@ -48,7 +44,7 @@ public class Fernkampf_1 extends Gegner implements EinmalProFrame {
         }
 
         angriffAktiv=false;
-        angriffCooldown=2.5f;
+        angriffCooldown=2.0f;
         angriffTimer=angriffCooldown;
         rnd = new Random();
         bewegungsVektor=new Vector2();
@@ -65,23 +61,16 @@ public class Fernkampf_1 extends Gegner implements EinmalProFrame {
     }
     @Override
     protected void angriff(float delta) {
-        if(AnimationAngriffStart.isPausiert() && AnimationAngriffEnde.isPausiert()){
-            if(!AnimationAngriffStart.isFertig() && !AnimationAngriffEnde.isFertig()){
-                AnimationAngriffStart.starteVonVorn();
-            }else if(AnimationAngriffStart.isFertig() && !AnimationAngriffEnde.isFertig()){
-                //Angriff!
-                float tmpWinkel = winkelZu(SpielAnzeige.spieler1);
-                SpielAnzeige.projektile.add(new Projektil(x,y,tmpWinkel,Spiel.instanz.atlas.findRegion("laser_rot",1),10, new Vector2(
-                        (float) (-Math.sin( (tmpWinkel/180) * Math.PI)) * schussSpeed,
-                        (float) (Math.cos( (tmpWinkel/180) * Math.PI)) * schussSpeed),
-                        raum, true));
-                AnimationAngriffEnde.starteVonVorn();
-            }else if(AnimationAngriffStart.isFertig() && AnimationAngriffEnde.isFertig()){
-                angriffAktiv=false;
-                AnimationAngriffStart.stop();
-                AnimationAngriffEnde.stop();
-            }
+        Random rnd = new Random();
+        for(int i=0; i<5; i++){
+            float tmpWinkel = winkelZu(SpielAnzeige.spieler1) + (float)(rnd.nextInt(50)-25);
+            SpielAnzeige.projektile.add(new Projektil(x,y,tmpWinkel,Spiel.instanz.atlas.findRegion("laser_rot",1),5, new Vector2(
+                    (float) (-Math.sin( (tmpWinkel/180) * Math.PI)) * schussSpeed,
+                    (float) (Math.cos( (tmpWinkel/180) * Math.PI)) * schussSpeed),
+                    raum, true));
         }
+        animationRecharge.starteVonVorn();
+        angriffAktiv=false;
     }
     @Override
     public void denke(float delta) {

@@ -1,25 +1,25 @@
 package com.programmierbeleg.machine_mayhem.SpielObjekte;
 
 import com.programmierbeleg.machine_mayhem.Daten.FeldEigenschaft;
-import com.programmierbeleg.machine_mayhem.Daten.FeldTextur;
+import com.programmierbeleg.machine_mayhem.Daten.Texturen;
 import com.programmierbeleg.machine_mayhem.Welt.Raum;
 
 public class Feld extends SpielObjekt{
 
     private boolean laufbar;
     private final FeldEigenschaft feldEigenschaft;
-    private final FeldTextur feldTextur;
+    private final Texturen feldTextur;
 
     private final Raum raum;
     private int winkel;
-    public Feld(FeldTextur textur, FeldEigenschaft feldEigenschaft, Raum raum,
+    public Feld(Texturen textur, FeldEigenschaft feldEigenschaft, Raum raum,
                 float x, float y, boolean laufbar) {
         super(x, y, 16, 16, 0,
                 true);
         this.feldEigenschaft = feldEigenschaft;
         this.feldTextur=textur;
         this.raum=raum;
-        this.textur =textur.getTextur();
+        this.textur =textur.getTexturRegion();
         this.laufbar=laufbar;
         winkel=0;
     }
@@ -50,7 +50,7 @@ public class Feld extends SpielObjekt{
         this.winkel = winkel;
     }
 
-    public FeldTextur getFeldTextur() {
+    public Texturen getFeldTextur() {
         return feldTextur;
     }
 

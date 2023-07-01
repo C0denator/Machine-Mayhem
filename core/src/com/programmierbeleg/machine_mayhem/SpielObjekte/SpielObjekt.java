@@ -23,8 +23,8 @@ public class SpielObjekt {
 
 
     public SpielObjekt(float x, float y, int breite, int höhe, float winkel, boolean Sichtbar){
-        this.breite=breite*Spiel.instanz.skalierung;
-        this.höhe=höhe*Spiel.instanz.skalierung;
+        this.breite=breite;
+        this.höhe=höhe;
         this.x=x;
         this.y=y;
         this.winkel=winkel;
@@ -44,7 +44,53 @@ public class SpielObjekt {
         this.y+=y*delta;
     }
 
+    public boolean kollidiertInZukunft(Raum raum, Vector2 v, float delta){
+        //prüft ob es zu einer Kollision im Raum kommt, wenn sich das Objekt um den übergebenen Betrag bewegen würde
+
+        SpielObjekt zukünftigesObjekt = new SpielObjekt(x,y, breite, höhe, winkel, false);
+
+        zukünftigesObjekt.bewegen(v,delta);
+
+        for(int x=0; x<raum.getFelder().length; x++){
+            for(int y=0; y<raum.getFelder()[x].length;y++){
+                if(zukünftigesObjekt.kollidiertMit(raum.getFelder()[x][y]) && !raum.getFelder()[x][y].isLaufbar()){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public boolean kollidiertInZukunft(Raum raum, Raum vorherigerRaum, Vector2 v, float delta){
+        //dasselbe wie oben, nur mit 2 Räumen (für Spielerkollision)
+        SpielObjekt zukünftigesObjekt = new SpielObjekt(x,y, breite, höhe, 0, false);
+
+        zukünftigesObjekt.bewegen(v,delta);
+
+        for(int x=0; x<raum.getFelder().length; x++){
+            for(int y=0; y<raum.getFelder()[x].length;y++){
+                if(zukünftigesObjekt.kollidiertMit(raum.getFelder()[x][y]) && !raum.getFelder()[x][y].isLaufbar()){
+                    return true;
+                }
+            }
+        }
+
+        if(vorherigerRaum!=null){
+            for(int x=0; x<vorherigerRaum.getFelder().length; x++){
+                for(int y=0; y<vorherigerRaum.getFelder()[x].length;y++){
+                    if(zukünftigesObjekt.kollidiertMit(vorherigerRaum.getFelder()[x][y]) && !vorherigerRaum.getFelder()[x][y].isLaufbar()){
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
     public boolean kollidiertMit(SpielObjekt o){
+        //kollidieren die Objekte?
         //true: Objekte berühren sich
         //false: sie tun es nicht
         Rectangle r1 = new Rectangle(x,y,breite,höhe);
@@ -130,4 +176,5 @@ public class SpielObjekt {
             return false;
         }
     }
+
 }

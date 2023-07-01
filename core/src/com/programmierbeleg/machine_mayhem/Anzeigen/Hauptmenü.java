@@ -31,20 +31,20 @@ public class Hauptmenü extends ScreenAdapter {
         knöpfe=new ArrayList<Knopf>();
         bitmapFont = new BitmapFont();
 
-        knöpfe.add(new Knopf(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()*0.7f,200,30,"Spielen"){
+        knöpfe.add(new Knopf(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()*0.7f,500,100,"Spielen"){
             @Override
             public void action(){
                 Spiel.instanz.aktiverBildschirm=new SpielAnzeige();
                 Spiel.instanz.aktiverBildschirm.show();
             }
         });
-        knöpfe.add(new Knopf(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()*0.6f,200,30,"Optionen"){
+        knöpfe.add(new Knopf(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()*0.6f,500,100,"Optionen"){
             @Override
             public void action(){
                 System.out.println("Optionen!!!!11");
             }
         });
-        knöpfe.add(new Knopf(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()*0.5f,200,30,"Beenden"){
+        knöpfe.add(new Knopf(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()*0.5f,500,100,"Beenden"){
             @Override
             public void action(){
                 Gdx.app.exit();

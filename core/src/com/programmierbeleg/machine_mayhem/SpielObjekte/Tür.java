@@ -1,9 +1,8 @@
 package com.programmierbeleg.machine_mayhem.SpielObjekte;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.programmierbeleg.machine_mayhem.Anzeigen.SpielAnzeige;
 import com.programmierbeleg.machine_mayhem.Daten.FeldEigenschaft;
-import com.programmierbeleg.machine_mayhem.Daten.FeldTextur;
+import com.programmierbeleg.machine_mayhem.Daten.Texturen;
 import com.programmierbeleg.machine_mayhem.Sonstiges.Animation;
 import com.programmierbeleg.machine_mayhem.Spiel;
 import com.programmierbeleg.machine_mayhem.Welt.Raum;
@@ -14,7 +13,7 @@ public class Tür extends Feld {
     Animation schließen;
 
     public Tür(float x, float y, Raum raum){
-        super(FeldTextur.TürOffen, FeldEigenschaft.Tür,raum,x,y,true);
+        super(Texturen.TürOffen, FeldEigenschaft.Tür,raum,x,y,true);
 
         öffnen=new Animation(this,new TextureRegion[]{
                 Spiel.instanz.atlas.findRegion("tür1_zu"),

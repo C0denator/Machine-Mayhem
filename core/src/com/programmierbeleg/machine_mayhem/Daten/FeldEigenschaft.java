@@ -5,8 +5,8 @@ public enum FeldEigenschaft {
 
     Keine,
     Tür,
-    Gegnerspawn,
-    Spielerspawn,
-    Itemspawn;
+    FernkampfSpawn,
+    NahkampfSpawn,
+    SpielerSpawn,
 
 }

@@ -1,22 +1,23 @@
 package com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner;
 
-import com.programmierbeleg.machine_mayhem.Anzeigen.SpielAnzeige;
-import com.programmierbeleg.machine_mayhem.Interfaces.EinmalProFrame;
+import com.badlogic.gdx.math.Vector2;
 import com.programmierbeleg.machine_mayhem.Sonstiges.LöschKlasse;
 import com.programmierbeleg.machine_mayhem.Spiel;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.SpielObjekt;
 import com.programmierbeleg.machine_mayhem.Welt.Raum;
 
-import java.util.ArrayList;
-
-public abstract class Gegner extends SpielObjekt implements EinmalProFrame {
+public abstract class Gegner extends SpielObjekt {
     protected int leben;
     protected int maxLeben;
     protected int laufGeschwindigkeit;
 
-    private Raum raum;
+    protected Raum raum;
 
-    private float sekundenBisNächsterAngriff;
+    protected float angriffCooldown;
+    protected float angriffTimer;
+
+    protected boolean angriffAktiv;
+
 
     public Gegner (float x, float y, Raum raum) {
         super (x, y,
@@ -24,16 +25,6 @@ public abstract class Gegner extends SpielObjekt implements EinmalProFrame {
                 Spiel.instanz.atlas.findRegion("robot",1).getRegionHeight(),
                 0, true);
         this.raum=raum;
-
-        if(SpielAnzeige.physikObjekte==null){
-            System.err.println("Fehler: SpielAnzeige.physikObjekte ist null");
-        }else{
-            SpielAnzeige.physikObjekte.add(this);
-        }
-    }
-
-    @Override
-    public void einmalProFrame(float delta) {
 
     }
 
@@ -48,9 +39,25 @@ public abstract class Gegner extends SpielObjekt implements EinmalProFrame {
         //alle Referenzen auf dieses Objekt werden auf null gesetzt
         LöschKlasse.lösche(this);
         raum.setGegnerAnzahl(raum.getGegnerAnzahl()-1);
+        raum.setPositionLetzterGegner(new Vector2(x,y));
     }
-    protected abstract boolean angriff();
-    public abstract void denke();
+
+    protected float winkelZu(SpielObjekt s){
+        //der Winkel, den ein Projektil haben muss, um zum Spieler zu schauen
+        double a = x-s.getX();
+        double b = y-s.getY();
+        double ergebnis;
+
+        if(a>=0){
+            ergebnis= ((180/Math.PI)*Math.atan(b/a)+90.0);
+        }else{
+            ergebnis= ((180/Math.PI)*Math.atan(b/a)-90.0);
+        }
+
+        return (float)ergebnis;
+    }
+    protected abstract void angriff(float delta);
+    public abstract void denke(float delta);
 
 
 

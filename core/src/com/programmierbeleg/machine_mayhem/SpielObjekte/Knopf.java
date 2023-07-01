@@ -19,8 +19,8 @@ public class Knopf extends SpielObjekt {
     public Knopf(float x, float y, int breite, int höhe, String schriftzug){
         super(x,y,breite,höhe,0, true);
         this.schriftzug=schriftzug;
-        this.x=x-breite* Spiel.instanz.skalierung/2;
-        this.y=y-höhe* Spiel.instanz.skalierung/2;
+        this.x=x-breite/2;
+        this.y=y-höhe/2;
         linienbreite=5.0f;
 
         shaperenderer = new ShapeRenderer();

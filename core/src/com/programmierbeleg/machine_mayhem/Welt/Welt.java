@@ -29,6 +29,7 @@ public class Welt {
         this.maxRaumAnzahl=maxRaumAnzahl;
         raumAnzahl=0;
         generiereWelt();
+        fügeSchlüsselHinzu();
     }
 
     public void generiereWelt() {
@@ -135,10 +136,22 @@ public class Welt {
             System.err.println("Fehler beim Laden der Raum-Dateien");
         }
 
-        startraum.setGegnerAnzahl(0);
-        SpielAnzeige.spieler.get(0).ändereAktuellenRaum(startraum);
-        startraum.öffneTüren();
+        startraum.schließeTüren();
+        SpielAnzeige.spieler1.ändereAktuellenRaum(startraum);
+        if(SpielAnzeige.spieler2!=null)  SpielAnzeige.spieler2.ändereAktuellenRaum(startraum);
 
+    }
+
+    private void fügeSchlüsselHinzu(){
+        int anzahlSchlüssel=0;
+        do{
+            Random rnd = new Random();
+            int tmp = rnd.nextInt(SpielAnzeige.räume.size());
+            if(SpielAnzeige.räume.get(tmp)!=null && !SpielAnzeige.räume.get(tmp).hatSchlüssel() && !SpielAnzeige.räume.get(tmp).equals(startraum)){
+                SpielAnzeige.räume.get(tmp).setSchlüssel(true);
+                anzahlSchlüssel++;
+            }
+        }while(anzahlSchlüssel<3);
     }
 
     private boolean istRaumKollisionsfrei(Raum raum, ArrayList<Raum> räume){
