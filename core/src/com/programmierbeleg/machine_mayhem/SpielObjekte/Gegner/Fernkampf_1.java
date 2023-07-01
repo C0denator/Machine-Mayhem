@@ -6,17 +6,21 @@ import com.programmierbeleg.machine_mayhem.Anzeigen.SpielAnzeige;
 import com.programmierbeleg.machine_mayhem.Interfaces.EinmalProFrame;
 import com.programmierbeleg.machine_mayhem.Sonstiges.Animation;
 import com.programmierbeleg.machine_mayhem.Spiel;
+import com.programmierbeleg.machine_mayhem.SpielObjekte.Projektil;
 import com.programmierbeleg.machine_mayhem.Welt.Raum;
 
 import java.util.Random;
 
 public class Fernkampf_1 extends Gegner implements EinmalProFrame {
 
-    Animation angriffAnimation;
+    Animation AnimationAngriffStart;
+    Animation AnimationAngriffEnde;
     private float timer;
     private Random rnd;
     private Vector2 bewegungsVektor;
     private float speed = 30.0f;
+
+    private float schussSpeed = 400.0f;
 
     public Fernkampf_1(float x, float y, Raum raum){
         super(x,y, raum);
@@ -26,13 +30,16 @@ public class Fernkampf_1 extends Gegner implements EinmalProFrame {
         maxLeben=50;
         laufGeschwindigkeit=100;
 
-        angriffAnimation=new Animation(this,new TextureRegion[]{
+        AnimationAngriffStart=new Animation(this,new TextureRegion[]{
                 Spiel.instanz.atlas.findRegion("robot",1),
                 Spiel.instanz.atlas.findRegion("robot",2),
                 Spiel.instanz.atlas.findRegion("robot",3),
-                Spiel.instanz.atlas.findRegion("robot",2)
-        },0.25f,true);
-        angriffAnimation.starteVonVorn();
+        },0.2f,false);
+        AnimationAngriffEnde =new Animation(this,new TextureRegion[]{
+                Spiel.instanz.atlas.findRegion("robot",3),
+                Spiel.instanz.atlas.findRegion("robot",2),
+                Spiel.instanz.atlas.findRegion("robot",1),
+        },0.2f,false);
 
         if(SpielAnzeige.physikObjekte==null){
             System.err.println("Fehler: SpielAnzeige.physikObjekte ist null");
@@ -41,7 +48,7 @@ public class Fernkampf_1 extends Gegner implements EinmalProFrame {
         }
 
         angriffAktiv=false;
-        angriffCooldown=4.0f;
+        angriffCooldown=3.0f;
         angriffTimer=angriffCooldown;
         rnd = new Random();
         bewegungsVektor=new Vector2();
@@ -58,7 +65,23 @@ public class Fernkampf_1 extends Gegner implements EinmalProFrame {
     }
     @Override
     protected void angriff(float delta) {
-        angriffAktiv=false;
+        if(AnimationAngriffStart.isPausiert() && AnimationAngriffEnde.isPausiert()){
+            if(!AnimationAngriffStart.isFertig() && !AnimationAngriffEnde.isFertig()){
+                AnimationAngriffStart.starteVonVorn();
+            }else if(AnimationAngriffStart.isFertig() && !AnimationAngriffEnde.isFertig()){
+                //Angriff!
+                float tmpWinkel = winkelZu(SpielAnzeige.spieler1);
+                SpielAnzeige.projektile.add(new Projektil(x,y,tmpWinkel,Spiel.instanz.atlas.findRegion("laser_rot",1),10, new Vector2(
+                        (float) (-Math.sin( (tmpWinkel/180) * Math.PI)) * schussSpeed,
+                        (float) (Math.cos( (tmpWinkel/180) * Math.PI)) * schussSpeed),
+                        raum, true));
+                AnimationAngriffEnde.starteVonVorn();
+            }else if(AnimationAngriffStart.isFertig() && AnimationAngriffEnde.isFertig()){
+                angriffAktiv=false;
+                AnimationAngriffStart.stop();
+                AnimationAngriffEnde.stop();
+            }
+        }
     }
     @Override
     public void denke(float delta) {

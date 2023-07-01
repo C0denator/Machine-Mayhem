@@ -25,17 +25,26 @@ public class Projektil extends SpielObjekt implements EinmalProFrame {
 
     private Animation animation;
     public Projektil(float x, float y, float winkel,
-                     TextureRegion textur, int schaden, Vector2 bewegungsVektor, Raum raum) {
+                     TextureRegion textur, int schaden, Vector2 bewegungsVektor, Raum raum, boolean vonGegner) {
         super(x, y, textur.getRegionWidth(), textur.getRegionHeight(), winkel, true);
         this.textur=textur;
         this.bewegungsVektor=bewegungsVektor;
         this.schaden=schaden;
         this.aktiverRaum=raum;
+        this.vonGegner=vonGegner;
 
-        animation=new Animation(this, new TextureRegion[]{
-                Spiel.instanz.atlas.findRegion("laser_gelb",1),
-                Spiel.instanz.atlas.findRegion("laser_gelb",2),
-        }, 0.1f,true);
+
+        if(!vonGegner){
+            animation=new Animation(this, new TextureRegion[]{
+                    Spiel.instanz.atlas.findRegion("laser_gelb",1),
+                    Spiel.instanz.atlas.findRegion("laser_gelb",2),
+            }, 0.1f,true);
+        }else {
+            animation=new Animation(this, new TextureRegion[]{
+                    Spiel.instanz.atlas.findRegion("laser_rot",1),
+                    Spiel.instanz.atlas.findRegion("laser_rot",2),
+            }, 0.1f,true);
+        }
 
         animation.starteVonVorn();
 
@@ -50,12 +59,20 @@ public class Projektil extends SpielObjekt implements EinmalProFrame {
     public void einmalProFrame(float delta) {
         bewegen(bewegungsVektor, delta);
 
-        for(Gegner g : SpielAnzeige.gegner){
-            if(g.kollidiertMit(this)){
-                g.bekommeSchaden(schaden);
+        if(!vonGegner){
+            for(Gegner g : SpielAnzeige.gegner){
+                if(g.kollidiertMit(this)){
+                    g.bekommeSchaden(schaden);
+                    löschen();
+                }
+            }
+        }else{
+            if(SpielAnzeige.spieler1.kollidiertMit(this)){
+                SpielAnzeige.spieler1.bekommeSchaden(schaden);
                 löschen();
             }
         }
+
 
         if(aktiverRaum.kollidiertMitWand(this)){
             löschen();

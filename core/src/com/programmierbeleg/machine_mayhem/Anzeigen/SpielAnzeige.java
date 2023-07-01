@@ -110,7 +110,7 @@ public class SpielAnzeige extends ScreenAdapter {
             else pausiert=true;
         }
 
-        if(!pausiert){
+        if(!pausiert && !gameOver){
             for(int i=0; i<physikObjekte.size(); i++){
                 physikObjekte.get(i).einmalProFrame(delta);
             }
@@ -236,27 +236,29 @@ public class SpielAnzeige extends ScreenAdapter {
     }
 
     private void zeichneUI(){
-        ////Lebensbalken:
-        float lBreite=500.0f;
-        float lHöhe=50.0f;
-        float lPosX=10.0f;
-        float lPosY=Gdx.graphics.getHeight()-lHöhe-10;
-        float lRand=5.0f;
+        if(!gameOver){
+            //Lebensbalken
+            float lBreite=500.0f;
+            float lHöhe=50.0f;
+            float lPosX=10.0f;
+            float lPosY=Gdx.graphics.getHeight()-lHöhe-10;
+            float lRand=5.0f;
 
-        shapeRenderer=new ShapeRenderer();
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(0.3f,0.3f,0.3f,1.0f);
-        shapeRenderer.rect(lPosX,lPosY,lBreite,lHöhe);
+            shapeRenderer=new ShapeRenderer();
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+            shapeRenderer.setColor(0.3f,0.3f,0.3f,1.0f);
+            shapeRenderer.rect(lPosX,lPosY,lBreite,lHöhe);
 
-        shapeRenderer.setColor(1.0f,0.0f,0.0f,1.0f);
-        shapeRenderer.rect(lPosX+lRand,lPosY+lRand,lBreite-(lRand*2),lHöhe-(lRand*2));
+            shapeRenderer.setColor(1.0f,0.0f,0.0f,1.0f);
+            shapeRenderer.rect(lPosX+lRand,lPosY+lRand,lBreite-(lRand*2),lHöhe-(lRand*2));
 
-        float breiteGrün= (lBreite-(lRand*2)) * ((float)spieler1.getLeben()/(float)spieler1.getMaxLeben());
-        if(breiteGrün<0) breiteGrün=0;
-        shapeRenderer.setColor(0.0f,1.0f,0.0f,1.0f);
-        shapeRenderer.rect(lPosX+lRand,lPosY+lRand, breiteGrün,lHöhe-(lRand*2));
+            float breiteGrün= (lBreite-(lRand*2)) * ((float)spieler1.getLeben()/(float)spieler1.getMaxLeben());
+            if(breiteGrün<0) breiteGrün=0;
+            shapeRenderer.setColor(0.0f,1.0f,0.0f,1.0f);
+            shapeRenderer.rect(lPosX+lRand,lPosY+lRand, breiteGrün,lHöhe-(lRand*2));
 
-        shapeRenderer.end();
+            shapeRenderer.end();
+        }
         ////
     }
 
@@ -299,6 +301,7 @@ public class SpielAnzeige extends ScreenAdapter {
         gegner=null;
         projektile=null;
         physikObjekte=null;
+        SpielAnzeige.instanz=null;
         Spiel.instanz.aktiverBildschirm=new Hauptmenü();
     }
 

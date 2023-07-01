@@ -17,6 +17,7 @@ public class Animation implements EinmalProFrame {
     private int indexAktuelleTextur;
     private boolean loop;
     private boolean pausiert;
+    private boolean fertig;
     private float sekundenBisZumNächstenBild;
     private float aktuelleZeit;
 
@@ -28,6 +29,7 @@ public class Animation implements EinmalProFrame {
         indexAktuelleTextur=0;
         aktuelleZeit=0.0f;
         pausiert=true;
+        fertig=false;
         this.loop=loop;
 
         if(SpielAnzeige.physikObjekte==null){
@@ -57,6 +59,7 @@ public class Animation implements EinmalProFrame {
                     }else{
                         stop();
                     }
+                    fertig=true;
                 }
             }
         }
@@ -73,12 +76,14 @@ public class Animation implements EinmalProFrame {
 
     public void starteVonVorn(){
         pausiert=false;
+        fertig=false;
         indexAktuelleTextur=0;
         sendeTextur();
     }
 
     public void stop(){
         pausiert=true;
+        fertig=false;
         indexAktuelleTextur=0;
     }
 
@@ -97,5 +102,9 @@ public class Animation implements EinmalProFrame {
 
     public boolean isPausiert() {
         return pausiert;
+    }
+
+    public boolean isFertig() {
+        return fertig;
     }
 }
