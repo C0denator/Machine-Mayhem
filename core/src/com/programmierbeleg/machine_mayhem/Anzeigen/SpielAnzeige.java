@@ -17,6 +17,7 @@ import com.programmierbeleg.machine_mayhem.Spiel;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner.Gegner;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Knopf;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Projektil;
+import com.programmierbeleg.machine_mayhem.SpielObjekte.SpielObjekt;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Spieler;
 import com.programmierbeleg.machine_mayhem.Welt.Raum;
 import com.programmierbeleg.machine_mayhem.Welt.Welt;
@@ -56,15 +57,15 @@ public class SpielAnzeige extends ScreenAdapter {
             new IllegalStateException("Mehrere SpielAnzeige-Instanzen :(");
         }
 
-        musik=Gdx.audio.newSound(Gdx.files.internal("Sounds/musik_2.mp3"));
-        musik.loop(0.2f);
+        musik=Gdx.audio.newSound(Gdx.files.internal("Sounds/musik_1.mp3"));
+        musik.loop(0.1f);
 
         gameOver=false;
 
         batch=new SpriteBatch();
         shapeRenderer=new ShapeRenderer();
         camera=new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-        zoomLevel=1.0f;
+        zoomLevel=0.5f;
         viewport=new ScreenViewport(camera);
 
         räume= new ArrayList<Raum>();
@@ -73,19 +74,19 @@ public class SpielAnzeige extends ScreenAdapter {
         physikObjekte = new ArrayList<>();
         knöpfe = new ArrayList<Knopf>();
         /////////////////
-        knöpfe.add(new Knopf(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()*0.8f,200,30,"Fortfahren"){
+        knöpfe.add(new Knopf(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()*0.8f,500,100,"Fortfahren"){
             @Override
             public void action(){
                 setPausiert(false);
             }
         });
-        knöpfe.add(new Knopf(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()*0.3f,200,30,"Zurück zum Hauptmenü"){
+        knöpfe.add(new Knopf(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()*0.3f,500,100,"Zurück zum Hauptmenü"){
             @Override
             public void action(){
                 zumHauptmenü();
             }
         });
-        knöpfe.add(new Knopf(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()*0.2f,200,30,"Zurück zum Desktop"){
+        knöpfe.add(new Knopf(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()*0.2f,500,100,"Zurück zum Desktop"){
             @Override
             public void action(){
                 Gdx.app.exit();
@@ -164,6 +165,7 @@ public class SpielAnzeige extends ScreenAdapter {
             for (int i = 0; i < gegner.size(); i++) {
                 if(gegner.get(i).isSichtbar()) {
                     batch.draw(gegner.get(i).getTextur(), gegner.get(i).getX(), gegner.get(i).getY(), gegner.get(i).getBreite(), gegner.get(i).getHöhe());
+                    zeichneKollisionen(gegner.get(i));
                 }
 
             }
@@ -182,27 +184,6 @@ public class SpielAnzeige extends ScreenAdapter {
         ////////////////////////////////////////////////////////////
         batch.end();
 
-        ////Lebensbalken:
-        float lBreite=500.0f;
-        float lHöhe=50.0f;
-        float lPosX=10.0f;
-        float lPosY=Gdx.graphics.getHeight()-lHöhe-10;
-        float lRand=5.0f;
-
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(0.3f,0.3f,0.3f,1.0f);
-        shapeRenderer.rect(lPosX,lPosY,lBreite,lHöhe);
-
-        shapeRenderer.setColor(1.0f,0.0f,0.0f,1.0f);
-        shapeRenderer.rect(lPosX+lRand,lPosY+lRand,lBreite-(lRand*2),lHöhe-(lRand*2));
-
-        float breiteGrün= (lBreite-(lRand*2)) * ((float)spieler1.getLeben()/(float)spieler1.getMaxLeben());
-        if(breiteGrün<0) breiteGrün=0;
-        shapeRenderer.setColor(0.0f,1.0f,0.0f,1.0f);
-        shapeRenderer.rect(lPosX+lRand,lPosY+lRand, breiteGrün,lHöhe-(lRand*2));
-
-        shapeRenderer.end();
-        ////
 
         ///Ausblenden bei GameOver
         if(gameOver){
@@ -229,6 +210,7 @@ public class SpielAnzeige extends ScreenAdapter {
         }
         ///
 
+        zeichneUI();
 
         //Wird nur angezeigt, wenn Spiel pausiert ist:
         if(pausiert && !gameOver){
@@ -253,6 +235,31 @@ public class SpielAnzeige extends ScreenAdapter {
         LöschKlasse.löschZyklus();
     }
 
+    private void zeichneUI(){
+        ////Lebensbalken:
+        float lBreite=500.0f;
+        float lHöhe=50.0f;
+        float lPosX=10.0f;
+        float lPosY=Gdx.graphics.getHeight()-lHöhe-10;
+        float lRand=5.0f;
+
+        shapeRenderer=new ShapeRenderer();
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(0.3f,0.3f,0.3f,1.0f);
+        shapeRenderer.rect(lPosX,lPosY,lBreite,lHöhe);
+
+        shapeRenderer.setColor(1.0f,0.0f,0.0f,1.0f);
+        shapeRenderer.rect(lPosX+lRand,lPosY+lRand,lBreite-(lRand*2),lHöhe-(lRand*2));
+
+        float breiteGrün= (lBreite-(lRand*2)) * ((float)spieler1.getLeben()/(float)spieler1.getMaxLeben());
+        if(breiteGrün<0) breiteGrün=0;
+        shapeRenderer.setColor(0.0f,1.0f,0.0f,1.0f);
+        shapeRenderer.rect(lPosX+lRand,lPosY+lRand, breiteGrün,lHöhe-(lRand*2));
+
+        shapeRenderer.end();
+        ////
+    }
+
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height);
@@ -271,10 +278,10 @@ public class SpielAnzeige extends ScreenAdapter {
 
     public void setZoomLevel(float zoom) {
         zoomLevel = zoom;
-        if(zoomLevel<0.25f) {
-            zoomLevel=0.25f;
-        }else if(zoomLevel>1.5f){
-            zoomLevel=1.5f;
+        if(zoomLevel<0.1f) {
+            zoomLevel=0.1f;
+        }else if(zoomLevel>1.0f){
+            zoomLevel=1.0f;
         }
     }
 
@@ -297,5 +304,23 @@ public class SpielAnzeige extends ScreenAdapter {
 
     public boolean isGameOver(){
         return gameOver;
+    }
+
+    public void zeichneKollisionen(SpielObjekt objekt){
+        //für Debug-Zwecke
+        boolean batchBeendet=false;
+        if(batch.isDrawing()){
+            batch.end();
+            batchBeendet=true;
+        }
+        shapeRenderer.setProjectionMatrix(camera.combined);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(1.0f,0.0f,0.0f,0.5f);
+        shapeRenderer.rect(objekt.getX(),objekt.getY(),objekt.getBreite(),objekt.getHöhe());
+        shapeRenderer.end();
+
+        if(batchBeendet){
+            batch.begin();
+        }
     }
 }

@@ -391,15 +391,15 @@ public class Raum implements EinmalProFrame {
                         //Normale Wand
                         felder[x][y]=new Feld
                                 (ermittleFeldtextur(image,x,y), FeldEigenschaft.Keine, this,
-                                        (x+start_x)*16* Spiel.instanz.skalierung,
-                                        (-y-start_y)*16*Spiel.instanz.skalierung,
+                                        (x+start_x)*16,
+                                        (-y-start_y)*16,
                                         false);
                         setzeRotation(felder[x][y],image,x,y);
                     } else if (g==255 && b==0) {
                         //Tür
                         felder[x][y]=new Tür
-                                ((x+start_x)*16* Spiel.instanz.skalierung,
-                                        (-y-start_y)*16*Spiel.instanz.skalierung,
+                                ((x+start_x)*16,
+                                        (-y-start_y)*16,
                                         this);
                         türen.add((Tür)felder[x][y]);
                         setzeRotation(felder[x][y],image,x,y);
@@ -407,9 +407,9 @@ public class Raum implements EinmalProFrame {
                         //FEHLER
                         felder[x][y]=new Feld
                                 (FeldTextur.Unbekannt, FeldEigenschaft.Keine, this,
-                                        (x+start_x)*16* Spiel.instanz.skalierung,
-                                        (-y-start_y)*16*Spiel.instanz.skalierung,
-                                        false);
+                                        (x+start_x)*16,
+                                        (-y-start_y)*16,
+                                        true);
                     }
 
                 }else if(r==255){
@@ -418,46 +418,46 @@ public class Raum implements EinmalProFrame {
                         //Normaler Boden
                         felder[x][y]=new Feld
                                 (FeldTextur.Boden_1, FeldEigenschaft.Keine, this,
-                                (x+start_x)*16* Spiel.instanz.skalierung,
-                                        (-y-start_y)*16*Spiel.instanz.skalierung,
+                                (x+start_x)*16,
+                                        (-y-start_y)*16,
                                         true);
                     } else if (g==0 && b==0) {
                         //Normaler Boden mit Gegnerspawn
                         felder[x][y]=new Feld
                                 (FeldTextur.Boden_1, FeldEigenschaft.Gegnerspawn, this,
-                                        (x+start_x)*16* Spiel.instanz.skalierung,
-                                        (-y-start_y)*16*Spiel.instanz.skalierung,
+                                        (x+start_x)*16,
+                                        (-y-start_y)*16,
                                         true);
                         gegnerSpawns.add(felder[x][y]);
                     } else if (g==255 && b==0) {
                         //Normaler Boden mit Spielerspawn
                         felder[x][y]=new Feld
                                 (FeldTextur.Boden_1, FeldEigenschaft.Spielerspawn, this,
-                                        (x+start_x)*16* Spiel.instanz.skalierung,
-                                        (-y-start_y)*16*Spiel.instanz.skalierung,
+                                        (x+start_x)*16,
+                                        (-y-start_y)*16,
                                         true);
                         if(SpielAnzeige.spieler1==null){
-                            SpielAnzeige.spieler1 = new Spieler((x+start_x)*16* Spiel.instanz.skalierung,
-                                    (-y-start_y)*16*Spiel.instanz.skalierung, this);
+                            SpielAnzeige.spieler1 = new Spieler((x+start_x)*16,
+                                    (-y-start_y)*16, this);
                         }else if(SpielAnzeige.spieler2==null){
-                            SpielAnzeige.spieler2 = new Spieler((x+start_x)*16* Spiel.instanz.skalierung,
-                                    (-y-start_y)*16*Spiel.instanz.skalierung, this);
+                            SpielAnzeige.spieler2 = new Spieler((x+start_x)*16,
+                                    (-y-start_y)*16, this);
                         }
                     }else{
                         //FEHLER
                         felder[x][y]=new Feld
                                 (FeldTextur.Unbekannt, FeldEigenschaft.Keine, this,
-                                        (x+start_x)*16* Spiel.instanz.skalierung,
-                                        (-y-start_y)*16*Spiel.instanz.skalierung,
-                                        false);
+                                        (x+start_x)*16,
+                                        (-y-start_y)*16,
+                                        true);
                     }
                 }else{
                     //FEHLER
                     felder[x][y]=new Feld
                             (FeldTextur.Unbekannt, FeldEigenschaft.Keine, this,
-                                    (x-start_x)*16* Spiel.instanz.skalierung,
-                                    (-y-start_y)*16*Spiel.instanz.skalierung,
-                                    false);
+                                    (x-start_x)*16,
+                                    (-y-start_y)*16,
+                                    true);
                 }
                 ///////////////////////////////////////
 

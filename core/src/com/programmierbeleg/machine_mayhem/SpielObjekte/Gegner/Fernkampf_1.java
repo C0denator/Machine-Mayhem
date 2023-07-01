@@ -14,7 +14,9 @@ public class Fernkampf_1 extends Gegner implements EinmalProFrame {
 
     Animation angriffAnimation;
     private float timer;
-    Random rnd;
+    private Random rnd;
+    private Vector2 bewegungsVektor;
+    private float speed = 30.0f;
 
     public Fernkampf_1(float x, float y, Raum raum){
         super(x,y, raum);
@@ -42,6 +44,7 @@ public class Fernkampf_1 extends Gegner implements EinmalProFrame {
         angriffCooldown=4.0f;
         angriffTimer=angriffCooldown;
         rnd = new Random();
+        bewegungsVektor=new Vector2();
     }
 
     @Override
@@ -51,6 +54,7 @@ public class Fernkampf_1 extends Gegner implements EinmalProFrame {
         }else{
             denke(delta);
         }
+
     }
     @Override
     protected void angriff(float delta) {
@@ -58,16 +62,31 @@ public class Fernkampf_1 extends Gegner implements EinmalProFrame {
     }
     @Override
     public void denke(float delta) {
+        //dieser Gegner hat eine zufällige Bewegung
         if(angriffTimer>0){
             angriffTimer-=delta;
-            int tmpX = rnd.nextInt(200)-100;
-            int tmpY = rnd.nextInt(200)-100;
-            if(!prüfeKollision(raum,new Vector2((float)tmpX,(float)tmpY),delta)){
-                bewegen(tmpX,tmpY,delta);
+
+            if(bewegungsVektor.len2()<20) zufälligeBewegung();
+
+            if(!kollidiertInZukunft(raum,bewegungsVektor,delta)){
+                bewegen(bewegungsVektor,delta);
+            }else{
+                zufälligeBewegung();
             }
+
         }else{
             angriffTimer=angriffCooldown;
             angriffAktiv=true;
         }
+    }
+
+    private void zufälligeBewegung(){
+        //erstellt einen zufälligen, normalisierten Vektor
+        bewegungsVektor.x=rnd.nextFloat()*2.0f-1.0f;
+        bewegungsVektor.y=rnd.nextFloat()*2.0f-1.0f;
+        bewegungsVektor.x/=bewegungsVektor.len2();
+        bewegungsVektor.y/=bewegungsVektor.len2();
+        bewegungsVektor.x*=speed;
+        bewegungsVektor.y*=speed;
     }
 }

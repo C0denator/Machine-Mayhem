@@ -41,7 +41,7 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
 
     private float schussAbklingzeit = 0.5f;
     private float abklingzeitTimer=schussAbklingzeit;
-    private int schussSpeed=500;
+    private int schussSpeed=250;
 
     private Sound schussSound;
 
@@ -51,7 +51,7 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
                 0, true);
         leben=100;
         maxLeben=100;
-        geschwindigkeit=75.0f *Spiel.instanz.skalierung;
+        geschwindigkeit=75.0f;
         bewegungsVektor =new Vector2(0.0f,0.0f);
         aktuellerRaum=raum;
 
@@ -84,7 +84,7 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
                 0, true);
         leben=100;
         maxLeben=100;
-        geschwindigkeit=75.0f *Spiel.instanz.skalierung;
+        geschwindigkeit=75.0f;
         bewegungsVektor =new Vector2(0.0f,0.0f);
         aktuellerRaum=raum;
 
@@ -104,7 +104,6 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
 
     @Override
     public void einmalProFrame(float delta) {
-        System.out.println("Leben"+Integer.toString(leben));
 
         if(leben>0){
             if(aktuellerRaum!=null){
@@ -181,9 +180,9 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
     public void prüfeEingabe(float delta){
 
         if(Gdx.input.isButtonJustPressed(Input.Buttons.FORWARD) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_ADD)){
-            SpielAnzeige.instanz.setZoomLevel(SpielAnzeige.instanz.getZoomLevel()-0.25f);
+            SpielAnzeige.instanz.setZoomLevel(SpielAnzeige.instanz.getZoomLevel()-0.1f);
         }else if(Gdx.input.isButtonJustPressed(Input.Buttons.BACK ) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_SUBTRACT)){
-            SpielAnzeige.instanz.setZoomLevel(SpielAnzeige.instanz.getZoomLevel()+0.25f);
+            SpielAnzeige.instanz.setZoomLevel(SpielAnzeige.instanz.getZoomLevel()+0.1f);
         }
 
         bewegungsVektor.x=0.0f;
@@ -213,16 +212,16 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
             //es wird geprüft ob der Spieler sich in die gewünschte Richtung bewegen kann
             //falls nicht wird geprüft ob der Spieler sich an der Wand entlang bewegen kann
             //es werden also 3 Vektoren geprüft
-            if(prüfeKollision(aktuellerRaum, vorherigerRaum, bewegungsVektor,delta)){
+            if(!kollidiertInZukunft(aktuellerRaum,vorherigerRaum,bewegungsVektor,delta)){
                 bewegen(bewegungsVektor,delta);
                 if(laufAnimation.isPausiert()) laufAnimation.starteVonVorn();
-            }else if(prüfeKollision(aktuellerRaum, vorherigerRaum, new Vector2(bewegungsVektor.x,0.0f),delta)){
+            }else if(!kollidiertInZukunft(aktuellerRaum, vorherigerRaum, new Vector2(bewegungsVektor.x,0.0f),delta)){
                 bewegen(bewegungsVektor.x,0.0f, delta);
                 if(laufAnimation.isPausiert()) laufAnimation.starteVonVorn();
-            }else if(prüfeKollision(aktuellerRaum, vorherigerRaum, new Vector2(0.0f,bewegungsVektor.y),delta)) {
+            }else if(!kollidiertInZukunft(aktuellerRaum, vorherigerRaum, new Vector2(0.0f,bewegungsVektor.y),delta)) {
                 bewegen(0.0f,bewegungsVektor.y, delta);
                 if(laufAnimation.isPausiert()) laufAnimation.starteVonVorn();
-            } else if (prüfeKollision(aktuellerRaum, vorherigerRaum, new Vector2(0.1f, 0.1f),delta)) {
+            } else if (!kollidiertInZukunft(aktuellerRaum, vorherigerRaum, new Vector2(0.1f, 0.1f),delta)) {
                 bewegen(0.1f, 0.1f, delta);
                 if(laufAnimation.isPausiert()) laufAnimation.starteVonVorn();
             }else{
@@ -232,44 +231,11 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
 
             //x=(float)(Math.round(x*10.0)/10.0f);
             //y=(float)(Math.round(y*10.0)/10.0f);
-            System.out.println("X: "+x+"| Y: "+y);
+            //System.out.println("X: "+x+"| Y: "+y);
         }else{
             if(!laufAnimation.isPausiert()) laufAnimation.stop();
             setTextur(Spiel.instanz.atlas.findRegion("Spieler_idle"));
         }
-    }
-
-    private boolean prüfeKollision(Raum aktuellerRaum, Raum vorherigerRaum, Vector2 v, float delta){
-        //prüft ob die zukünftigen Felder, die der Spieler berühren wird, laufbar sind, oder nicht
-        //true: Bewegung erlaubt
-
-        //Ein imaginärer Spieler -> mit diesem wird die Kollision geprüft
-        SpielObjekt zukünftigerSpieler = new SpielObjekt(x,y, 15, 15, 0, false);
-
-        zukünftigerSpieler.bewegen(v,delta);
-
-        //alle Felder finden, die berührt werden
-        //falls eines davon nicht laufbar ist -> false
-        for(int x=0; x<aktuellerRaum.getFelder().length; x++){
-            for(int y=0; y<aktuellerRaum.getFelder()[x].length;y++){
-                if(zukünftigerSpieler.kollidiertMit(aktuellerRaum.getFelder()[x][y]) && !aktuellerRaum.getFelder()[x][y].isLaufbar()){
-                    return false;
-                }
-
-            }
-        }
-
-        if(vorherigerRaum!=null){
-            for(int x=0; x<vorherigerRaum.getFelder().length; x++){
-                for(int y=0; y<vorherigerRaum.getFelder()[x].length;y++){
-                    if(zukünftigerSpieler.kollidiertMit(vorherigerRaum.getFelder()[x][y]) && !vorherigerRaum.getFelder()[x][y].isLaufbar()){
-                        return false;
-                    }
-                }
-            }
-        }
-
-        return true;
     }
 
     public void schauAufMauzeiger(){
