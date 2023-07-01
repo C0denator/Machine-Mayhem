@@ -9,14 +9,18 @@ import com.programmierbeleg.machine_mayhem.Welt.Raum;
 
 import java.util.ArrayList;
 
-public abstract class Gegner extends SpielObjekt implements EinmalProFrame {
+public abstract class Gegner extends SpielObjekt {
     protected int leben;
     protected int maxLeben;
     protected int laufGeschwindigkeit;
 
-    private Raum raum;
+    protected Raum raum;
 
-    private float sekundenBisNächsterAngriff;
+    protected float angriffCooldown;
+    protected float angriffTimer;
+
+    protected boolean angriffAktiv;
+
 
     public Gegner (float x, float y, Raum raum) {
         super (x, y,
@@ -24,16 +28,6 @@ public abstract class Gegner extends SpielObjekt implements EinmalProFrame {
                 Spiel.instanz.atlas.findRegion("robot",1).getRegionHeight(),
                 0, true);
         this.raum=raum;
-
-        if(SpielAnzeige.physikObjekte==null){
-            System.err.println("Fehler: SpielAnzeige.physikObjekte ist null");
-        }else{
-            SpielAnzeige.physikObjekte.add(this);
-        }
-    }
-
-    @Override
-    public void einmalProFrame(float delta) {
 
     }
 
@@ -49,8 +43,8 @@ public abstract class Gegner extends SpielObjekt implements EinmalProFrame {
         LöschKlasse.lösche(this);
         raum.setGegnerAnzahl(raum.getGegnerAnzahl()-1);
     }
-    protected abstract boolean angriff();
-    public abstract void denke();
+    protected abstract void angriff(float delta);
+    public abstract void denke(float delta);
 
 
 

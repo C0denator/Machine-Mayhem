@@ -57,7 +57,7 @@ public class SpielAnzeige extends ScreenAdapter {
         }
 
         musik=Gdx.audio.newSound(Gdx.files.internal("Sounds/musik_2.mp3"));
-        musik.loop(0.15f);
+        musik.loop(0.2f);
 
         gameOver=false;
 

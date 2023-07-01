@@ -67,9 +67,9 @@ public class Raum implements EinmalProFrame {
     public void einmalProFrame(float delta) {
         if(sichtbar && kampfAktiv){
             if(SpielAnzeige.gegner.size()>0){
-                for(Gegner g : SpielAnzeige.gegner){
-                    g.denke();
-                }
+//                for(Gegner g : SpielAnzeige.gegner){
+//                    g.denke(delta);
+//                }
             }else{
                 if(gegnerAnzahl>0 && timer<=0){
                     timer=2.0f;

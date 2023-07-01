@@ -245,9 +245,7 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
 
         //Ein imaginärer Spieler -> mit diesem wird die Kollision geprüft
         SpielObjekt zukünftigerSpieler = new SpielObjekt(x,y, 15, 15, 0, false);
-        //Spieler zukünftigerSpieler = new Spieler(x,y,aktuellerRaum,false);
-        //zukünftigerSpieler.setBreite(kollisionsBreite);
-        //zukünftigerSpieler.setHöhe(kollisionsHöhe);
+
         zukünftigerSpieler.bewegen(v,delta);
 
         //alle Felder finden, die berührt werden

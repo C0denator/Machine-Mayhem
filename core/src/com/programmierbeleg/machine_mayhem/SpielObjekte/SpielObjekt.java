@@ -44,6 +44,24 @@ public class SpielObjekt {
         this.y+=y*delta;
     }
 
+    public boolean prüfeKollision(Raum raum, Vector2 v, float delta){
+
+        SpielObjekt zukünftigesObjekt = new SpielObjekt(x,y, breite, höhe, winkel, false);
+
+        zukünftigesObjekt.bewegen(v,delta);
+
+        for(int x=0; x<raum.getFelder().length; x++){
+            for(int y=0; y<raum.getFelder()[x].length;y++){
+                if(zukünftigesObjekt.kollidiertMit(raum.getFelder()[x][y]) && !raum.getFelder()[x][y].isLaufbar()){
+                    return false;
+                }
+
+            }
+        }
+
+        return true;
+    }
+
     public boolean kollidiertMit(SpielObjekt o){
         //true: Objekte berühren sich
         //false: sie tun es nicht
