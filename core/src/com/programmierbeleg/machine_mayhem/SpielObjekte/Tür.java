@@ -11,27 +11,48 @@ public class Tür extends Feld {
 
     Animation öffnen;
     Animation schließen;
+    private boolean bossTür;
 
-    public Tür(float x, float y, Raum raum){
-        super(Texturen.TürOffen, FeldEigenschaft.Tür,raum,x,y,true);
+    public Tür(float x, float y, Raum raum, boolean bossTür){
+        super(Texturen.TürZu, FeldEigenschaft.Tür,raum,x,y,true);
+        this.bossTür=bossTür;
+        if(bossTür){
+            textur=Spiel.instanz.atlas.findRegion("bossTür_verschlossen");
 
-        öffnen=new Animation(this,new TextureRegion[]{
-                Spiel.instanz.atlas.findRegion("tür1_zu"),
-                Spiel.instanz.atlas.findRegion("tür1",1),
-                Spiel.instanz.atlas.findRegion("tür1",2),
-                Spiel.instanz.atlas.findRegion("tür1",3),
-                Spiel.instanz.atlas.findRegion("tür1",4),
-                Spiel.instanz.atlas.findRegion("tür1_offen"),
-        },0.1f,false);
-        schließen=new Animation(this,new TextureRegion[]{
-                Spiel.instanz.atlas.findRegion("tür1_offen"),
-                Spiel.instanz.atlas.findRegion("tür1",4),
-                Spiel.instanz.atlas.findRegion("tür1",3),
-                Spiel.instanz.atlas.findRegion("tür1",2),
-                Spiel.instanz.atlas.findRegion("tür1",1),
-                Spiel.instanz.atlas.findRegion("tür1_zu"),
-        },0.1f,false);
-
+            öffnen=new Animation(this,new TextureRegion[]{
+                    Spiel.instanz.atlas.findRegion("bossTür_zu"),
+                    Spiel.instanz.atlas.findRegion("bossTür",1),
+                    Spiel.instanz.atlas.findRegion("bossTür",2),
+                    Spiel.instanz.atlas.findRegion("bossTür",3),
+                    Spiel.instanz.atlas.findRegion("bossTür",4),
+                    Spiel.instanz.atlas.findRegion("bossTür_offen"),
+            },0.1f,false);
+            schließen=new Animation(this,new TextureRegion[]{
+                    Spiel.instanz.atlas.findRegion("bossTür_offen"),
+                    Spiel.instanz.atlas.findRegion("bossTür",4),
+                    Spiel.instanz.atlas.findRegion("bossTür",3),
+                    Spiel.instanz.atlas.findRegion("bossTür",2),
+                    Spiel.instanz.atlas.findRegion("bossTür",1),
+                    Spiel.instanz.atlas.findRegion("bossTür_zu"),
+            },0.1f,false);
+        }else{
+            öffnen=new Animation(this,new TextureRegion[]{
+                    Spiel.instanz.atlas.findRegion("tür1_zu"),
+                    Spiel.instanz.atlas.findRegion("tür1",1),
+                    Spiel.instanz.atlas.findRegion("tür1",2),
+                    Spiel.instanz.atlas.findRegion("tür1",3),
+                    Spiel.instanz.atlas.findRegion("tür1",4),
+                    Spiel.instanz.atlas.findRegion("tür1_offen"),
+            },0.1f,false);
+            schließen=new Animation(this,new TextureRegion[]{
+                    Spiel.instanz.atlas.findRegion("tür1_offen"),
+                    Spiel.instanz.atlas.findRegion("tür1",4),
+                    Spiel.instanz.atlas.findRegion("tür1",3),
+                    Spiel.instanz.atlas.findRegion("tür1",2),
+                    Spiel.instanz.atlas.findRegion("tür1",1),
+                    Spiel.instanz.atlas.findRegion("tür1_zu"),
+            },0.1f,false);
+        }
     }
 
     public void öffnen(){
@@ -42,5 +63,34 @@ public class Tür extends Feld {
     public void schließen(){
         schließen.starteVonVorn();
         setLaufbar(false);
+    }
+
+    public void wandleInBossTürUm(){
+        bossTür=true;
+        textur=Spiel.instanz.atlas.findRegion("bossTür_verschlossen");
+        öffnen=new Animation(this,new TextureRegion[]{
+                Spiel.instanz.atlas.findRegion("bossTür_zu"),
+                Spiel.instanz.atlas.findRegion("bossTür",1),
+                Spiel.instanz.atlas.findRegion("bossTür",2),
+                Spiel.instanz.atlas.findRegion("bossTür",3),
+                Spiel.instanz.atlas.findRegion("bossTür",4),
+                Spiel.instanz.atlas.findRegion("bossTür_offen"),
+        },0.1f,false);
+        schließen=new Animation(this,new TextureRegion[]{
+                Spiel.instanz.atlas.findRegion("bossTür_offen"),
+                Spiel.instanz.atlas.findRegion("bossTür",4),
+                Spiel.instanz.atlas.findRegion("bossTür",3),
+                Spiel.instanz.atlas.findRegion("bossTür",2),
+                Spiel.instanz.atlas.findRegion("bossTür",1),
+                Spiel.instanz.atlas.findRegion("bossTür_zu"),
+        },0.1f,false);
+    }
+
+    public boolean isBossTür() {
+        return bossTür;
+    }
+
+    public void setBossTür(boolean bossTür) {
+        this.bossTür = bossTür;
     }
 }

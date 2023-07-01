@@ -2,7 +2,6 @@ package com.programmierbeleg.machine_mayhem.Anzeigen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
@@ -11,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.programmierbeleg.machine_mayhem.Daten.Texturen;
 import com.programmierbeleg.machine_mayhem.Interfaces.EinmalProFrame;
 import com.programmierbeleg.machine_mayhem.Sonstiges.LöschKlasse;
 import com.programmierbeleg.machine_mayhem.Spiel;
@@ -24,7 +24,8 @@ import java.util.ArrayList;
 public class SpielAnzeige extends ScreenAdapter {
 
 
-    private SpriteBatch batch;
+    private SpriteBatch kameraBatch;
+    private SpriteBatch bildschirmBatch;
 
     private ShapeRenderer shapeRenderer;
     public static ArrayList<Raum> räume;
@@ -56,11 +57,12 @@ public class SpielAnzeige extends ScreenAdapter {
         }
 
         musik=Gdx.audio.newSound(Gdx.files.internal("Sounds/musik_1.mp3"));
-        musik.loop(0.1f);
+        musik.loop(0.05f);
 
         gameOver=false;
 
-        batch=new SpriteBatch();
+        kameraBatch =new SpriteBatch();
+        bildschirmBatch= new SpriteBatch();
         shapeRenderer=new ShapeRenderer();
         camera=new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         zoomLevel=0.5f;
@@ -124,9 +126,9 @@ public class SpielAnzeige extends ScreenAdapter {
 
         Gdx.gl.glClearColor(0.4f,0.4f,0.4f,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        batch.enableBlending();
-        batch.setProjectionMatrix(camera.combined);
-        batch.begin();
+        kameraBatch.enableBlending();
+        kameraBatch.setProjectionMatrix(camera.combined);
+        kameraBatch.begin();
         ////////////////////////////////////////////////////////////
 
 
@@ -135,7 +137,7 @@ public class SpielAnzeige extends ScreenAdapter {
                 if(räume.get(i).isSichtbar()){
                     for(int x=0; x<räume.get(i).getFelder().length; x++){
                         for(int y=0; y<räume.get(i).getFelder()[x].length; y++){
-                            batch.draw(räume.get(i).getFelder()[x][y].getTextur(),
+                            kameraBatch.draw(räume.get(i).getFelder()[x][y].getTextur(),
                                     räume.get(i).getFelder()[x][y].getX(),
                                     räume.get(i).getFelder()[x][y].getY(),
                                     räume.get(i).getFelder()[x][y].getBreite()/2,
@@ -152,7 +154,7 @@ public class SpielAnzeige extends ScreenAdapter {
             for (int i = 0; i < projektile.size(); i++) {
                 if(projektile.get(i).isSichtbar()) {
                     //batch.draw(spieler.get(i).getTexturen()[0], spieler.get(i).getX(), spieler.get(i).getY(), spieler.get(i).getBreite(), spieler.get(i).getHöhe());
-                    batch.draw(projektile.get(i).getTextur(), projektile.get(i).getX(), projektile.get(i).getY(),
+                    kameraBatch.draw(projektile.get(i).getTextur(), projektile.get(i).getX(), projektile.get(i).getY(),
                             projektile.get(i).getBreite()/2, projektile.get(i).getHöhe()/2,
                             projektile.get(i).getBreite(), projektile.get(i).getHöhe(), 1.0f, 1.0f, projektile.get(i).getWinkel());
 
@@ -163,28 +165,28 @@ public class SpielAnzeige extends ScreenAdapter {
         if(gegner!=null) {
             for (int i = 0; i < gegner.size(); i++) {
                 if(gegner.get(i).isSichtbar()) {
-                    batch.draw(gegner.get(i).getTextur(), gegner.get(i).getX(), gegner.get(i).getY(), gegner.get(i).getBreite(), gegner.get(i).getHöhe());
+                    kameraBatch.draw(gegner.get(i).getTextur(), gegner.get(i).getX(), gegner.get(i).getY(), gegner.get(i).getBreite(), gegner.get(i).getHöhe());
                     //zeichneKollisionen(gegner.get(i));
                 }
 
             }
         }
         for(Item i : items){
-            batch.draw(i.getTextur(),i.getX(),i.getY(),i.getBreite(),i.getHöhe());
+            kameraBatch.draw(i.getTextur(),i.getX(),i.getY(),i.getBreite(),i.getHöhe());
         }
         if(spieler1!=null) {
-            batch.draw(spieler1.getTextur(), spieler1.getX(), spieler1.getY(),
+            kameraBatch.draw(spieler1.getTextur(), spieler1.getX(), spieler1.getY(),
                     spieler1.getBreite()/2, spieler1.getHöhe()/2,
                     spieler1.getBreite(), spieler1.getHöhe(), 1.0f, 1.0f, spieler1.getWinkelInt());
         }
         if(spieler2!=null) {
-            batch.draw(spieler2.getTextur(), spieler2.getX(), spieler2.getY(),
+            kameraBatch.draw(spieler2.getTextur(), spieler2.getX(), spieler2.getY(),
                     spieler2.getBreite()/2, spieler2.getHöhe()/2,
                     spieler2.getBreite(), spieler2.getHöhe(), 1.0f, 1.0f, spieler2.getWinkelInt());
         }
 
         ////////////////////////////////////////////////////////////
-        batch.end();
+        kameraBatch.end();
 
 
         ///Ausblenden bei GameOver
@@ -248,7 +250,7 @@ public class SpielAnzeige extends ScreenAdapter {
 
             shapeRenderer=new ShapeRenderer();
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.setColor(0.3f,0.3f,0.3f,1.0f);
+            shapeRenderer.setColor(0.0f,0.0f,0.0f,1.0f);
             shapeRenderer.rect(lPosX,lPosY,lBreite,lHöhe);
 
             shapeRenderer.setColor(1.0f,0.0f,0.0f,1.0f);
@@ -260,6 +262,15 @@ public class SpielAnzeige extends ScreenAdapter {
             shapeRenderer.rect(lPosX+lRand,lPosY+lRand, breiteGrün,lHöhe-(lRand*2));
 
             shapeRenderer.end();
+
+            //Schlüssel zeichnen
+            bildschirmBatch.begin();
+            for(int i=0; i<spieler1.getAnzahlSchlüssel(); i++){
+                bildschirmBatch.draw(Texturen.Schlüssel.getTexturRegion(), 25+(i*50), Gdx.graphics.getHeight()-125,
+                        32, 32,
+                        64, 64, 1.0f, 1.0f, 45);
+            }
+            bildschirmBatch.end();
         }
         ////
     }
@@ -314,8 +325,8 @@ public class SpielAnzeige extends ScreenAdapter {
     public void zeichneKollisionen(SpielObjekt objekt){
         //für Debug-Zwecke
         boolean batchBeendet=false;
-        if(batch.isDrawing()){
-            batch.end();
+        if(kameraBatch.isDrawing()){
+            kameraBatch.end();
             batchBeendet=true;
         }
         shapeRenderer.setProjectionMatrix(camera.combined);
@@ -325,7 +336,7 @@ public class SpielAnzeige extends ScreenAdapter {
         shapeRenderer.end();
 
         if(batchBeendet){
-            batch.begin();
+            kameraBatch.begin();
         }
     }
 }

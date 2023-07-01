@@ -15,6 +15,8 @@ public class Welt {
     private Raum startraum;
     private int raumAnzahl;
     private int maxRaumAnzahl;
+
+    private Raum letzterRaum;
     private File räumeOrdner;
     //der Ordner mit allen Räumen
     private File[] räume;
@@ -29,6 +31,7 @@ public class Welt {
         this.maxRaumAnzahl=maxRaumAnzahl;
         raumAnzahl=0;
         generiereWelt();
+        fügeSchlüsselHinzu();
     }
 
     public void generiereWelt() {
@@ -42,13 +45,23 @@ public class Welt {
 
             while(raumAnzahl<maxRaumAnzahl){
 
+                BufferedImage image;
+
                 //Norden
                 randomInt=rnd.nextInt(räume.length);
                 if(raumAnzahl<maxRaumAnzahl && !derzeitigerRaum.hasNord()){
-                    derzeitigerRaum.fügeRaumAn(ImageIO.read(räume[randomInt]), Richtung.Nord);
+
+                    if(raumAnzahl==maxRaumAnzahl-1){
+                        image=ImageIO.read(new File("assets/bossRaum.png"));
+                    }else{
+                        image=ImageIO.read(räume[randomInt]);
+                    }
+
+                    derzeitigerRaum.fügeRaumAn(image, Richtung.Nord);
 
                     if(istRaumKollisionsfrei(derzeitigerRaum.getRaumNord(),SpielAnzeige.räume)){
                         SpielAnzeige.räume.add(derzeitigerRaum.getRaumNord());
+                        letzterRaum=derzeitigerRaum.getRaumNord();
                         raumAnzahl++;
                     }else{
                         System.out.println("Kollision entdeckt");
@@ -60,10 +73,18 @@ public class Welt {
                 //Süden
                 randomInt=rnd.nextInt(räume.length);
                 if(raumAnzahl<maxRaumAnzahl && !derzeitigerRaum.hasSüd()){
-                    derzeitigerRaum.fügeRaumAn(ImageIO.read(räume[randomInt]), Richtung.Süd);
+
+                    if(raumAnzahl==maxRaumAnzahl-1){
+                        image=ImageIO.read(new File("assets/bossRaum.png"));
+                    }else{
+                        image=ImageIO.read(räume[randomInt]);
+                    }
+
+                    derzeitigerRaum.fügeRaumAn(image, Richtung.Süd);
 
                     if(istRaumKollisionsfrei(derzeitigerRaum.getRaumSüd(),SpielAnzeige.räume)){
                         SpielAnzeige.räume.add(derzeitigerRaum.getRaumSüd());
+                        letzterRaum=derzeitigerRaum.getRaumSüd();
                         raumAnzahl++;
                     }else{
                         System.out.println("Kollision entdeckt");
@@ -75,10 +96,18 @@ public class Welt {
                 //Osten
                 randomInt=rnd.nextInt(räume.length);
                 if(raumAnzahl<maxRaumAnzahl && !derzeitigerRaum.hasOst()){
-                    derzeitigerRaum.fügeRaumAn(ImageIO.read(räume[randomInt]), Richtung.Ost);
+
+                    if(raumAnzahl==maxRaumAnzahl-1){
+                        image=ImageIO.read(new File("assets/bossRaum.png"));
+                    }else{
+                        image=ImageIO.read(räume[randomInt]);
+                    }
+
+                    derzeitigerRaum.fügeRaumAn(image, Richtung.Ost);
 
                     if(istRaumKollisionsfrei(derzeitigerRaum.getRaumOst(),SpielAnzeige.räume)){
                         SpielAnzeige.räume.add(derzeitigerRaum.getRaumOst());
+                        letzterRaum=derzeitigerRaum.getRaumOst();
                         raumAnzahl++;
                     }else{
                         System.out.println("Kollision entdeckt");
@@ -90,10 +119,18 @@ public class Welt {
                 //Westen
                 randomInt=rnd.nextInt(räume.length);
                 if(raumAnzahl<maxRaumAnzahl && !derzeitigerRaum.hasWest()){
-                    derzeitigerRaum.fügeRaumAn(ImageIO.read(räume[randomInt]), Richtung.West);
+
+                    if(raumAnzahl==maxRaumAnzahl-1){
+                        image=ImageIO.read(new File("assets/bossRaum.png"));
+                    }else{
+                        image=ImageIO.read(räume[randomInt]);
+                    }
+
+                    derzeitigerRaum.fügeRaumAn(image, Richtung.West);
 
                     if(istRaumKollisionsfrei(derzeitigerRaum.getRaumWest(),SpielAnzeige.räume)){
                         SpielAnzeige.räume.add(derzeitigerRaum.getRaumWest());
+                        letzterRaum=derzeitigerRaum.getRaumWest();
                         raumAnzahl++;
                     }else{
                         System.out.println("Kollision entdeckt");
@@ -135,10 +172,36 @@ public class Welt {
             System.err.println("Fehler beim Laden der Raum-Dateien");
         }
 
+        letzterRaum.setBossRaum(true);
+        if(letzterRaum.hasNord()){
+            letzterRaum.getRaumNord().findeTürObjekt(Richtung.Süd).wandleInBossTürUm();
+        }
+        if(letzterRaum.hasSüd()){
+            letzterRaum.getRaumSüd().findeTürObjekt(Richtung.Nord).wandleInBossTürUm();
+        }
+        if(letzterRaum.hasOst()){
+            letzterRaum.getRaumOst().findeTürObjekt(Richtung.West).wandleInBossTürUm();
+        }
+        if(letzterRaum.hasWest()){
+            letzterRaum.getRaumWest().findeTürObjekt(Richtung.Ost).wandleInBossTürUm();
+        }
+
         startraum.schließeTüren();
         SpielAnzeige.spieler1.ändereAktuellenRaum(startraum);
         if(SpielAnzeige.spieler2!=null)  SpielAnzeige.spieler2.ändereAktuellenRaum(startraum);
 
+    }
+
+    private void fügeSchlüsselHinzu(){
+        int anzahlSchlüssel=0;
+        do{
+            Random rnd = new Random();
+            int tmp = rnd.nextInt(SpielAnzeige.räume.size());
+            if(SpielAnzeige.räume.get(tmp)!=null && !SpielAnzeige.räume.get(tmp).hatSchlüssel() && !SpielAnzeige.räume.get(tmp).equals(startraum)){
+                SpielAnzeige.räume.get(tmp).setSchlüssel(true);
+                anzahlSchlüssel++;
+            }
+        }while(anzahlSchlüssel<3);
     }
 
     private boolean istRaumKollisionsfrei(Raum raum, ArrayList<Raum> räume){

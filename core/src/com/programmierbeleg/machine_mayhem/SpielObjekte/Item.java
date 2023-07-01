@@ -37,7 +37,9 @@ public class Item extends SpielObjekt implements EinmalProFrame {
         if(kollidiertMit(SpielAnzeige.spieler1)){
             switch (itemEigenschaft){
                 case Batterie:
-                    SpielAnzeige.spieler1.heilen(25);
+                    SpielAnzeige.spieler1.heilen(33);
+                case Schlüssel:
+                    SpielAnzeige.spieler1.setAnzahlSchlüssel(SpielAnzeige.spieler1.getAnzahlSchlüssel()+1);
             }
             LöschKlasse.lösche(this);
         }

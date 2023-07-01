@@ -32,9 +32,11 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
     private Animation laufAnimation;
 
     //Angriffsparameter
-    private int schaden = 10;
+    private int schaden = 100;
     private int chanceAufItem;
     //0-100%
+
+    private int anzahlSchlüssel;
 
 
 
@@ -76,6 +78,7 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
 
         schussSound=Gdx.audio.newSound(Gdx.files.internal("Sounds/laser.wav"));
         chanceAufItem=0;
+        anzahlSchlüssel=0;
     }
 
     private Spieler(float x, float y, Raum raum, boolean fake){
@@ -104,7 +107,6 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
 
     @Override
     public void einmalProFrame(float delta) {
-        System.out.println("Chance auf Item: "+Integer.toString(chanceAufItem));
 
         if(leben>0){
             if(aktuellerRaum!=null){
@@ -304,5 +306,13 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
 
     public void setChanceAufItem(int chanceAufItem) {
         this.chanceAufItem = chanceAufItem;
+    }
+
+    public int getAnzahlSchlüssel() {
+        return anzahlSchlüssel;
+    }
+
+    public void setAnzahlSchlüssel(int anzahlSchlüssel) {
+        this.anzahlSchlüssel = anzahlSchlüssel;
     }
 }

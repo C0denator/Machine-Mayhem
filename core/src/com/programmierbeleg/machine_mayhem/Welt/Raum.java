@@ -42,12 +42,16 @@ public class Raum implements EinmalProFrame {
     private boolean sichtbar;
     private boolean bossRaum;
     private boolean kampfAktiv;
+    private boolean hatSchlüssel;
+    //soll ein Schlüssel nach Besiegen der Gegner gespawnt werden?
 
     float timer = 0.0f;
 
     public Raum(BufferedImage image, Vector2 vector2){
         sichtbar=false;
         kampfAktiv=false;
+        bossRaum=false;
+        hatSchlüssel=false;
         ID= ID_Vergeber.instanz.vergebeID();
         start_x=(int)vector2.x;
         start_y=(int)vector2.y;
@@ -82,13 +86,19 @@ public class Raum implements EinmalProFrame {
                     getRaumOst().öffneTüren();
                 }
 
-                Random rnd = new Random();
-                if(SpielAnzeige.spieler1.getChanceAufItem()>=(rnd.nextInt(99)+1)){
-                    SpielAnzeige.spieler1.setChanceAufItem(0);
-                    SpielAnzeige.items.add(new Item(ItemEigenschaft.Batterie,
+                if(hatSchlüssel){
+                    SpielAnzeige.items.add(new Item(ItemEigenschaft.Schlüssel,
                             positionLetzterGegner.x, positionLetzterGegner.y));
-                }else{
                     SpielAnzeige.spieler1.setChanceAufItem(SpielAnzeige.spieler1.getChanceAufItem()+25);
+                }else{
+                    Random rnd = new Random();
+                    if(SpielAnzeige.spieler1.getChanceAufItem()>=(rnd.nextInt(99)+1)){
+                        SpielAnzeige.spieler1.setChanceAufItem(0);
+                        SpielAnzeige.items.add(new Item(ItemEigenschaft.Batterie,
+                                positionLetzterGegner.x, positionLetzterGegner.y));
+                    }else{
+                        SpielAnzeige.spieler1.setChanceAufItem(SpielAnzeige.spieler1.getChanceAufItem()+25);
+                    }
                 }
             }
         }
@@ -272,6 +282,8 @@ public class Raum implements EinmalProFrame {
                 }
             default:
                 throw new IllegalArgumentException("Ungülige Richtung");
+                //System.err.println("Ungültige Richtung");
+                //return new Vector2();
         }
     }
 
@@ -401,7 +413,7 @@ public class Raum implements EinmalProFrame {
                         felder[x][y]=new Tür
                                 ((x+start_x)*16,
                                         (-y-start_y)*16,
-                                        this);
+                                        this, false);
                         türen.add((Tür)felder[x][y]);
                         setzeRotation(felder[x][y],image,x,y);
                     } else{
@@ -713,5 +725,13 @@ public class Raum implements EinmalProFrame {
         }else{
             return false;
         }
+    }
+
+    public boolean hatSchlüssel() {
+        return hatSchlüssel;
+    }
+
+    public void setSchlüssel(boolean hatSchlüssel) {
+        this.hatSchlüssel = hatSchlüssel;
     }
 }
