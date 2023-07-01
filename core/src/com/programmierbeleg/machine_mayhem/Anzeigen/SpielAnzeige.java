@@ -165,7 +165,7 @@ public class SpielAnzeige extends ScreenAdapter {
             for (int i = 0; i < gegner.size(); i++) {
                 if(gegner.get(i).isSichtbar()) {
                     batch.draw(gegner.get(i).getTextur(), gegner.get(i).getX(), gegner.get(i).getY(), gegner.get(i).getBreite(), gegner.get(i).getHöhe());
-                    zeichneKollisionen(gegner.get(i));
+                    //zeichneKollisionen(gegner.get(i));
                 }
 
             }

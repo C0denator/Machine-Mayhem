@@ -11,6 +11,7 @@ import com.programmierbeleg.machine_mayhem.Spiel;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Feld;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner.Fernkampf_1;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner.Gegner;
+import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner.Schrot_1;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.SpielObjekt;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Spieler;
 import com.badlogic.gdx.math.Rectangle;
@@ -18,6 +19,7 @@ import com.programmierbeleg.machine_mayhem.SpielObjekte.Tür;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Raum implements EinmalProFrame {
     private Raum RaumNord;
@@ -76,8 +78,13 @@ public class Raum implements EinmalProFrame {
                     int tmp = gegnerAnzahl;
                     for(Feld f : gegnerSpawns){
                         if(tmp>0){
-                            Gegner g = new Fernkampf_1(f.getX(),f.getY(), this);
-                            SpielAnzeige.gegner.add(g);
+                            if(new Random().nextInt(2)==0){
+                                Gegner g = new Fernkampf_1(f.getX(),f.getY(), this);
+                                SpielAnzeige.gegner.add(g);
+                            }else{
+                                Gegner g = new Schrot_1(f.getX(),f.getY(), this);
+                                SpielAnzeige.gegner.add(g);
+                            }
                             tmp--;
                         }
                     }

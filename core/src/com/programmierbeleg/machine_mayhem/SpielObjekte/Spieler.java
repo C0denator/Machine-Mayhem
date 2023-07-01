@@ -127,7 +127,7 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
         abklingzeitTimer-=delta;
         if(abklingzeitTimer<=0){
             if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)){
-                SpielAnzeige.projektile.add(new Projektil(x+breite/2,y, winkel,Spiel.instanz.atlas.findRegion("laser_gelb",1),25, new Vector2(
+                SpielAnzeige.projektile.add(new Projektil(x+breite/2,y, winkel,Spiel.instanz.atlas.findRegion("laser_gelb",1),10, new Vector2(
                         (float) (-Math.sin( (winkel/180) * Math.PI)) * schussSpeed,
                         (float) (Math.cos( (winkel/180) * Math.PI)) * schussSpeed),
                         aktuellerRaum, false));
