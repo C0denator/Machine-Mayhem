@@ -4,219 +4,233 @@ size: 512, 512
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
+Batterie
+  rotate: false
+  xy: 279, 344
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
 Fragezeichen
   rotate: false
-  xy: 2, 74
+  xy: 2, 50
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+Schlüssel
+  rotate: false
+  xy: 21, 68
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 Spieler_idle
   rotate: false
-  xy: 260, 332
+  xy: 40, 86
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 Spieler_lauf1
   rotate: false
-  xy: 2, 56
+  xy: 260, 308
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 Spieler_lauf2
   rotate: false
-  xy: 20, 74
+  xy: 279, 326
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 badlogic
   rotate: false
-  xy: 2, 92
+  xy: 2, 104
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
 boden
   rotate: false
-  xy: 260, 314
+  xy: 297, 344
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 laser_gelb
   rotate: false
-  xy: 278, 284
+  xy: 315, 332
   size: 2, 10
   orig: 2, 10
   offset: 0, 0
   index: 1
 laser_gelb
   rotate: false
-  xy: 296, 302
+  xy: 333, 350
   size: 2, 10
   orig: 2, 10
   offset: 0, 0
   index: 2
 laser_rot
   rotate: false
-  xy: 314, 320
+  xy: 2, 2
   size: 2, 10
   orig: 2, 10
   offset: 0, 0
   index: 1
 laser_rot
   rotate: false
-  xy: 332, 338
+  xy: 20, 20
   size: 2, 10
   orig: 2, 10
   offset: 0, 0
   index: 2
 robot
   rotate: false
-  xy: 278, 332
+  xy: 2, 32
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 1
 robot
   rotate: false
-  xy: 2, 38
+  xy: 20, 50
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 2
 robot
   rotate: false
-  xy: 20, 56
+  xy: 39, 68
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 3
 schrot_idle
   rotate: false
-  xy: 38, 74
-  size: 16, 16
-  orig: 16, 16
+  xy: 2, 86
+  size: 17, 16
+  orig: 17, 16
   offset: 0, 0
   index: -1
 schrot_recharge
   rotate: false
-  xy: 260, 296
-  size: 16, 16
-  orig: 16, 16
+  xy: 260, 344
+  size: 17, 16
+  orig: 17, 16
   offset: 0, 0
   index: 1
 schrot_recharge
   rotate: false
-  xy: 278, 314
-  size: 16, 16
-  orig: 16, 16
+  xy: 2, 68
+  size: 17, 16
+  orig: 17, 16
   offset: 0, 0
   index: 2
 schrot_recharge
   rotate: false
-  xy: 296, 332
-  size: 16, 16
-  orig: 16, 16
+  xy: 21, 86
+  size: 17, 16
+  orig: 17, 16
   offset: 0, 0
   index: 3
 schrot_recharge
   rotate: false
-  xy: 2, 20
-  size: 16, 16
-  orig: 16, 16
+  xy: 260, 326
+  size: 17, 16
+  orig: 17, 16
   offset: 0, 0
   index: 4
 tür1
   rotate: false
-  xy: 20, 38
+  xy: 58, 86
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 1
 tür1
   rotate: false
-  xy: 38, 56
+  xy: 260, 290
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 2
 tür1
   rotate: false
-  xy: 56, 74
+  xy: 278, 308
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 3
 tür1
   rotate: false
-  xy: 260, 278
+  xy: 297, 326
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 4
 tür1_offen
   rotate: false
-  xy: 278, 296
+  xy: 315, 344
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 tür1_zu
   rotate: false
-  xy: 296, 314
+  xy: 2, 14
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 wand_block
   rotate: false
-  xy: 314, 332
+  xy: 20, 32
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 wand_ecke
   rotate: false
-  xy: 2, 2
+  xy: 38, 50
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 wand_ende
   rotate: false
-  xy: 20, 20
+  xy: 57, 68
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 wand_füllung
   rotate: false
-  xy: 38, 38
+  xy: 76, 86
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 wand_gerade
   rotate: false
-  xy: 56, 56
+  xy: 260, 272
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 wand_nord
   rotate: false
-  xy: 74, 74
+  xy: 278, 290
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 wand_rand
   rotate: false
-  xy: 260, 260
+  xy: 296, 308
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
