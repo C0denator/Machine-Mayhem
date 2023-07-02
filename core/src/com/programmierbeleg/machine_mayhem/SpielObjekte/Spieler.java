@@ -31,7 +31,7 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
     private Animation laufAnimation;
 
     //Angriffsparameter
-    private int schaden = 100;
+    private int schaden = 10;
     private int chanceAufItem;
     //0-100%
 
@@ -40,7 +40,7 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
 
 
 
-    private float schussAbklingzeit = 0.5f;
+    private float schussAbklingzeit = 0.3f;
     private float abklingzeitTimer=schussAbklingzeit;
     private int schussSpeed=250;
 
@@ -77,7 +77,7 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
 
         schussSound=Gdx.audio.newSound(Gdx.files.internal("Sounds/laser.wav"));
         chanceAufItem=0;
-        anzahlSchlüssel=3;
+        anzahlSchlüssel=0;
     }
 
     private Spieler(float x, float y, Raum raum, boolean fake){

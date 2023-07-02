@@ -27,7 +27,7 @@ public class Fernkampf_1 extends Gegner implements EinmalProFrame {
         textur =Spiel.instanz.atlas.findRegion("robot",1);
 
         leben=30;
-        maxLeben=30;
+        maxLeben=leben;
         laufGeschwindigkeit=100;
 
         AnimationAngriffStart=new Animation(this,new TextureRegion[]{

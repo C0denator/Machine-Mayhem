@@ -6,6 +6,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -31,6 +32,7 @@ public class SpielAnzeige extends ScreenAdapter {
     private SpriteBatch bildschirmBatch;
 
     private ShapeRenderer shapeRenderer;
+    private BitmapFont bitmapFont;
     public static ArrayList<Raum> räume;
     public static ArrayList<Gegner> gegner;
     public static ArrayList<Projektil> projektile;
@@ -73,6 +75,7 @@ public class SpielAnzeige extends ScreenAdapter {
         kameraBatch =new SpriteBatch();
         bildschirmBatch= new SpriteBatch();
         shapeRenderer=new ShapeRenderer();
+        bitmapFont=new BitmapFont();
         camera=new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         zoomLevel=0.5f;
         viewport=new ScreenViewport(camera);
@@ -228,10 +231,29 @@ public class SpielAnzeige extends ScreenAdapter {
         }
         ///
 
-        zeichneUI();
+        if(gewonnen){
+            float scale=5.0f;
+            int breite=500;
+            int höhe=100;
+            float x = (Gdx.graphics.getWidth()/2)-breite/2;
+            float y= (Gdx.graphics.getHeight()/2)-höhe/2;
+            bildschirmBatch.begin();
+            bitmapFont.getData().setScale(scale);
+            bitmapFont.draw(bildschirmBatch,"Gewonnen", Gdx.graphics.getWidth()/2-200, Gdx.graphics.getHeight()*0.9f);
+            bildschirmBatch.end();
+
+            knöpfe.get(1).render();
+            knöpfe.get(2).render();
+
+        }
+
+        if(!gameOver && !gewonnen){
+            zeichneUI();
+        }
+
 
         //Wird nur angezeigt, wenn Spiel pausiert ist:
-        if(pausiert && !gameOver){
+        if(pausiert && !gameOver &&!gewonnen){
             Gdx.gl.glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
             ShapeRenderer s = new ShapeRenderer();
@@ -254,63 +276,59 @@ public class SpielAnzeige extends ScreenAdapter {
     }
 
     private void zeichneUI(){
-        if(!gameOver){
-            //Lebensbalken
-            float lBreite=500.0f;
-            float lHöhe=50.0f;
-            float lPosX=10.0f;
-            float lPosY=Gdx.graphics.getHeight()-lHöhe-10;
-            float lRand=5.0f;
+        float lBreite=500.0f;
+        float lHöhe=50.0f;
+        float lPosX=10.0f;
+        float lPosY=Gdx.graphics.getHeight()-lHöhe-10;
+        float lRand=5.0f;
 
-            shapeRenderer=new ShapeRenderer();
+        shapeRenderer=new ShapeRenderer();
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(0.0f,0.0f,0.0f,1.0f);
+        shapeRenderer.rect(lPosX,lPosY,lBreite,lHöhe);
+
+        shapeRenderer.setColor(1.0f,0.0f,0.0f,1.0f);
+        shapeRenderer.rect(lPosX+lRand,lPosY+lRand,lBreite-(lRand*2),lHöhe-(lRand*2));
+
+        float breiteGrün= (lBreite-(lRand*2)) * ((float)spieler1.getLeben()/(float)spieler1.getMaxLeben());
+        if(breiteGrün<0) breiteGrün=0;
+        shapeRenderer.setColor(0.0f,1.0f,0.0f,1.0f);
+        shapeRenderer.rect(lPosX+lRand,lPosY+lRand, breiteGrün,lHöhe-(lRand*2));
+
+        shapeRenderer.end();
+
+        //Boss-Lebensbalken
+        if(bossAktiv){
+            float bBreite=500.0f;
+            float bHöhe=30.0f;
+            float bPosX=(Gdx.graphics.getWidth()/2)-bBreite/2;
+            float bPosY=10;
+            float bRand=5.0f;
+
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+            shapeRenderer.setColor(0.3f,0.3f,0.3f,1.0f);
+            shapeRenderer.rect(bPosX,bPosY,bBreite,bHöhe);
+
             shapeRenderer.setColor(0.0f,0.0f,0.0f,1.0f);
-            shapeRenderer.rect(lPosX,lPosY,lBreite,lHöhe);
+            shapeRenderer.rect(bPosX+bRand,bPosY+bRand,bBreite-(bRand*2),bHöhe-(bRand*2));
 
-            shapeRenderer.setColor(1.0f,0.0f,0.0f,1.0f);
-            shapeRenderer.rect(lPosX+lRand,lPosY+lRand,lBreite-(lRand*2),lHöhe-(lRand*2));
-
-            float breiteGrün= (lBreite-(lRand*2)) * ((float)spieler1.getLeben()/(float)spieler1.getMaxLeben());
-            if(breiteGrün<0) breiteGrün=0;
-            shapeRenderer.setColor(0.0f,1.0f,0.0f,1.0f);
-            shapeRenderer.rect(lPosX+lRand,lPosY+lRand, breiteGrün,lHöhe-(lRand*2));
+            float breiteGelb= (bBreite-(bRand*2)) * ((float)boss.getLeben()/(float)boss.getMaxLeben());
+            if(breiteGelb<0) breiteGelb=0;
+            shapeRenderer.setColor(1.0f,1.0f,0.0f,1.0f);
+            shapeRenderer.rect(bPosX+bRand,bPosY+bRand, breiteGelb,bHöhe-(bRand*2));
 
             shapeRenderer.end();
 
-            //Boss-Lebensbalken
-            if(bossAktiv){
-                float bBreite=500.0f;
-                float bHöhe=30.0f;
-                float bPosX=(Gdx.graphics.getWidth()/2)-bBreite/2;
-                float bPosY=10;
-                float bRand=5.0f;
-
-                shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-                shapeRenderer.setColor(0.3f,0.3f,0.3f,1.0f);
-                shapeRenderer.rect(bPosX,bPosY,bBreite,bHöhe);
-
-                shapeRenderer.setColor(0.0f,0.0f,0.0f,1.0f);
-                shapeRenderer.rect(bPosX+bRand,bPosY+bRand,bBreite-(bRand*2),bHöhe-(bRand*2));
-
-                float breiteGelb= (bBreite-(bRand*2)) * ((float)boss.getLeben()/(float)boss.getMaxLeben());
-                if(breiteGelb<0) breiteGelb=0;
-                shapeRenderer.setColor(1.0f,1.0f,0.0f,1.0f);
-                shapeRenderer.rect(bPosX+bRand,bPosY+bRand, breiteGelb,bHöhe-(bRand*2));
-
-                shapeRenderer.end();
-
-            }
-
-            //Schlüssel zeichnen
-            bildschirmBatch.begin();
-            for(int i=0; i<spieler1.getAnzahlSchlüssel(); i++){
-                bildschirmBatch.draw(Texturen.Schlüssel.getTexturRegion(), 25+(i*50), Gdx.graphics.getHeight()-125,
-                        32, 32,
-                        64, 64, 1.0f, 1.0f, 45);
-            }
-            bildschirmBatch.end();
         }
-        ////
+
+        //Schlüssel zeichnen
+        bildschirmBatch.begin();
+        for(int i=0; i<spieler1.getAnzahlSchlüssel(); i++){
+            bildschirmBatch.draw(Texturen.Schlüssel.getTexturRegion(), 25+(i*50), Gdx.graphics.getHeight()-125,
+                    32, 32,
+                    64, 64, 1.0f, 1.0f, 45);
+        }
+        bildschirmBatch.end();
     }
 
     @Override

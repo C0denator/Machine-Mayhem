@@ -25,8 +25,8 @@ public class Schrot_1 extends Gegner implements EinmalProFrame {
         super(x,y, raum);
         textur =Spiel.instanz.atlas.findRegion("schrot_idle");
 
-        leben=40;
-        maxLeben=40;
+        leben=30;
+        maxLeben=leben;
         laufGeschwindigkeit=100;
 
         animationRecharge =new Animation(this,new TextureRegion[]{

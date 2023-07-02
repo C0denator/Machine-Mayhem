@@ -38,7 +38,7 @@ public class Boss extends Gegner implements EinmalProFrame {
         breite=32;
         höhe=32;
         textur= Spiel.instanz.atlas.findRegion("Boss_idle");
-        leben=200;
+        leben=1000;
         maxLeben=leben;
 
         intro=Gdx.audio.newSound(Gdx.files.internal("Sounds/EpischKurz.mp3"));
@@ -174,7 +174,13 @@ public class Boss extends Gegner implements EinmalProFrame {
         if(leben<=0){
             SpielAnzeige.instanz.setGewonnen(true);
             SpielAnzeige.instanz.setBossAktiv(false);
+            stirb();
         }
     }
 
+    @Override
+    public void stirb() {
+        super.stirb();
+        SpielAnzeige.instanz.setGewonnen(true);
+    }
 }
