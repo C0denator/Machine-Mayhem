@@ -8,6 +8,9 @@ import com.programmierbeleg.machine_mayhem.SpielObjekte.Effekte.Explosion;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.SpielObjekt;
 import com.programmierbeleg.machine_mayhem.Welt.Raum;
 
+/**
+ * Oberklasse für alle Gegner
+ */
 public abstract class Gegner extends SpielObjekt {
     protected int leben;
     protected int maxLeben;

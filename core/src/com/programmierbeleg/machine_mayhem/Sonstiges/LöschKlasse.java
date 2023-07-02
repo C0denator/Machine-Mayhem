@@ -8,15 +8,24 @@ import com.programmierbeleg.machine_mayhem.SpielObjekte.Projektile.Projektil;
 
 import java.util.ArrayList;
 
+/**
+ * Eine Klasse, die Objekte aus den Listen in SpielAnzeige löschen kann
+ */
 public class LöschKlasse {
 
     private static ArrayList<Object> zuLöschendeObjekte = new ArrayList<Object>();
 
+    /**
+     * Fügt das übergebene Objekt zur Liste der zu löschenden Objekte hinzu.
+     */
     public static void lösche(Object o){
         //fügt ein Element zur Warteschlange hinzu
         zuLöschendeObjekte.add(o);
     }
 
+    /**
+     * wird am Ende der Render-Methode aufgerufen. Löscht alle zuvor hinzugefügten Elemente
+     */
     public static void löschZyklus(){
         //wird am Ende des Game-Loops aufgerufen
         //löscht alle Objekte, die eine Referenz in "zuLöschendeObjekte" haben

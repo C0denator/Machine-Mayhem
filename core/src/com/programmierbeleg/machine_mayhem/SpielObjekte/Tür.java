@@ -9,6 +9,9 @@ import com.programmierbeleg.machine_mayhem.Sonstiges.Animation;
 import com.programmierbeleg.machine_mayhem.Spiel;
 import com.programmierbeleg.machine_mayhem.Welt.Raum;
 
+/**
+ * Eine Sonderform des Feldes. Beinhaltet Animationen.
+ */
 public class Tür extends Feld implements EinmalProFrame {
 
     Animation öffnen;

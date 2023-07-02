@@ -28,26 +28,66 @@ import java.util.ArrayList;
 public class SpielAnzeige extends ScreenAdapter {
 
 
+    /**
+     * Diese Batch wird mit einer Kamera kombiniert, und dient zum Rendern der Spielobjekte.
+     */
     private SpriteBatch kameraBatch;
+
+    /**
+     * Diese Batch hat keine zugewiesene Kamera und dient der Anzeige der UI-Elemente.
+     */
     private SpriteBatch bildschirmBatch;
 
     private ShapeRenderer shapeRenderer;
     private BitmapFont bitmapFont;
+
+    /**
+     * Alle Räume der generierten Welt
+     */
     public static ArrayList<Raum> räume;
+
+    /**
+     * Alle aktiven Gegner
+     */
     public static ArrayList<Gegner> gegner;
+
+    /**
+     * Alle aktiven Projektile
+     */
     public static ArrayList<Projektil> projektile;
+
+    /**
+     * Alle Objekte, die das Interface "EinmalProFrame" implementieren
+     */
     public static ArrayList<EinmalProFrame> physikObjekte;
+
+    /**
+     * Alle Knöpfe des Screens
+     */
     public static ArrayList<Knopf> knöpfe;
+
+    /**
+     * Alle aktiven Items
+     */
     public static ArrayList<Item> items;
 
+    /**
+     * Alle aktiven Effekte
+     */
     public static ArrayList<Effekt> effekte;
 
+    /**
+     * Der Spieler
+     */
     public static Spieler spieler1;
-    public static Spieler spieler2;
     private OrthographicCamera camera;
     private Viewport viewport;
 
     public static SpielAnzeige instanz;
+
+    /**
+     * Das Spiel kann mit Escape pausiert werden
+     */
     private boolean pausiert = false;
 
     private Sound musik;
@@ -130,7 +170,7 @@ public class SpielAnzeige extends ScreenAdapter {
             }
         }
 
-        if(spieler1!=null && spieler2==null){
+        if(spieler1!=null){
             camera.position.set(spieler1.getX()+spieler1.getBreite()/2,spieler1.getY()+spieler1.getHöhe()/2,0);
             camera.update();
         }else{
@@ -191,11 +231,6 @@ public class SpielAnzeige extends ScreenAdapter {
             kameraBatch.draw(spieler1.getTextur(), spieler1.getX(), spieler1.getY(),
                     spieler1.getBreite()/2, spieler1.getHöhe()/2,
                     spieler1.getBreite(), spieler1.getHöhe(), 1.0f, 1.0f, spieler1.getWinkelInt());
-        }
-        if(spieler2!=null) {
-            kameraBatch.draw(spieler2.getTextur(), spieler2.getX(), spieler2.getY(),
-                    spieler2.getBreite()/2, spieler2.getHöhe()/2,
-                    spieler2.getBreite(), spieler2.getHöhe(), 1.0f, 1.0f, spieler2.getWinkelInt());
         }
 
         for(Effekt e : effekte){
@@ -365,7 +400,6 @@ public class SpielAnzeige extends ScreenAdapter {
     private void zumHauptmenü(){
         musik.stop();
         spieler1=null;
-        spieler2=null;
         räume=null;
         gegner=null;
         projektile=null;
@@ -378,8 +412,10 @@ public class SpielAnzeige extends ScreenAdapter {
         return gameOver;
     }
 
+    /**
+     * Für Debug-Zwecke
+     */
     public void zeichneKollisionen(SpielObjekt objekt){
-        //für Debug-Zwecke
         boolean batchBeendet=false;
         if(kameraBatch.isDrawing()){
             kameraBatch.end();
@@ -396,16 +432,8 @@ public class SpielAnzeige extends ScreenAdapter {
         }
     }
 
-    public boolean isBossAktiv() {
-        return bossAktiv;
-    }
-
     public void setBossAktiv(boolean bossAktiv) {
         this.bossAktiv = bossAktiv;
-    }
-
-    public boolean isGewonnen() {
-        return gewonnen;
     }
 
     public void setGewonnen(boolean gewonnen) {

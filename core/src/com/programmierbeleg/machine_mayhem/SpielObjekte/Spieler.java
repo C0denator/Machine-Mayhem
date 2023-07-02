@@ -17,23 +17,28 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
 
     private int leben;
     private int maxLeben;
-
-    private int kollisionsBreite;
-    private int kollisionsHöhe;
     private float geschwindigkeit;
+    /**
+     * Der Vektor, um den sich der Spieler bewegen soll
+     */
     private Vector2 bewegungsVektor;
 
     private Raum aktuellerRaum;
     private Raum vorherigerRaum;
-    //für die Tür-Animationen notwendig
+
+    /**
+     * Alle 4 benachbarten Türen (wichtig um den Raum zu wechslen)
+     */
     private Feld[] benachbarteTüren;
 
     private Animation laufAnimation;
 
     //Angriffsparameter
     private int schaden = 10;
+    /**
+     * Zwischen 0% und 100%
+     */
     private int chanceAufItem;
-    //0-100%
 
     private int anzahlSchlüssel;
 
@@ -56,9 +61,6 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
         bewegungsVektor =new Vector2(0.0f,0.0f);
         aktuellerRaum=raum;
 
-        kollisionsBreite=15;
-        kollisionsHöhe=15;
-
         textur= Spiel.instanz.atlas.findRegion("Spieler_idle");
         laufAnimation = new Animation(this, new TextureRegion[]{
                 Spiel.instanz.atlas.findRegion("Spieler_lauf1"),
@@ -78,30 +80,6 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
         schussSound=Gdx.audio.newSound(Gdx.files.internal("Sounds/laser.wav"));
         chanceAufItem=0;
         anzahlSchlüssel=0;
-    }
-
-    private Spieler(float x, float y, Raum raum, boolean fake){
-        super(x,y,Spiel.instanz.atlas.findRegion("Spieler_idle").getRegionWidth()-1,
-                Spiel.instanz.atlas.findRegion("Spieler_idle").getRegionHeight()-1,
-                0, true);
-        leben=100;
-        maxLeben=100;
-        geschwindigkeit=75.0f;
-        bewegungsVektor =new Vector2(0.0f,0.0f);
-        aktuellerRaum=raum;
-
-        kollisionsBreite=15;
-        kollisionsHöhe=15;
-
-        textur= Spiel.instanz.atlas.findRegion("Spieler_idle");
-        laufAnimation = new Animation(this, new TextureRegion[]{
-                Spiel.instanz.atlas.findRegion("Spieler_lauf1"),
-                Spiel.instanz.atlas.findRegion("Spieler_idle"),
-                Spiel.instanz.atlas.findRegion("Spieler_lauf2"),
-                Spiel.instanz.atlas.findRegion("Spieler_idle"),
-        }, 0.25f,true);
-
-        benachbarteTüren=new Feld[4];
     }
 
     @Override
@@ -125,6 +103,9 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
 
     }
 
+    /**
+     * Erstellt ein Spieler-Projektil, wenn die Anforderungen erfüllt sind
+     */
     private void prüfeSchießen(float delta){
         abklingzeitTimer-=delta;
         if(abklingzeitTimer<=0){
@@ -139,9 +120,10 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
         }
     }
 
-
+    /**
+     * Prüft, ob der Spieler den Raum gewechselt hat
+     */
     private void prüfeNachTüren(){
-        //hat der Spieler den Raum gewechselt?
         if(benachbarteTüren[0]!=null && benachbarteTüren[0].kollidiertMit(this) && !aktuellerRaum.kollidiertMitTüren(this)){
             ändereAktuellenRaum(benachbarteTüren[0].getRaum());
         }else if(benachbarteTüren[1]!=null && benachbarteTüren[1].kollidiertMit(this) && !aktuellerRaum.kollidiertMitTüren(this)){
@@ -153,6 +135,9 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
         }
     }
 
+    /**
+     * Ändert den aktuellen Raum des Spielers (notwendig für Kollisionsabfragen)
+     */
     public void ändereAktuellenRaum(Raum raum){
         vorherigerRaum=aktuellerRaum;
         aktuellerRaum=raum;
@@ -179,6 +164,10 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
         aktuellerRaum.raumBetreten(vorherigerRaum);
     }
 
+    /**
+     * Prüft alle Eingaben des Spielers
+     * @param delta
+     */
     public void prüfeEingabe(float delta){
 
         if(Gdx.input.isButtonJustPressed(Input.Buttons.FORWARD) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_ADD)){
@@ -240,8 +229,10 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
         }
     }
 
+    /**
+     * Setzt den Winkel des Spielers so, dass er auf den Mauszeiger schaut
+     */
     public void schauAufMauzeiger(){
-        //setzt den Winkel so, dass Spieler in Richtung Mauszeiger schaut
         double a = Gdx.input.getX()-(Gdx.graphics.getWidth()/2.0f);
         double b = Gdx.input.getY()-(Gdx.graphics.getHeight()/2.0f);
         double ergebnis;
@@ -281,14 +272,6 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
 
     public Raum getAktuellerRaum() {
         return aktuellerRaum;
-    }
-
-    public int getKollisionsBreite() {
-        return kollisionsBreite;
-    }
-
-    public int getGetKollisionsHöhe() {
-        return kollisionsHöhe;
     }
 
     public int getLeben() {

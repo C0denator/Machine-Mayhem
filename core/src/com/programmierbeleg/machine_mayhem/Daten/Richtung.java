@@ -1,5 +1,8 @@
 package com.programmierbeleg.machine_mayhem.Daten;
 
+/**
+ * Alle Himmelsrichtungen. Wichtig für die Weltgenerierung.
+ */
 public enum Richtung {
     Nord,
     Süd,

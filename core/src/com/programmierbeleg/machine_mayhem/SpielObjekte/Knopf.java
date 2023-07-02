@@ -28,6 +28,9 @@ public class Knopf extends SpielObjekt {
         batch =new SpriteBatch();
     }
 
+    /**
+     * Zeichnet den Knopf, und prüft gleichzeitig die Interaktionen mit dem Mauszeiger.
+     */
     public void render(){
         shaperenderer.begin(ShapeRenderer.ShapeType.Filled);
 
@@ -86,13 +89,9 @@ public class Knopf extends SpielObjekt {
         shaperenderer.rectLine(x+breite,y+linienbreite/2,x,y+linienbreite/2,linienbreite);
     }
 
-    public void action(){
-        //muss überschrieben werden
-    }
-
-    public void dispose(){
-        shaperenderer.dispose();
-        bitmapFont.dispose();
-    }
+    /**
+     * Wird ausgeführt, wenn der Knopf angeklickt wurde
+     */
+    public void action(){}
 
 }

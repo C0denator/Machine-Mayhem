@@ -4,6 +4,9 @@ import com.programmierbeleg.machine_mayhem.Daten.FeldEigenschaft;
 import com.programmierbeleg.machine_mayhem.Daten.Texturen;
 import com.programmierbeleg.machine_mayhem.Welt.Raum;
 
+/**
+ * Ein einzelnes Feld. Kann entweder laufbar sein, oder zu Kollisionen führen.
+ */
 public class Feld extends SpielObjekt{
 
     private boolean laufbar;

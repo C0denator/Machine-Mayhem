@@ -18,6 +18,9 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * 
+ */
 public class Raum implements EinmalProFrame {
     private Raum RaumNord;
     private Raum RaumSüd;

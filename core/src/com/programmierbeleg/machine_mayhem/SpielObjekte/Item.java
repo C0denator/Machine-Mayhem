@@ -7,6 +7,9 @@ import com.programmierbeleg.machine_mayhem.Interfaces.EinmalProFrame;
 import com.programmierbeleg.machine_mayhem.Sonstiges.LöschKlasse;
 import com.programmierbeleg.machine_mayhem.Spiel;
 
+/**
+ * Ein Spielobjekt, welches vom Spieler aufgesammelt werden kann.
+ */
 public class Item extends SpielObjekt implements EinmalProFrame {
 
     ItemEigenschaft itemEigenschaft;

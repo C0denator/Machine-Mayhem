@@ -3,6 +3,9 @@ package com.programmierbeleg.machine_mayhem.Daten;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.programmierbeleg.machine_mayhem.Spiel;
 
+/**
+ * Eine Sammlung von Texturen
+ */
 public enum Texturen {
     //Die Textur die ein Feld hat
 

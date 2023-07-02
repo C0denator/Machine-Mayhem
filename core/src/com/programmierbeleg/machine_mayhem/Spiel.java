@@ -19,11 +19,10 @@ public class Spiel extends Game {
 	public static Spiel instanz;
 	private BitmapFont bitmapFont;
 	private SpriteBatch mainBatch;
-	private boolean debug=true;
+	private boolean debug=false;
 	public float delta;
 	public TextureAtlas atlas;
 	public ScreenAdapter aktiverBildschirm;
-	public final int skalierung=3;
 
 	public static Spiel starteSpiel() throws IllegalStateException{
 		if(instanz==null){
@@ -73,6 +72,10 @@ public class Spiel extends Game {
 
 	}
 
+	/**
+	 * Zeigt einige Informationen auf dem Bildschirm an
+	 * @param batch
+	 */
 	public void renderDebug(SpriteBatch batch){
 		int objekte =0;
 

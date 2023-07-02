@@ -7,6 +7,9 @@ import com.programmierbeleg.machine_mayhem.Sonstiges.ID_Vergeber;
 import com.programmierbeleg.machine_mayhem.Spiel;
 import com.programmierbeleg.machine_mayhem.Welt.Raum;
 
+/**
+ * Oberklasse für alle Objekte, die Teil der Spielwelt sind
+ */
 public class SpielObjekt {
 
     protected float x;
@@ -33,17 +36,27 @@ public class SpielObjekt {
     }
 
 
-
+    /**
+     * Bewegt den Spieler um den übergebenen Vektor.
+     */
     public void bewegen(Vector2 v, float delta){
         this.x+=v.x * delta;
         this.y+=v.y * delta;
     }
 
+    /**
+     * Bewegt den Spieler um die übergenen Werte.
+     */
     public void bewegen(float x, float y, float delta){
         this.x+=x*delta;
         this.y+=y*delta;
     }
 
+    /**
+     * Bewegt den Spieler in die Richtung des übergebenen Winkels.
+     * @param winkel der Winkel, in den das Spielobjekt bewegt werden soll
+     * @param multiplikator multipliziert den Vektor
+     */
     public void bewegenInRichtung(float winkel, float multiplikator, float delta){
         //bewegt das Objekt in die jeweilige Richtung
         Vector2 v = new Vector2(
@@ -53,6 +66,11 @@ public class SpielObjekt {
 
     }
 
+    /**
+     * Gibt an, ob ein Objekt kollidieren würde, wenn es sich um den übergebenen Wert bewegen würde.
+     * @param raum der Raum wo die Kollisionsabfrage stattfindet
+     * @param v die Bewegung, die überprüft werden soll
+     */
     public boolean kollidiertInZukunft(Raum raum, Vector2 v, float delta){
         //prüft ob es zu einer Kollision im Raum kommt, wenn sich das Objekt um den übergebenen Betrag bewegen würde
 
@@ -71,6 +89,12 @@ public class SpielObjekt {
         return false;
     }
 
+    /**
+     * Gibt an, ob ein Objekt kollidieren würde, wenn es sich um den übergebenen Wert bewegen würde.
+     * Diese Methode überprüft 2 Räume statt einen (wichtig für Spielerkollision)
+     * @param raum der Raum wo die Kollisionsabfrage stattfindet
+     * @param v die Bewegung, die überprüft werden soll
+     */
     public boolean kollidiertInZukunft(Raum raum, Raum vorherigerRaum, Vector2 v, float delta){
         //dasselbe wie oben, nur mit 2 Räumen (für Spielerkollision)
         SpielObjekt zukünftigesObjekt = new SpielObjekt(x,y, breite, höhe, 0, false);
@@ -98,6 +122,9 @@ public class SpielObjekt {
         return false;
     }
 
+    /**
+     * Gibt an, ob das Objekt mit dem übergebenen Objekt jetzt gerade kollidiert
+     */
     public boolean kollidiertMit(SpielObjekt o){
         //kollidieren die Objekte?
         //true: Objekte berühren sich
@@ -107,20 +134,18 @@ public class SpielObjekt {
         return r1.overlaps(r2);
     }
 
-    public boolean kollidiertMit(Rectangle r2){
-        //dasselbe wie oben, nur das ein Rectangle übergeben wird
-        //true: Objekte berühren sich
-        //false: sie tun es nicht
-        Rectangle r1 = new Rectangle(x,y,breite,höhe);
-        return r1.overlaps(r2);
-    }
-
+    /**
+     * Gibt die Distanz des Objekts zu dem übergebenen Objekt zurück
+     */
     public float distanzZu(SpielObjekt o){
         float xKathete = x-o.getX();
         float yKathete = y-o.getY();
         return (float)Math.sqrt((xKathete*xKathete)+(yKathete*yKathete));
     }
 
+    /**
+     * Gibt den Winkel zurück, den das Objekt haben muss, um auf das übergebene Objekt zu zeigen.
+     */
     protected float winkelZu(SpielObjekt s){
         //der Winkel, den dieses Objekt haben muss, um zum übergebenen Objekt zu schauen
         double a = x-s.getX();
@@ -156,24 +181,12 @@ public class SpielObjekt {
         return breite;
     }
 
-    public void setBreite(int breite) {
-        this.breite = breite;
-    }
-
     public int getHöhe() {
         return höhe;
     }
 
-    public void setHöhe(int höhe) {
-        this.höhe = höhe;
-    }
-
     public boolean isSichtbar() {
         return Sichtbar;
-    }
-
-    public void setSichtbar(boolean sichtbar) {
-        Sichtbar = sichtbar;
     }
 
     public TextureRegion getTextur() {
@@ -186,10 +199,6 @@ public class SpielObjekt {
 
     public float getWinkel() {
         return winkel;
-    }
-
-    public void setWinkel(float winkel) {
-        this.winkel = winkel;
     }
 
     public String toString(){

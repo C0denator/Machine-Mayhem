@@ -5,18 +5,30 @@ import com.programmierbeleg.machine_mayhem.Anzeigen.SpielAnzeige;
 import com.programmierbeleg.machine_mayhem.Interfaces.EinmalProFrame;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.SpielObjekt;
 
+/**
+ * Kann als Attribut von Objekten verwendet werden, wenn diese Animationen implementieren sollen
+ */
 public class Animation implements EinmalProFrame {
-    //warum etwas importieren, wenn man es auch selber machen kann???
-
-    //Wichtig!!! Animation muss zur ArrayList "PhysikObjekte" hinzugefügt werden
-
+    /**
+     * die Klasse die eine Animation haben soll
+     */
     private SpielObjekt objekt;
-    //die Klasse die eine Animation anfordert
+
+    /**
+     * Alle einzelnen Texturen der Animation in geordneter Reihenfolge
+     */
     private TextureRegion[] texturen;
-    //die einzelnen Texturen in geordneter Reihenfolge
+
     private int indexAktuelleTextur;
+    /**
+     * true: Animation wiederholt sich
+     * false: Animation pausiert nach einem Durchlauf
+     */
     private boolean loop;
     private boolean pausiert;
+    /**
+     * Animation wurde einmal durchlaufen
+     */
     private boolean fertig;
     private float sekundenBisZumNächstenBild;
     private float aktuelleZeit;

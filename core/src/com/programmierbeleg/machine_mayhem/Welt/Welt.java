@@ -189,7 +189,6 @@ public class Welt {
 
         startraum.schließeTüren();
         SpielAnzeige.spieler1.ändereAktuellenRaum(startraum);
-        if(SpielAnzeige.spieler2!=null)  SpielAnzeige.spieler2.ändereAktuellenRaum(startraum);
 
     }
 
