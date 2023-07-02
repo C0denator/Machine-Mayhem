@@ -17,6 +17,7 @@ import com.programmierbeleg.machine_mayhem.Spiel;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.*;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Effekte.Effekt;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner.Gegner;
+import com.programmierbeleg.machine_mayhem.SpielObjekte.Projektile.Projektil;
 import com.programmierbeleg.machine_mayhem.Welt.Raum;
 import com.programmierbeleg.machine_mayhem.Welt.Welt;
 

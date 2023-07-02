@@ -10,9 +10,8 @@ import com.programmierbeleg.machine_mayhem.Daten.Richtung;
 import com.programmierbeleg.machine_mayhem.Interfaces.EinmalProFrame;
 import com.programmierbeleg.machine_mayhem.Sonstiges.Animation;
 import com.programmierbeleg.machine_mayhem.Spiel;
+import com.programmierbeleg.machine_mayhem.SpielObjekte.Projektile.Projektil;
 import com.programmierbeleg.machine_mayhem.Welt.Raum;
-
-import java.util.ArrayList;
 
 public class Spieler extends SpielObjekt implements EinmalProFrame {
 
@@ -53,7 +52,7 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
                 0, true);
         leben=100;
         maxLeben=100;
-        geschwindigkeit=75.0f;
+        geschwindigkeit=85.0f;
         bewegungsVektor =new Vector2(0.0f,0.0f);
         aktuellerRaum=raum;
 

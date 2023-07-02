@@ -4,8 +4,8 @@ import com.programmierbeleg.machine_mayhem.SpielObjekte.SpielObjekt;
 
 public abstract class Effekt extends SpielObjekt {
 
-    public Effekt(float x, float y){
-        super (x, y, 16, 16, 0, true);
+    public Effekt(float x, float y, int breite, int höhe){
+        super (x, y, breite, höhe, 0, true);
     }
 
 }

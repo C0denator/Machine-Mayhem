@@ -4,8 +4,7 @@ import com.programmierbeleg.machine_mayhem.Anzeigen.SpielAnzeige;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Effekte.Effekt;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner.Gegner;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Item;
-import com.programmierbeleg.machine_mayhem.SpielObjekte.Projektil;
-import com.programmierbeleg.machine_mayhem.SpielObjekte.SpielObjekt;
+import com.programmierbeleg.machine_mayhem.SpielObjekte.Projektile.Projektil;
 
 import java.util.ArrayList;
 

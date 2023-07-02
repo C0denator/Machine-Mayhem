@@ -8,7 +8,9 @@ import com.programmierbeleg.machine_mayhem.Anzeigen.SpielAnzeige;
 import com.programmierbeleg.machine_mayhem.Interfaces.EinmalProFrame;
 import com.programmierbeleg.machine_mayhem.Sonstiges.Animation;
 import com.programmierbeleg.machine_mayhem.Spiel;
-import com.programmierbeleg.machine_mayhem.SpielObjekte.Projektil;
+import com.programmierbeleg.machine_mayhem.SpielObjekte.Effekte.Explosion;
+import com.programmierbeleg.machine_mayhem.SpielObjekte.Projektile.Projektil;
+import com.programmierbeleg.machine_mayhem.SpielObjekte.Projektile.Rakete;
 import com.programmierbeleg.machine_mayhem.Welt.Raum;
 
 import java.util.Random;
@@ -22,10 +24,14 @@ public class Boss extends Gegner implements EinmalProFrame {
     float spezialCooldown;
     float spezialDauer;
     float spezialDauerMAX;
+    float raketenCooldown;
+    float raketenTimer;
     Sound intro;
 
     boolean schussLinks;
-    private float schussSpeed = 100.0f;
+    private float schussSpeed = 125.0f;
+
+    Random rnd = new Random();
 
     public Boss(float x, float y, Raum raum){
         super(x,y,raum);
@@ -68,11 +74,14 @@ public class Boss extends Gegner implements EinmalProFrame {
         angriffCooldown=0.3f;
         angriffTimer=angriffCooldown;
 
+        raketenCooldown=0.5f;
+        raketenTimer=0.0f;
+
         schussLinks=true;
 
 
         SpielAnzeige.instanz.setBossAktiv(true);
-        intro.play();
+        intro.play(0.2f);
     }
 
     @Override
@@ -92,6 +101,28 @@ public class Boss extends Gegner implements EinmalProFrame {
 
         if(spezialDauer>0){
             spezialDauer-=delta;
+            raketenTimer-=delta;
+
+            ////
+            if(raketenTimer<=0){
+
+                if(schussLinks){
+                    Vector2 pos = new Vector2(SpielAnzeige.spieler1.getX(),SpielAnzeige.spieler1.getY());
+                    pos.x+= (rnd.nextFloat()-0.5f)*64;
+                    pos.y+= (rnd.nextFloat()-0.5f)*64;
+                    schussLinks=false;
+                }else{
+                    Vector2 pos = new Vector2(SpielAnzeige.spieler1.getX(),SpielAnzeige.spieler1.getY());
+                    pos.x+= (rnd.nextFloat()-0.5f)*128;
+                    pos.y+= (rnd.nextFloat()-0.5f)*128;
+                    schussLinks=true;
+                }
+
+                SpielAnzeige.projektile.add(new Rakete(pos.x,pos.y,15,raum,true));
+                raketenTimer=raketenCooldown;
+            }
+            ////
+
         }else{
             spezialDauer=spezialDauerMAX;
             spezialAktiv=false;
@@ -109,10 +140,9 @@ public class Boss extends Gegner implements EinmalProFrame {
         if(angriffTimer>0){
             angriffTimer-=delta;
         }else {
-            Random rnd = new Random();
             angriffTimer=angriffCooldown;
 
-            float tmpWinkel = winkelZu(SpielAnzeige.spieler1) + (float)(rnd.nextInt(91)-45);
+            float tmpWinkel = winkelZu(SpielAnzeige.spieler1) + (float)(rnd.nextInt(46)-23);
 
             if(schussLinks){
                 SpielAnzeige.projektile.add(new Projektil(x,y+16,tmpWinkel,Spiel.instanz.atlas.findRegion("laser_rot",1),5, new Vector2(

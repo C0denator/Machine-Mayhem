@@ -14,8 +14,8 @@ public class Explosion extends Effekt implements EinmalProFrame {
     private boolean schadenAusgeteilt;
     private Animation explosion;
 
-    public Explosion(float x, float y, float breite, float höhe, int schaden){
-        super(x,y);
+    public Explosion(float x, float y, int breite, int höhe, int schaden){
+        super(x,y, breite, höhe);
         this.schaden=schaden;
         schadenAusgeteilt=false;
         textur=Spiel.instanz.atlas.findRegion("Explosion",1);

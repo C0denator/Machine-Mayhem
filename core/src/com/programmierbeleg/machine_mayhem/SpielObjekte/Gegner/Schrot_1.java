@@ -6,7 +6,7 @@ import com.programmierbeleg.machine_mayhem.Anzeigen.SpielAnzeige;
 import com.programmierbeleg.machine_mayhem.Interfaces.EinmalProFrame;
 import com.programmierbeleg.machine_mayhem.Sonstiges.Animation;
 import com.programmierbeleg.machine_mayhem.Spiel;
-import com.programmierbeleg.machine_mayhem.SpielObjekte.Projektil;
+import com.programmierbeleg.machine_mayhem.SpielObjekte.Projektile.Projektil;
 import com.programmierbeleg.machine_mayhem.Welt.Raum;
 
 import java.util.Random;
