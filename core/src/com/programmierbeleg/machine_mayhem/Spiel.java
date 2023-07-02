@@ -85,7 +85,6 @@ public class Spiel extends Game {
 			}
 
 			if(SpielAnzeige.spieler1!=null) objekte++;
-			if(SpielAnzeige.spieler2!=null) objekte++;
 
 			objekte+=SpielAnzeige.gegner.size();
 			objekte+=SpielAnzeige.projektile.size();

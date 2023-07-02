@@ -11,16 +11,30 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * Die Klasse der Spielwelt. Hat eine Referenz zum Startraum.
+ */
 public class Welt {
     private Raum startraum;
     private int raumAnzahl;
+    /**
+     * Maximale Anzahl an Räumen, die bei der Weltgenerierung erzeugt werden sollen
+     */
     private int maxRaumAnzahl;
 
+    /**
+     * Referenz zum letzten erzeugten Raum. Wird zum Boss-Raum
+     */
     private Raum letzterRaum;
+    /**
+     * Der Ordner mit allen Raum-Bildern
+     */
     private File räumeOrdner;
-    //der Ordner mit allen Räumen
+    /**
+     * Alle Raum-Bilder
+     */
     private File[] räume;
-    //alle Räume als Array
+
 
 
     public Welt(int maxRaumAnzahl) {
@@ -205,6 +219,9 @@ public class Welt {
         System.out.println("Anzahl Schlüssel: "+Integer.toString(anzahlSchlüssel));
     }
 
+    /**
+     * Prüft, ob der Raum mit einem bereits erzeugten Raum kollidiert
+     */
     private boolean istRaumKollisionsfrei(Raum raum, ArrayList<Raum> räume){
         //prüft, ob der übergebene Raum mit einem Raum aus der Liste kollidiert
         for(Raum r : räume){

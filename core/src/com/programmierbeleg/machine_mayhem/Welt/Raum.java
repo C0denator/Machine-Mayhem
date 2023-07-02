@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * 
+ * Ein Raum ist eine Sammlung aus mehreren Feldern. Er kann Referenzen auf bis zu 4 weitere Räume haben
  */
 public class Raum implements EinmalProFrame {
     private Raum RaumNord;
@@ -27,29 +27,46 @@ public class Raum implements EinmalProFrame {
     private Raum RaumWest;
     private Raum RaumOst;
 
+    /**
+     * Die Position des Startpunktes (notwendig für Weltgenerierung)
+     */
     private int start_x;
+    /**
+     * Die Position des Startpunktes (notwendig für Weltgenerierung)
+     */
     private int start_y;
 
     public final int ID;
 
 
+    /**
+     * Alle felder des Raums.
+     */
     private Feld[][] felder;
+    /**
+     * Alle Spawnpunkte für Gegner des Raums
+     */
     private ArrayList<Feld> gegnerSpawns;
+    /**
+     * Alle Türen des Raums
+     */
     private ArrayList<Tür> türen;
 
-
-    private float feldGröße;
+    /**
+     * Die Anzahl an Gegnern, die besiegt werden müssen, damit sich die Türen wieder öffnen.
+     */
     private int gegnerAnzahl;
-    //die Anzahl an Gegner die besiegt werden müssen, bevor die Türen wieder geöffnet werden
+    /**
+     * Die Position des zuletzt besiegten Gegners. Dort können Items spawnen.
+     */
     private Vector2 positionLetzterGegner;
-    //dort können Items gespawnt werden
     private boolean sichtbar;
     private boolean bossRaum;
     private boolean kampfAktiv;
+    /**
+     * Soll ein Schlüssel nach Besiegen der Gegner gespawnt werden?
+     */
     private boolean hatSchlüssel;
-    //soll ein Schlüssel nach Besiegen der Gegner gespawnt werden?
-
-    float timer = 0.0f;
 
     public Raum(BufferedImage image, Vector2 vector2){
         sichtbar=false;
@@ -188,8 +205,11 @@ public class Raum implements EinmalProFrame {
     }
 
 
+    /**
+     * Prüft, ob der Raum mit dem übergebenen Raum kollidiert.
+     */
     public boolean kollidiertMit(Raum r){
-        //Prüft, ob der Raum mit dem übergebenen Raum kollidiert
+
         Rectangle r1 = new Rectangle(felder[0][0].getX(),felder[0][0].getY(),
                 felder[0][0].getBreite()*felder.length,
                 felder[0][0].getHöhe()*felder[0].length);
@@ -201,6 +221,10 @@ public class Raum implements EinmalProFrame {
         return r1.overlaps(r2);
     }
 
+
+    /**
+     * Prüft, ob das übergebene Spielobjekt mit einem nicht laufbaren Feld des Raums kollidiert.
+     */
     public boolean kollidiertMitWand(SpielObjekt objekt){
 
         for(int x=0; x<felder.length; x++){
@@ -212,8 +236,10 @@ public class Raum implements EinmalProFrame {
         return false;
     }
 
+    /**
+     * Prüft, ob der übergebene Spieler eine Tür des Raumes berührt (wichtig für den Raumwechsel)
+     */
     public boolean kollidiertMitTüren(Spieler s){
-        //prüft ob der übergebene Spieler eine Tür des Raumes berührt (wichtig für den Raumwechsel)
         Rectangle r1 = new Rectangle(s.getX(),s.getY(),s.getBreite(),s.getHöhe());
         Rectangle r2;
 
@@ -225,6 +251,10 @@ public class Raum implements EinmalProFrame {
         return false;
     }
 
+    /**
+     * Gibt die Stelle der Tür in Pixeln zurück.
+     * @param richtung die Richtung, wo die Tür gesucht werden soll
+     */
     public Vector2 findeTür(Richtung richtung){
         //gibt die Stelle der Tür in Pixeln/Feldern zurück
         switch(richtung){
@@ -261,6 +291,11 @@ public class Raum implements EinmalProFrame {
         }
     }
 
+    /**
+     * Gibt die Stelle der Tür in Pixeln zurück.
+     * @param image Das Bild des Raumes
+     * @param richtung die Richtung, wo die Tür gesucht werden soll
+     */
     public Vector2 findeTür(Richtung richtung, BufferedImage image){
         //gibt die Stelle der Tür in Pixeln zurück
         switch(richtung){
@@ -299,8 +334,12 @@ public class Raum implements EinmalProFrame {
         }
     }
 
+
+    /**
+     * Gibt die Tür als Referenz zurück.
+     * @param richtung die Richtung, wo die Tür gesucht werden soll
+     */
     public Tür findeTürObjekt(Richtung richtung){
-        //gibt eine Tür als Referenz zurück
         switch(richtung){
             case Nord:
                 for(int x=0; x<felder.length; x++){
@@ -331,6 +370,11 @@ public class Raum implements EinmalProFrame {
         }
     }
 
+    /**
+     * Fügt einen Raum an diesen Raum an
+     * @param image Das Bild des Raumes, der angefügt werden soll
+     * @param richtung Die Richtung, in die der Raum angefügt werden soll
+     */
     public Raum fügeRaumAn(BufferedImage image, Richtung richtung){
         //fügt einen Raum an (! Abfrage nach Kollision muss vorher erfolgen)
         Vector2 türVater;
@@ -368,6 +412,12 @@ public class Raum implements EinmalProFrame {
         return null;
     }
 
+    /**
+     * Gibt den Startpunkt des zu generierenden Raumes zurück. Ist abhängig von der Richtung.
+     * @param türVater Koordinaten der Tür des alten Raumes.
+     * @param türKind Koordinaten der Tür des neuen Raumes.
+     * @return
+     */
     private static Vector2 berechneStartpunkt(Richtung richtung, Vector2 türVater, Vector2 türKind){
         //ermittelt den Startpunkt für die Erstellung eines zukünftigen Raumes anhand der Türen von Vater und (zukünftiges) Kind
         //in Pixel
@@ -393,6 +443,12 @@ public class Raum implements EinmalProFrame {
         throw new RuntimeException("Startpunkt verkackt");
     }
 
+    /**
+     * Liest alle Pixel des übergebenen Bildes, und erstellt anhand der RGB-Werte die einzelnen Spielobjekte
+     * @param image Das Bild des Raumes
+     * @param start_x Der Startpunkt des Raumes
+     * @param start_y Der Startpunkt des Raumes
+     */
     private void erstelleRaumFelder(BufferedImage image, int start_x, int start_y) {
         //dekodiert das übergebene Bild, und erstellt damit alle Felder des Raumes
 
@@ -480,9 +536,6 @@ public class Raum implements EinmalProFrame {
                         if(SpielAnzeige.spieler1==null){
                             SpielAnzeige.spieler1 = new Spieler((x+start_x)*16,
                                     (-y-start_y)*16, this);
-                        }else if(SpielAnzeige.spieler2==null){
-                            SpielAnzeige.spieler2 = new Spieler((x+start_x)*16,
-                                    (-y-start_y)*16, this);
                         }
                     } else{
                         //FEHLER
@@ -508,6 +561,9 @@ public class Raum implements EinmalProFrame {
 
     //private void erstelleRaumFelder(BufferedImage image, Vector2)
 
+    /**
+     * Rotiert die übergebenen Felder, wenn nötig. (damit es schön aussieht)
+     */
     private static void setzeRotation(Feld feld, BufferedImage image, int x, int y){
         //ermittelt, ob und wie sich das übergebene Feld drehen muss
         boolean wandN=false;
@@ -561,6 +617,9 @@ public class Raum implements EinmalProFrame {
 
     }
 
+    /**
+     * Ermittelt anhand des RGB-Wertes, welche Textur das übergebene Feld bekommen soll
+     */
     private Texturen ermittleFeldtextur(BufferedImage image, int x, int y){
         //ermittelt die richtige Textur für das Feld
         boolean wandN=false;
@@ -599,6 +658,10 @@ public class Raum implements EinmalProFrame {
 
     }
 
+    /**
+     * Gibt einen Array mit einem Rot-, Gelb- und Grün-Anteil zurück
+     * @param feld der Pixel als Integer-Wert
+     */
     private static int[] ermittleRGB(int feld){
         /*
         Integer:    0000 0000 0000 0000 0000 0000 0000 0000 = 32 Bit
@@ -613,6 +676,10 @@ public class Raum implements EinmalProFrame {
         return rgb;
     }
 
+    /**
+     * Ermittelt anhand des RGB-Wertes die Feldeigenschaft
+     * @param rgb die RGB-Werte als Array
+     */
     private static FeldEigenschaft ermittleFeldeigenschaft(int[] rgb){
         int r = rgb[0];
         int g = rgb[1];
