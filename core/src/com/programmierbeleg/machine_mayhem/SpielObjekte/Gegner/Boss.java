@@ -81,6 +81,7 @@ public class Boss extends Gegner implements EinmalProFrame {
 
 
         SpielAnzeige.instanz.setBossAktiv(true);
+        SpielAnzeige.instanz.setBoss(this);
         intro.play(0.2f);
     }
 
@@ -105,14 +106,13 @@ public class Boss extends Gegner implements EinmalProFrame {
 
             ////
             if(raketenTimer<=0){
+                Vector2 pos = new Vector2(SpielAnzeige.spieler1.getX(),SpielAnzeige.spieler1.getY());
 
                 if(schussLinks){
-                    Vector2 pos = new Vector2(SpielAnzeige.spieler1.getX(),SpielAnzeige.spieler1.getY());
                     pos.x+= (rnd.nextFloat()-0.5f)*64;
                     pos.y+= (rnd.nextFloat()-0.5f)*64;
                     schussLinks=false;
                 }else{
-                    Vector2 pos = new Vector2(SpielAnzeige.spieler1.getX(),SpielAnzeige.spieler1.getY());
                     pos.x+= (rnd.nextFloat()-0.5f)*128;
                     pos.y+= (rnd.nextFloat()-0.5f)*128;
                     schussLinks=true;

@@ -16,6 +16,7 @@ import com.programmierbeleg.machine_mayhem.Sonstiges.LöschKlasse;
 import com.programmierbeleg.machine_mayhem.Spiel;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.*;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Effekte.Effekt;
+import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner.Boss;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner.Gegner;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Projektile.Projektil;
 import com.programmierbeleg.machine_mayhem.Welt.Raum;
@@ -51,6 +52,7 @@ public class SpielAnzeige extends ScreenAdapter {
     private boolean gameOver;
     private boolean gewonnen;
     private boolean bossAktiv;
+    private Boss boss;
     private float gameOverAlpha;
 
     private float zoomLevel;
@@ -62,8 +64,8 @@ public class SpielAnzeige extends ScreenAdapter {
             new IllegalStateException("Mehrere SpielAnzeige-Instanzen :(");
         }
 
-        musik=Gdx.audio.newSound(Gdx.files.internal("Sounds/musik_2.mp3"));
-        musik.loop(0.2f);
+        musik=Gdx.audio.newSound(Gdx.files.internal("Sounds/musik_1.mp3"));
+        musik.loop(0.1f);
 
         gameOver=false;
         gewonnen=false;
@@ -275,6 +277,30 @@ public class SpielAnzeige extends ScreenAdapter {
 
             shapeRenderer.end();
 
+            //Boss-Lebensbalken
+            if(bossAktiv){
+                float bBreite=500.0f;
+                float bHöhe=30.0f;
+                float bPosX=(Gdx.graphics.getWidth()/2)-bBreite/2;
+                float bPosY=10;
+                float bRand=5.0f;
+
+                shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+                shapeRenderer.setColor(0.3f,0.3f,0.3f,1.0f);
+                shapeRenderer.rect(bPosX,bPosY,bBreite,bHöhe);
+
+                shapeRenderer.setColor(0.0f,0.0f,0.0f,1.0f);
+                shapeRenderer.rect(bPosX+bRand,bPosY+bRand,bBreite-(bRand*2),bHöhe-(bRand*2));
+
+                float breiteGelb= (bBreite-(bRand*2)) * ((float)boss.getLeben()/(float)boss.getMaxLeben());
+                if(breiteGelb<0) breiteGelb=0;
+                shapeRenderer.setColor(1.0f,1.0f,0.0f,1.0f);
+                shapeRenderer.rect(bPosX+bRand,bPosY+bRand, breiteGelb,bHöhe-(bRand*2));
+
+                shapeRenderer.end();
+
+            }
+
             //Schlüssel zeichnen
             bildschirmBatch.begin();
             for(int i=0; i<spieler1.getAnzahlSchlüssel(); i++){
@@ -366,5 +392,9 @@ public class SpielAnzeige extends ScreenAdapter {
 
     public void setGewonnen(boolean gewonnen) {
         this.gewonnen = gewonnen;
+    }
+
+    public void setBoss(Boss boss) {
+        this.boss = boss;
     }
 }

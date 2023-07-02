@@ -48,6 +48,11 @@ public abstract class Gegner extends SpielObjekt {
     protected abstract void angriff(float delta);
     public abstract void denke(float delta);
 
+    public int getLeben() {
+        return leben;
+    }
 
-
+    public int getMaxLeben() {
+        return maxLeben;
+    }
 }
