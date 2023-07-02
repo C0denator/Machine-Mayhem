@@ -1,5 +1,8 @@
 package com.programmierbeleg.machine_mayhem.Welt;
 
+import com.badlogic.gdx.Files;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
 import com.programmierbeleg.machine_mayhem.Anzeigen.SpielAnzeige;
 import com.programmierbeleg.machine_mayhem.Daten.Richtung;
@@ -26,20 +29,28 @@ public class Welt {
      * Referenz zum letzten erzeugten Raum. Wird zum Boss-Raum
      */
     private Raum letzterRaum;
-    /**
-     * Der Ordner mit allen Raum-Bildern
-     */
-    private File räumeOrdner;
+   
     /**
      * Alle Raum-Bilder
      */
-    private File[] räume;
+    private FileHandle[] räume;
 
 
 
     public Welt(int maxRaumAnzahl) {
-        räumeOrdner = new File("assets/Räume");
-        räume = räumeOrdner.listFiles();
+
+
+        try{
+            räume = Gdx.files.internal("assets/räume").list();
+        }catch (Exception e){
+            System.err.println("Fehler beim Laden der einzelnen Räume");
+        }
+
+        System.out.println("Größe des Raum-Arrays: "+räume.length);
+
+        if(räume==null){
+            System.err.println("räume ist null");
+        }
 
 
         this.maxRaumAnzahl=maxRaumAnzahl;
@@ -53,138 +64,191 @@ public class Welt {
         int randomInt;
 
         try{
-            startraum=new Raum(ImageIO.read(new File("assets/start.png")),new Vector2());
-            SpielAnzeige.räume.add(startraum);
-            Raum derzeitigerRaum = startraum;
+            startraum=new Raum(ImageIO.read(Gdx.files.internal("assets/start.png").file()),new Vector2());
+        }catch (IOException e){
+            System.err.println("Fehler beim Startraum laden");
+        }
 
-            while(raumAnzahl<maxRaumAnzahl){
+        SpielAnzeige.räume.add(startraum);
+        Raum derzeitigerRaum = startraum;
 
-                BufferedImage image;
+        while(raumAnzahl<maxRaumAnzahl){
 
-                //Norden
-                randomInt=rnd.nextInt(räume.length);
-                if(raumAnzahl<maxRaumAnzahl && !derzeitigerRaum.hasNord()){
+            BufferedImage image = null;
 
-                    if(raumAnzahl==maxRaumAnzahl-1){
-                        image=ImageIO.read(new File("assets/bossRaum.png"));
-                    }else{
-                        image=ImageIO.read(räume[randomInt]);
+            //Norden
+            randomInt=rnd.nextInt(räume.length);
+            if(raumAnzahl<maxRaumAnzahl && !derzeitigerRaum.hasNord()){
+
+                if(raumAnzahl==maxRaumAnzahl-1){
+                    try{
+                        image=ImageIO.read(Gdx.files.internal("assets/bossRaum.png").file());
+                    }catch (IOException e){
+                        System.err.println("Fehler beim Laden des Bossraums");
                     }
-
-                    derzeitigerRaum.fügeRaumAn(image, Richtung.Nord);
-
-                    if(istRaumKollisionsfrei(derzeitigerRaum.getRaumNord(),SpielAnzeige.räume)){
-                        SpielAnzeige.räume.add(derzeitigerRaum.getRaumNord());
-                        letzterRaum=derzeitigerRaum.getRaumNord();
-                        raumAnzahl++;
-                    }else{
-                        System.out.println("Kollision entdeckt");
-                        derzeitigerRaum.setRaumNord(null);
-                    }
-
-                }
-
-                //Süden
-                randomInt=rnd.nextInt(räume.length);
-                if(raumAnzahl<maxRaumAnzahl && !derzeitigerRaum.hasSüd()){
-
-                    if(raumAnzahl==maxRaumAnzahl-1){
-                        image=ImageIO.read(new File("assets/bossRaum.png"));
-                    }else{
-                        image=ImageIO.read(räume[randomInt]);
-                    }
-
-                    derzeitigerRaum.fügeRaumAn(image, Richtung.Süd);
-
-                    if(istRaumKollisionsfrei(derzeitigerRaum.getRaumSüd(),SpielAnzeige.räume)){
-                        SpielAnzeige.räume.add(derzeitigerRaum.getRaumSüd());
-                        letzterRaum=derzeitigerRaum.getRaumSüd();
-                        raumAnzahl++;
-                    }else{
-                        System.out.println("Kollision entdeckt");
-                        derzeitigerRaum.setRaumSüd(null);
+                }else{
+                    try {
+                        image=ImageIO.read(räume[randomInt].file());
+                    }catch(IOException e){
+                        System.err.println("Fehler beim Laden des zufälligen Raumes");
                     }
 
                 }
 
-                //Osten
-                randomInt=rnd.nextInt(räume.length);
-                if(raumAnzahl<maxRaumAnzahl && !derzeitigerRaum.hasOst()){
-
-                    if(raumAnzahl==maxRaumAnzahl-1){
-                        image=ImageIO.read(new File("assets/bossRaum.png"));
-                    }else{
-                        image=ImageIO.read(räume[randomInt]);
-                    }
-
-                    derzeitigerRaum.fügeRaumAn(image, Richtung.Ost);
-
-                    if(istRaumKollisionsfrei(derzeitigerRaum.getRaumOst(),SpielAnzeige.räume)){
-                        SpielAnzeige.räume.add(derzeitigerRaum.getRaumOst());
-                        letzterRaum=derzeitigerRaum.getRaumOst();
-                        raumAnzahl++;
-                    }else{
-                        System.out.println("Kollision entdeckt");
-                        derzeitigerRaum.setRaumOst(null);
-                    }
-
+                if(image==null){
+                    System.err.println("FEHLER: image ist null");
                 }
 
-                //Westen
-                randomInt=rnd.nextInt(räume.length);
-                if(raumAnzahl<maxRaumAnzahl && !derzeitigerRaum.hasWest()){
+                derzeitigerRaum.fügeRaumAn(image, Richtung.Nord);
 
-                    if(raumAnzahl==maxRaumAnzahl-1){
-                        image=ImageIO.read(new File("assets/bossRaum.png"));
-                    }else{
-                        image=ImageIO.read(räume[randomInt]);
-                    }
-
-                    derzeitigerRaum.fügeRaumAn(image, Richtung.West);
-
-                    if(istRaumKollisionsfrei(derzeitigerRaum.getRaumWest(),SpielAnzeige.räume)){
-                        SpielAnzeige.räume.add(derzeitigerRaum.getRaumWest());
-                        letzterRaum=derzeitigerRaum.getRaumWest();
-                        raumAnzahl++;
-                    }else{
-                        System.out.println("Kollision entdeckt");
-                        derzeitigerRaum.setRaumWest(null);
-                    }
-
-                }
-
-                if(raumAnzahl<maxRaumAnzahl){
-                    //den aktuellen Raum wechseln
-                    int tmp = rnd.nextInt(4);
-                    switch (tmp){
-                        case 0:
-                            if(derzeitigerRaum.hasNord()) {
-                                derzeitigerRaum = derzeitigerRaum.getRaumNord();
-                            }
-                            break;
-                        case 1:
-                            if(derzeitigerRaum.hasOst()) {
-                                derzeitigerRaum = derzeitigerRaum.getRaumOst();
-                            }
-                            break;
-                        case 2:
-                            if(derzeitigerRaum.hasSüd()) {
-                                derzeitigerRaum = derzeitigerRaum.getRaumSüd();
-                            }
-                            break;
-                        case 3:
-                            if(derzeitigerRaum.hasWest()) {
-                                derzeitigerRaum = derzeitigerRaum.getRaumWest();
-                            }
-                            break;
-                    }
+                if(istRaumKollisionsfrei(derzeitigerRaum.getRaumNord(),SpielAnzeige.räume)){
+                    SpielAnzeige.räume.add(derzeitigerRaum.getRaumNord());
+                    letzterRaum=derzeitigerRaum.getRaumNord();
+                    raumAnzahl++;
+                }else{
+                    System.out.println("Kollision entdeckt");
+                    derzeitigerRaum.setRaumNord(null);
                 }
 
             }
 
-        }catch (IOException e){
-            System.err.println("Fehler beim Laden der Raum-Dateien");
+            //Süden
+            randomInt=rnd.nextInt(räume.length);
+            if(raumAnzahl<maxRaumAnzahl && !derzeitigerRaum.hasSüd()){
+
+                if(raumAnzahl==maxRaumAnzahl-1){
+                    try{
+                        image=ImageIO.read(Gdx.files.internal("assets/bossRaum.png").file());
+                    }catch (IOException e){
+                        System.err.println("Fehler beim Laden des Bossraums");
+                    }
+                }else{
+                    try {
+                        image=ImageIO.read(räume[randomInt].file());
+                    }catch(IOException e){
+                        System.err.println("Fehler beim Laden des zufälligen Raumes");
+                    }
+
+                }
+
+                if(image==null){
+                    System.err.println("FEHLER: image ist null");
+                }
+
+                derzeitigerRaum.fügeRaumAn(image, Richtung.Süd);
+
+                if(istRaumKollisionsfrei(derzeitigerRaum.getRaumSüd(),SpielAnzeige.räume)){
+                    SpielAnzeige.räume.add(derzeitigerRaum.getRaumSüd());
+                    letzterRaum=derzeitigerRaum.getRaumSüd();
+                    raumAnzahl++;
+                }else{
+                    System.out.println("Kollision entdeckt");
+                    derzeitigerRaum.setRaumSüd(null);
+                }
+
+            }
+
+            //Osten
+            randomInt=rnd.nextInt(räume.length);
+            if(raumAnzahl<maxRaumAnzahl && !derzeitigerRaum.hasOst()){
+
+                if(raumAnzahl==maxRaumAnzahl-1){
+                    try{
+                        image=ImageIO.read(Gdx.files.internal("assets/bossRaum.png").file());
+                    }catch (IOException e){
+                        System.err.println("Fehler beim Laden des Bossraums");
+                    }
+                }else{
+                    try {
+                        image=ImageIO.read(räume[randomInt].file());
+                    }catch(IOException e){
+                        System.err.println("Fehler beim Laden des zufälligen Raumes");
+                    }
+
+                }
+
+                if(image==null){
+                    System.err.println("FEHLER: image ist null");
+                }
+
+                derzeitigerRaum.fügeRaumAn(image, Richtung.Ost);
+
+                if(istRaumKollisionsfrei(derzeitigerRaum.getRaumOst(),SpielAnzeige.räume)){
+                    SpielAnzeige.räume.add(derzeitigerRaum.getRaumOst());
+                    letzterRaum=derzeitigerRaum.getRaumOst();
+                    raumAnzahl++;
+                }else{
+                    System.out.println("Kollision entdeckt");
+                    derzeitigerRaum.setRaumOst(null);
+                }
+
+            }
+
+            //Westen
+            randomInt=rnd.nextInt(räume.length);
+            if(raumAnzahl<maxRaumAnzahl && !derzeitigerRaum.hasWest()){
+
+                if(raumAnzahl==maxRaumAnzahl-1){
+                    try{
+                        image=ImageIO.read(Gdx.files.internal("assets/bossRaum.png").file());
+                    }catch (IOException e){
+                        System.err.println("Fehler beim Laden des Bossraums");
+                    }
+                }else{
+                    try {
+                        image=ImageIO.read(räume[randomInt].file());
+                    }catch(IOException e){
+                        System.err.println("Fehler beim Laden des zufälligen Raumes");
+                    }
+
+                }
+
+                if(image==null){
+                    System.err.println("FEHLER: image ist null");
+                }
+
+                derzeitigerRaum.fügeRaumAn(image, Richtung.West);
+
+                if(istRaumKollisionsfrei(derzeitigerRaum.getRaumWest(),SpielAnzeige.räume)){
+                    SpielAnzeige.räume.add(derzeitigerRaum.getRaumWest());
+                    letzterRaum=derzeitigerRaum.getRaumWest();
+                    raumAnzahl++;
+                }else{
+                    System.out.println("Kollision entdeckt");
+                    derzeitigerRaum.setRaumWest(null);
+                }
+
+            }
+
+            if(raumAnzahl<maxRaumAnzahl){
+                //den aktuellen Raum wechseln
+                int tmp = rnd.nextInt(4);
+                switch (tmp){
+                    case 0:
+                        if(derzeitigerRaum.hasNord()) {
+                            derzeitigerRaum = derzeitigerRaum.getRaumNord();
+                        }
+                        break;
+                    case 1:
+                        if(derzeitigerRaum.hasOst()) {
+                            derzeitigerRaum = derzeitigerRaum.getRaumOst();
+                        }
+                        break;
+                    case 2:
+                        if(derzeitigerRaum.hasSüd()) {
+                            derzeitigerRaum = derzeitigerRaum.getRaumSüd();
+                        }
+                        break;
+                    case 3:
+                        if(derzeitigerRaum.hasWest()) {
+                            derzeitigerRaum = derzeitigerRaum.getRaumWest();
+                        }
+                        break;
+                }
+            }
+
         }
+
 
         letzterRaum.setBossRaum(true);
         letzterRaum.setGegnerAnzahl(1);

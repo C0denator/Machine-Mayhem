@@ -7,7 +7,6 @@ import com.programmierbeleg.machine_mayhem.Spiel;
  * Eine Sammlung von Texturen
  */
 public enum Texturen {
-    //Die Textur die ein Feld hat
 
     Boden_1(Spiel.instanz.atlas.findRegion("boden")),
     TürZu(Spiel.instanz.atlas.findRegion("tür1_zu")),

@@ -728,29 +728,8 @@ public class Raum implements EinmalProFrame {
         RaumOst = raumOst;
     }
 
-    public int getStart_x() {
-        return start_x;
-    }
-
-    public void setStart_x(int start_x) {
-        this.start_x = start_x;
-    }
-
-    public int getStart_y() {
-        return start_y;
-    }
-
-    public void setStart_y(int start_y) {
-        this.start_y = start_y;
-    }
-
-
     public Feld[][] getFelder() {
         return felder;
-    }
-
-    public void setFelder(Feld[][] felder) {
-        this.felder = felder;
     }
 
     public int getGegnerAnzahl() {
@@ -765,24 +744,12 @@ public class Raum implements EinmalProFrame {
         return sichtbar;
     }
 
-    public void setSichtbar(boolean sichtbar) {
-        this.sichtbar = sichtbar;
-    }
-
-    public boolean isBossRaum() {
-        return bossRaum;
-    }
-
     public void setBossRaum(boolean bossRaum) {
         this.bossRaum = bossRaum;
     }
 
     public boolean isKampfAktiv() {
         return kampfAktiv;
-    }
-
-    public void setKampfAktiv(boolean kampfAktiv) {
-        this.kampfAktiv = kampfAktiv;
     }
 
     public boolean hasNord(){

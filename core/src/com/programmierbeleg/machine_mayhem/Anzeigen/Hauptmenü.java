@@ -26,7 +26,6 @@ public class Hauptmenü extends ScreenAdapter {
 
     public Hauptmenü(){
         batch = new SpriteBatch();
-        //img = new Texture("badlogic.jpg");
         testBild= Spiel.instanz.atlas.findRegion("badlogic");
         knöpfe=new ArrayList<Knopf>();
         bitmapFont = new BitmapFont();
