@@ -38,8 +38,10 @@ public class Item extends SpielObjekt implements EinmalProFrame {
             switch (itemEigenschaft){
                 case Batterie:
                     SpielAnzeige.spieler1.heilen(33);
+                    break;
                 case Schlüssel:
                     SpielAnzeige.spieler1.setAnzahlSchlüssel(SpielAnzeige.spieler1.getAnzahlSchlüssel()+1);
+                    break;
             }
             LöschKlasse.lösche(this);
         }

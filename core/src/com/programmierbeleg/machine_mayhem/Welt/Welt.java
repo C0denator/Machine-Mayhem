@@ -202,6 +202,7 @@ public class Welt {
                 anzahlSchlüssel++;
             }
         }while(anzahlSchlüssel<3);
+        System.out.println("Anzahl Schlüssel: "+Integer.toString(anzahlSchlüssel));
     }
 
     private boolean istRaumKollisionsfrei(Raum raum, ArrayList<Raum> räume){

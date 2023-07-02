@@ -122,25 +122,25 @@ public class Raum implements EinmalProFrame {
             kampfAktiv=true;
 
             if(getRaumNord()!=null && vorherigerRaum.equals(getRaumNord())){
-                vorherigerRaum.findeTürObjekt(Richtung.Süd).schließen();
-                findeTürObjekt(Richtung.Süd).schließen();
-                findeTürObjekt(Richtung.West).schließen();
-                findeTürObjekt(Richtung.Ost).schließen();
+                vorherigerRaum.schließeTür(Richtung.Süd);
+                schließeTür(Richtung.Süd);
+                schließeTür(Richtung.West);
+                schließeTür(Richtung.Ost);
             }else if(getRaumSüd()!=null && vorherigerRaum.equals(getRaumSüd())){
-                vorherigerRaum.findeTürObjekt(Richtung.Nord).schließen();
-                findeTürObjekt(Richtung.Nord).schließen();
-                findeTürObjekt(Richtung.West).schließen();
-                findeTürObjekt(Richtung.Ost).schließen();
+                vorherigerRaum.schließeTür(Richtung.Nord);
+                schließeTür(Richtung.Nord);
+                schließeTür(Richtung.West);
+                schließeTür(Richtung.Ost);
             }else if(getRaumOst()!=null && vorherigerRaum.equals(getRaumOst())){
-                vorherigerRaum.findeTürObjekt(Richtung.West).schließen();
-                findeTürObjekt(Richtung.Nord).schließen();
-                findeTürObjekt(Richtung.Süd).schließen();
-                findeTürObjekt(Richtung.West).schließen();
+                vorherigerRaum.schließeTür(Richtung.West);
+                schließeTür(Richtung.Nord);
+                schließeTür(Richtung.Süd);
+                schließeTür(Richtung.West);
             }else if(getRaumWest()!=null && vorherigerRaum.equals(getRaumWest())){
-                vorherigerRaum.findeTürObjekt(Richtung.Ost).schließen();
-                findeTürObjekt(Richtung.Nord).schließen();
-                findeTürObjekt(Richtung.Süd).schließen();
-                findeTürObjekt(Richtung.Ost).schließen();
+                vorherigerRaum.schließeTür(Richtung.Ost);
+                schließeTür(Richtung.Nord);
+                schließeTür(Richtung.Süd);
+                schließeTür(Richtung.Ost);
             }
             spawneGegner();
         }
@@ -148,16 +148,16 @@ public class Raum implements EinmalProFrame {
 
     public void öffneTüren(){
         if(getRaumNord()!=null){
-            findeTürObjekt(Richtung.Nord).öffnen();
+            öffneTür(Richtung.Nord);
         }
         if(getRaumSüd()!=null){
-            findeTürObjekt(Richtung.Süd).öffnen();
+            öffneTür(Richtung.Süd);
         }
         if(getRaumWest()!=null){
-            findeTürObjekt(Richtung.West).öffnen();
+            öffneTür(Richtung.West);
         }
         if(getRaumOst()!=null){
-            findeTürObjekt(Richtung.Ost).öffnen();
+            öffneTür(Richtung.Ost);
         }
     }
 
@@ -172,7 +172,9 @@ public class Raum implements EinmalProFrame {
     }
 
     public void öffneTür(Richtung richtung){
-        findeTürObjekt(richtung).öffnen();
+        if(!findeTürObjekt(richtung).isBossTür()){
+            findeTürObjekt(richtung).öffnen();
+        }
     }
 
 
