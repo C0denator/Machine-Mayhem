@@ -15,6 +15,7 @@ import com.programmierbeleg.machine_mayhem.Interfaces.EinmalProFrame;
 import com.programmierbeleg.machine_mayhem.Sonstiges.LöschKlasse;
 import com.programmierbeleg.machine_mayhem.Spiel;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.*;
+import com.programmierbeleg.machine_mayhem.SpielObjekte.Effekte.Effekt;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner.Gegner;
 import com.programmierbeleg.machine_mayhem.Welt.Raum;
 import com.programmierbeleg.machine_mayhem.Welt.Welt;
@@ -34,6 +35,8 @@ public class SpielAnzeige extends ScreenAdapter {
     public static ArrayList<EinmalProFrame> physikObjekte;
     public static ArrayList<Knopf> knöpfe;
     public static ArrayList<Item> items;
+
+    public static ArrayList<Effekt> effekte;
 
     public static Spieler spieler1;
     public static Spieler spieler2;
@@ -77,6 +80,7 @@ public class SpielAnzeige extends ScreenAdapter {
         physikObjekte = new ArrayList<>();
         knöpfe = new ArrayList<Knopf>();
         items = new ArrayList<Item>();
+        effekte = new ArrayList<Effekt>();
         /////////////////
         knöpfe.add(new Knopf(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()*0.8f,500,100,"Fortfahren"){
             @Override
@@ -186,6 +190,10 @@ public class SpielAnzeige extends ScreenAdapter {
             kameraBatch.draw(spieler2.getTextur(), spieler2.getX(), spieler2.getY(),
                     spieler2.getBreite()/2, spieler2.getHöhe()/2,
                     spieler2.getBreite(), spieler2.getHöhe(), 1.0f, 1.0f, spieler2.getWinkelInt());
+        }
+
+        for(Effekt e : effekte){
+            kameraBatch.draw(e.getTextur(),e.getX(),e.getY(),e.getBreite(),e.getHöhe());
         }
 
         ////////////////////////////////////////////////////////////

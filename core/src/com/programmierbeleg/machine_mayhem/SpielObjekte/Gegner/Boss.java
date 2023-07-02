@@ -1,5 +1,7 @@
 package com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.programmierbeleg.machine_mayhem.Anzeigen.SpielAnzeige;
@@ -20,6 +22,10 @@ public class Boss extends Gegner implements EinmalProFrame {
     float spezialCooldown;
     float spezialDauer;
     float spezialDauerMAX;
+    Sound intro;
+
+    boolean schussLinks;
+    private float schussSpeed = 100.0f;
 
     public Boss(float x, float y, Raum raum){
         super(x,y,raum);
@@ -28,6 +34,8 @@ public class Boss extends Gegner implements EinmalProFrame {
         textur= Spiel.instanz.atlas.findRegion("Boss_idle");
         leben=200;
         maxLeben=leben;
+
+        intro=Gdx.audio.newSound(Gdx.files.internal("Sounds/EpischKurz.mp3"));
 
         animationLaufen=new Animation(this,new TextureRegion[]{
                 Spiel.instanz.atlas.findRegion("Boss_lauf",1),
@@ -57,10 +65,14 @@ public class Boss extends Gegner implements EinmalProFrame {
         spezialDauer=5.0f;
         spezialDauerMAX=spezialDauer;
 
-        angriffCooldown=0.5f;
+        angriffCooldown=0.3f;
         angriffTimer=angriffCooldown;
 
+        schussLinks=true;
+
+
         SpielAnzeige.instanz.setBossAktiv(true);
+        intro.play();
     }
 
     @Override
@@ -98,12 +110,23 @@ public class Boss extends Gegner implements EinmalProFrame {
             angriffTimer-=delta;
         }else {
             Random rnd = new Random();
-            float tmpWinkel = winkelZu(SpielAnzeige.spieler1) + (float)(rnd.nextInt(21)-10);
-            SpielAnzeige.projektile.add(new Projektil(x,y,tmpWinkel,Spiel.instanz.atlas.findRegion("laser_rot",1),5, new Vector2(
-                    (float) (-Math.sin( (tmpWinkel/180) * Math.PI)) * 150,
-                    (float) (Math.cos( (tmpWinkel/180) * Math.PI)) * 150),
-                    raum, true));
             angriffTimer=angriffCooldown;
+
+            float tmpWinkel = winkelZu(SpielAnzeige.spieler1) + (float)(rnd.nextInt(91)-45);
+
+            if(schussLinks){
+                SpielAnzeige.projektile.add(new Projektil(x,y+16,tmpWinkel,Spiel.instanz.atlas.findRegion("laser_rot",1),5, new Vector2(
+                        (float) (-Math.sin( (tmpWinkel/180) * Math.PI)) * schussSpeed,
+                        (float) (Math.cos( (tmpWinkel/180) * Math.PI)) * schussSpeed),
+                        raum, true));
+                schussLinks=false;
+            }else{
+                SpielAnzeige.projektile.add(new Projektil(x+32,y+16,tmpWinkel,Spiel.instanz.atlas.findRegion("laser_rot",1),5, new Vector2(
+                        (float) (-Math.sin( (tmpWinkel/180) * Math.PI)) * schussSpeed,
+                        (float) (Math.cos( (tmpWinkel/180) * Math.PI)) * schussSpeed),
+                        raum, true));
+                schussLinks=true;
+            }
         }
 
         if(spezialTimer>0){

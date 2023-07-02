@@ -35,7 +35,7 @@ public class Schrot_1 extends Gegner implements EinmalProFrame {
                 Spiel.instanz.atlas.findRegion("schrot_recharge",2),
                 Spiel.instanz.atlas.findRegion("schrot_recharge",1),
                 Spiel.instanz.atlas.findRegion("schrot_idle"),
-        },0.4f,false);
+        },0.5f,false);
 
         if(SpielAnzeige.physikObjekte==null){
             System.err.println("Fehler: SpielAnzeige.physikObjekte ist null");
@@ -44,7 +44,7 @@ public class Schrot_1 extends Gegner implements EinmalProFrame {
         }
 
         angriffAktiv=false;
-        angriffCooldown=2.0f;
+        angriffCooldown=2.5f;
         angriffTimer=angriffCooldown;
         rnd = new Random();
         bewegungsVektor=new Vector2();
