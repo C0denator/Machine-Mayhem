@@ -106,6 +106,12 @@ public class SpielObjekt {
         return r1.overlaps(r2);
     }
 
+    public float distanzZu(SpielObjekt o){
+        float xKathete = x-o.getX();
+        float yKathete = y-o.getY();
+        return (float)Math.sqrt((xKathete*xKathete)+(yKathete*yKathete));
+    }
+
     public float getX() {
         return x;
     }

@@ -56,8 +56,8 @@ public class SpielAnzeige extends ScreenAdapter {
             new IllegalStateException("Mehrere SpielAnzeige-Instanzen :(");
         }
 
-        musik=Gdx.audio.newSound(Gdx.files.internal("Sounds/musik_1.mp3"));
-        musik.loop(0.05f);
+        musik=Gdx.audio.newSound(Gdx.files.internal("Sounds/musik_2.mp3"));
+        musik.loop(0.2f);
 
         gameOver=false;
 

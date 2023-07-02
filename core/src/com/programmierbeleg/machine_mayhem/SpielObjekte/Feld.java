@@ -10,7 +10,7 @@ public class Feld extends SpielObjekt{
     private final FeldEigenschaft feldEigenschaft;
     private final Texturen feldTextur;
 
-    private final Raum raum;
+    protected final Raum raum;
     private int winkel;
     public Feld(Texturen textur, FeldEigenschaft feldEigenschaft, Raum raum,
                 float x, float y, boolean laufbar) {
