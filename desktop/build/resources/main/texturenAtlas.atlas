@@ -4,177 +4,443 @@ size: 512, 512
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
+Batterie
+  rotate: false
+  xy: 36, 126
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+Boss
+  rotate: false
+  xy: 2, 212
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+Boss_idle
+  rotate: false
+  xy: 2, 212
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+Boss_lauf
+  rotate: false
+  xy: 260, 470
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 1
+Boss_lauf
+  rotate: false
+  xy: 2, 178
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 2
+Boss_spezial
+  rotate: false
+  xy: 36, 212
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 1
+Boss_spezial
+  rotate: false
+  xy: 260, 436
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 2
+Boss_spezial
+  rotate: false
+  xy: 294, 470
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 3
+Boss_spezial
+  rotate: false
+  xy: 2, 144
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 4
+Boss_spezial
+  rotate: false
+  xy: 36, 178
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 5
+Boss_spezial
+  rotate: false
+  xy: 70, 212
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 6
+Explosion
+  rotate: false
+  xy: 70, 160
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 1
+Explosion
+  rotate: false
+  xy: 104, 194
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 2
+Explosion
+  rotate: false
+  xy: 138, 228
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 3
+Explosion
+  rotate: false
+  xy: 260, 366
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 4
+Explosion
+  rotate: false
+  xy: 381, 486
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 5
+Explosion
+  rotate: false
+  xy: 2, 74
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 6
 Fragezeichen
   rotate: false
-  xy: 2, 72
+  xy: 156, 228
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+Rakete
+  rotate: false
+  xy: 260, 402
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 1
+Rakete
+  rotate: false
+  xy: 294, 436
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 2
+Rakete
+  rotate: false
+  xy: 328, 470
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 3
+Rakete
+  rotate: false
+  xy: 2, 110
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 4
+Rakete
+  rotate: false
+  xy: 36, 144
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 5
+Rakete
+  rotate: false
+  xy: 70, 178
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 6
+Rakete
+  rotate: false
+  xy: 104, 212
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 7
+Schlüssel
+  rotate: false
+  xy: 260, 348
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 Spieler_idle
   rotate: false
-  xy: 260, 330
+  xy: 399, 486
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 Spieler_lauf1
   rotate: false
-  xy: 2, 54
+  xy: 2, 56
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 Spieler_lauf2
   rotate: false
-  xy: 20, 72
+  xy: 174, 228
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 badlogic
   rotate: false
-  xy: 2, 90
+  xy: 2, 246
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
 boden
   rotate: false
+  xy: 260, 330
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+bossTür
+  rotate: false
+  xy: 417, 486
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 1
+bossTür
+  rotate: false
+  xy: 2, 38
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 2
+bossTür
+  rotate: false
+  xy: 192, 228
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 3
+bossTür
+  rotate: false
   xy: 260, 312
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 4
+bossTür_offen
+  rotate: false
+  xy: 435, 486
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+bossTür_verschlossen
+  rotate: false
+  xy: 2, 20
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+bossTür_zu
+  rotate: false
+  xy: 210, 228
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 laser_gelb
   rotate: false
-  xy: 2, 2
-  size: 6, 14
-  orig: 6, 14
+  xy: 21, 98
+  size: 2, 10
+  orig: 2, 10
   offset: 0, 0
   index: 1
 laser_gelb
   rotate: false
-  xy: 20, 20
-  size: 6, 14
-  orig: 6, 14
+  xy: 36, 114
+  size: 2, 10
+  orig: 2, 10
   offset: 0, 0
   index: 2
 laser_rot
   rotate: false
-  xy: 38, 38
-  size: 6, 14
-  orig: 6, 14
+  xy: 54, 132
+  size: 2, 10
+  orig: 2, 10
   offset: 0, 0
   index: 1
 laser_rot
   rotate: false
-  xy: 56, 56
-  size: 6, 14
-  orig: 6, 14
+  xy: 70, 148
+  size: 2, 10
+  orig: 2, 10
   offset: 0, 0
   index: 2
 robot
-  rotate: false
-  xy: 278, 330
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: 1
-robot
-  rotate: false
-  xy: 2, 36
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: 2
-robot
-  rotate: false
-  xy: 20, 54
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: 3
-schrot
-  rotate: false
-  xy: 38, 72
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: 1
-tür1
   rotate: false
   xy: 260, 294
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 1
+robot
+  rotate: false
+  xy: 453, 486
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 2
+robot
+  rotate: false
+  xy: 2, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 3
+schrot_idle
+  rotate: false
+  xy: 260, 384
+  size: 17, 16
+  orig: 17, 16
+  offset: 0, 0
+  index: -1
+schrot_recharge
+  rotate: false
+  xy: 294, 418
+  size: 17, 16
+  orig: 17, 16
+  offset: 0, 0
+  index: 1
+schrot_recharge
+  rotate: false
+  xy: 328, 452
+  size: 17, 16
+  orig: 17, 16
+  offset: 0, 0
+  index: 2
+schrot_recharge
+  rotate: false
+  xy: 362, 486
+  size: 17, 16
+  orig: 17, 16
+  offset: 0, 0
+  index: 3
+schrot_recharge
+  rotate: false
+  xy: 2, 92
+  size: 17, 16
+  orig: 17, 16
+  offset: 0, 0
+  index: 4
 tür1
   rotate: false
-  xy: 278, 312
+  xy: 228, 228
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 1
+tür1
+  rotate: false
+  xy: 260, 276
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 2
 tür1
   rotate: false
-  xy: 296, 330
+  xy: 471, 486
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 3
 tür1
   rotate: false
-  xy: 2, 18
+  xy: 260, 258
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 4
 tür1_offen
   rotate: false
-  xy: 20, 36
+  xy: 489, 486
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 tür1_zu
   rotate: false
-  xy: 38, 54
+  xy: 294, 400
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 wand_block
   rotate: false
-  xy: 56, 72
+  xy: 328, 434
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 wand_ecke
   rotate: false
-  xy: 260, 276
+  xy: 362, 468
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 wand_ende
   rotate: false
-  xy: 278, 294
+  xy: 380, 468
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 wand_füllung
   rotate: false
-  xy: 296, 312
+  xy: 398, 468
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 wand_gerade
   rotate: false
-  xy: 314, 330
+  xy: 416, 468
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wand_nord
+  rotate: false
+  xy: 434, 468
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wand_rand
+  rotate: false
+  xy: 452, 468
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
