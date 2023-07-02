@@ -59,7 +59,8 @@ public class Tür extends Feld implements EinmalProFrame {
 
     @Override
     public void einmalProFrame(float delta) {
-        if(bossTür && SpielAnzeige.spieler1.getAktuellerRaum().equals(raum)){
+        System.out.println("Distanz zum Bossraum: "+distanzZu(SpielAnzeige.spieler1));
+        if(bossTür && SpielAnzeige.spieler1.getAktuellerRaum().equals(raum) && !raum.isKampfAktiv()){
             if(SpielAnzeige.spieler1.getAnzahlSchlüssel()>=3 && SpielAnzeige.spieler1.distanzZu(this)<=50){
                 if(!isLaufbar()){
                     öffnen();

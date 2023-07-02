@@ -78,7 +78,7 @@ public class Spieler extends SpielObjekt implements EinmalProFrame {
 
         schussSound=Gdx.audio.newSound(Gdx.files.internal("Sounds/laser.wav"));
         chanceAufItem=0;
-        anzahlSchlüssel=0;
+        anzahlSchlüssel=3;
     }
 
     private Spieler(float x, float y, Raum raum, boolean fake){
