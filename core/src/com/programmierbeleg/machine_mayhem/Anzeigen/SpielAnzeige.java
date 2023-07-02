@@ -44,7 +44,9 @@ public class SpielAnzeige extends ScreenAdapter {
     private boolean pausiert = false;
 
     private Sound musik;
-    private static boolean gameOver;
+    private boolean gameOver;
+    private boolean gewonnen;
+    private boolean bossAktiv;
     private float gameOverAlpha;
 
     private float zoomLevel;
@@ -60,6 +62,7 @@ public class SpielAnzeige extends ScreenAdapter {
         musik.loop(0.2f);
 
         gameOver=false;
+        gewonnen=false;
 
         kameraBatch =new SpriteBatch();
         bildschirmBatch= new SpriteBatch();
@@ -338,5 +341,21 @@ public class SpielAnzeige extends ScreenAdapter {
         if(batchBeendet){
             kameraBatch.begin();
         }
+    }
+
+    public boolean isBossAktiv() {
+        return bossAktiv;
+    }
+
+    public void setBossAktiv(boolean bossAktiv) {
+        this.bossAktiv = bossAktiv;
+    }
+
+    public boolean isGewonnen() {
+        return gewonnen;
+    }
+
+    public void setGewonnen(boolean gewonnen) {
+        this.gewonnen = gewonnen;
     }
 }

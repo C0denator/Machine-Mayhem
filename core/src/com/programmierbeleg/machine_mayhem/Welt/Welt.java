@@ -173,6 +173,7 @@ public class Welt {
         }
 
         letzterRaum.setBossRaum(true);
+        letzterRaum.setGegnerAnzahl(1);
         if(letzterRaum.hasNord()){
             letzterRaum.getRaumNord().findeTürObjekt(Richtung.Süd).wandleInBossTürUm();
         }

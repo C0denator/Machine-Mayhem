@@ -21,8 +21,8 @@ public abstract class Gegner extends SpielObjekt {
 
     public Gegner (float x, float y, Raum raum) {
         super (x, y,
-                Spiel.instanz.atlas.findRegion("robot",1).getRegionWidth(),
-                Spiel.instanz.atlas.findRegion("robot",1).getRegionHeight(),
+                16,
+                16,
                 0, true);
         this.raum=raum;
 
@@ -40,21 +40,6 @@ public abstract class Gegner extends SpielObjekt {
         LöschKlasse.lösche(this);
         raum.setGegnerAnzahl(raum.getGegnerAnzahl()-1);
         raum.setPositionLetzterGegner(new Vector2(x,y));
-    }
-
-    protected float winkelZu(SpielObjekt s){
-        //der Winkel, den ein Projektil haben muss, um zum Spieler zu schauen
-        double a = x-s.getX();
-        double b = y-s.getY();
-        double ergebnis;
-
-        if(a>=0){
-            ergebnis= ((180/Math.PI)*Math.atan(b/a)+90.0);
-        }else{
-            ergebnis= ((180/Math.PI)*Math.atan(b/a)-90.0);
-        }
-
-        return (float)ergebnis;
     }
     protected abstract void angriff(float delta);
     public abstract void denke(float delta);

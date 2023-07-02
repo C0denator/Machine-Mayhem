@@ -9,6 +9,7 @@ import com.programmierbeleg.machine_mayhem.Daten.Richtung;
 import com.programmierbeleg.machine_mayhem.Interfaces.EinmalProFrame;
 import com.programmierbeleg.machine_mayhem.Sonstiges.ID_Vergeber;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.*;
+import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner.Boss;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner.Fernkampf_1;
 import com.programmierbeleg.machine_mayhem.SpielObjekte.Gegner.Schrot_1;
 import com.badlogic.gdx.math.Rectangle;
@@ -69,7 +70,7 @@ public class Raum implements EinmalProFrame {
 
     @Override
     public void einmalProFrame(float delta) {
-        if(sichtbar && kampfAktiv){
+        if(sichtbar && !bossRaum && kampfAktiv){
             if(gegnerAnzahl<=0){
                 kampfAktiv=false;
                 öffneTüren();
@@ -106,12 +107,18 @@ public class Raum implements EinmalProFrame {
 
     private void spawneGegner(){
         for(Feld f : gegnerSpawns){
-            if(f.getFeldEigenschaft()==FeldEigenschaft.FernkampfSpawn){
-                SpielAnzeige.gegner.add(new Fernkampf_1(f.getX(),f.getY(),this));
-                gegnerAnzahl++;
-            }else if(f.getFeldEigenschaft()==FeldEigenschaft.NahkampfSpawn){
-                SpielAnzeige.gegner.add(new Schrot_1(f.getX(),f.getY(),this));
-                gegnerAnzahl++;
+            switch (f.getFeldEigenschaft()){
+                case FernkampfSpawn:
+                    SpielAnzeige.gegner.add(new Fernkampf_1(f.getX(),f.getY(),this));
+                    gegnerAnzahl++;
+                    break;
+                case NahkampfSpawn:
+                    SpielAnzeige.gegner.add(new Schrot_1(f.getX(),f.getY(),this));
+                    gegnerAnzahl++;
+                    break;
+                case BossSpawn:
+                    SpielAnzeige.gegner.add(new Boss(f.getX(),f.getY(),f.getRaum()));
+                    gegnerAnzahl++;
             }
         }
     }
@@ -448,6 +455,14 @@ public class Raum implements EinmalProFrame {
                         //Normaler Boden mit NahkampfSpawn
                         felder[x][y]=new Feld
                                 (Texturen.Boden_1, FeldEigenschaft.NahkampfSpawn, this,
+                                        (x+start_x)*16,
+                                        (-y-start_y)*16,
+                                        true);
+                        gegnerSpawns.add(felder[x][y]);
+                    }else if (g==0 && b==255) {
+                        //Normaler Boden mit BossSpawn
+                        felder[x][y]=new Feld
+                                (Texturen.Boden_1, FeldEigenschaft.BossSpawn, this,
                                         (x+start_x)*16,
                                         (-y-start_y)*16,
                                         true);

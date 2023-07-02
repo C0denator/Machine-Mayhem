@@ -7,6 +7,7 @@ public enum FeldEigenschaft {
     Tür,
     FernkampfSpawn,
     NahkampfSpawn,
+    BossSpawn,
     SpielerSpawn,
 
 }

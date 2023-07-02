@@ -44,6 +44,15 @@ public class SpielObjekt {
         this.y+=y*delta;
     }
 
+    public void bewegenInRichtung(float winkel, float multiplikator, float delta){
+        //bewegt das Objekt in die jeweilige Richtung
+        Vector2 v = new Vector2(
+                (float) (-Math.sin( (winkel/180) * Math.PI)) * multiplikator,
+                (float) (Math.cos( (winkel/180) * Math.PI)) * multiplikator);
+        bewegen(v,delta);
+
+    }
+
     public boolean kollidiertInZukunft(Raum raum, Vector2 v, float delta){
         //prüft ob es zu einer Kollision im Raum kommt, wenn sich das Objekt um den übergebenen Betrag bewegen würde
 
@@ -110,6 +119,21 @@ public class SpielObjekt {
         float xKathete = x-o.getX();
         float yKathete = y-o.getY();
         return (float)Math.sqrt((xKathete*xKathete)+(yKathete*yKathete));
+    }
+
+    protected float winkelZu(SpielObjekt s){
+        //der Winkel, den dieses Objekt haben muss, um zum übergebenen Objekt zu schauen
+        double a = x-s.getX();
+        double b = y-s.getY();
+        double ergebnis;
+
+        if(a>=0){
+            ergebnis= ((180/Math.PI)*Math.atan(b/a)+90.0);
+        }else{
+            ergebnis= ((180/Math.PI)*Math.atan(b/a)-90.0);
+        }
+
+        return (float)ergebnis;
     }
 
     public float getX() {
